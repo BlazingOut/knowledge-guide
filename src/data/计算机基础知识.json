@@ -1,0 +1,85 @@
+{
+  "id": "computer-basics",
+  "title": "计算机基础知识",
+  "source": {
+    "name": "JavaGuide",
+    "url": "https://javaguide.cn/cs-basics/",
+    "localFile": "assets/计算机基础知识体系：计算机网络、操作系统、数据结构与算法 _ JavaGuide.html"
+  },
+  "children": [
+    {
+      "id": "computer-network",
+      "title": "计算机网络",
+      "url": "https://javaguide.cn/cs-basics/network/",
+      "topics": [
+        { "id": "network-questions-01", "title": "计算机网络常见面试题总结（上）", "url": "https://javaguide.cn/cs-basics/network/other-network-questions.html" },
+        { "id": "network-questions-02", "title": "计算机网络常见面试题总结（下）", "url": "https://javaguide.cn/cs-basics/network/other-network-questions2.html" },
+        { "id": "osi-and-tcp-ip-model", "title": "OSI 七层模型与 TCP/IP 四层模型详解", "url": "https://javaguide.cn/cs-basics/network/osi-and-tcp-ip-model.html" },
+        { "id": "web-page-access", "title": "从输入 URL 到页面展示到底发生了什么？", "url": "https://javaguide.cn/cs-basics/network/the-whole-process-of-accessing-web-pages.html" },
+        { "id": "http-vs-https", "title": "HTTP vs HTTPS", "url": "https://javaguide.cn/cs-basics/network/http-vs-https.html" },
+        { "id": "http-versions", "title": "HTTP 1.0 vs HTTP 1.1", "url": "https://javaguide.cn/cs-basics/network/http1.0-vs-http1.1.html" },
+        { "id": "http-status-codes", "title": "HTTP 常见状态码总结", "url": "https://javaguide.cn/cs-basics/network/http-status-codes.html" },
+        { "id": "tcp-handshake-teardown", "title": "TCP 三次握手和四次挥手", "url": "https://javaguide.cn/cs-basics/network/tcp-connection-and-disconnection.html" },
+        { "id": "tcp-reliability", "title": "TCP 传输可靠性保障", "url": "https://javaguide.cn/cs-basics/network/tcp-reliability-guarantee.html" }
+      ]
+    },
+    {
+      "id": "operating-system",
+      "title": "操作系统",
+      "url": "https://javaguide.cn/cs-basics/operating-system/",
+      "topics": [
+        { "id": "os-questions-01", "title": "操作系统常见面试题总结（上）", "url": "https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html" },
+        { "id": "os-questions-02", "title": "操作系统常见面试题总结（下）", "url": "https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-02.html" },
+        { "id": "process-and-thread", "title": "进程与线程详解：区别、状态、通信、上下文切换与虚拟线程", "url": "https://javaguide.cn/cs-basics/operating-system/process-and-thread.html" },
+        { "id": "ipc", "title": "进程间通信（IPC）详解：管道、消息队列、共享内存、Socket 与 Binder", "url": "https://javaguide.cn/cs-basics/operating-system/ipc.html" },
+        { "id": "os-lock-and-sync", "title": "操作系统锁与同步机制详解：mutex、semaphore、condition variable、spinlock 与 futex", "url": "https://javaguide.cn/cs-basics/operating-system/os-lock-and-sync.html" },
+        { "id": "memory-management", "title": "操作系统内存管理详解：分页、分段、页面置换、Swap 与 OOM", "url": "https://javaguide.cn/cs-basics/operating-system/memory-management.html" },
+        { "id": "virtual-memory", "title": "虚拟内存详解：地址转换、TLB、缺页异常与页面置换", "url": "https://javaguide.cn/cs-basics/operating-system/virtual-memory.html" },
+        { "id": "file-system", "title": "操作系统文件系统详解：inode、VFS、Page Cache 与日志机制", "url": "https://javaguide.cn/cs-basics/operating-system/file-system.html" },
+        { "id": "io-multiplexing", "title": "I/O 多路复用详解：select、poll、epoll 原理与区别", "url": "https://javaguide.cn/cs-basics/operating-system/io-multiplexing.html" },
+        { "id": "zero-copy", "title": "零拷贝详解：mmap、sendfile 与 splice", "url": "https://javaguide.cn/cs-basics/operating-system/zero-copy.html" },
+        { "id": "linux-intro", "title": "Linux 基础知识总结", "url": "https://javaguide.cn/cs-basics/operating-system/linux-intro.html" },
+        { "id": "shell-intro", "title": "Shell 编程基础知识总结", "url": "https://javaguide.cn/cs-basics/operating-system/shell-intro.html" }
+      ]
+    },
+    {
+      "id": "data-structure",
+      "title": "数据结构",
+      "url": "https://javaguide.cn/cs-basics/data-structure/",
+      "topics": [
+        { "id": "linear-data-structure", "title": "线性数据结构详解", "url": "https://javaguide.cn/cs-basics/data-structure/linear-data-structure.html" },
+        { "id": "hash-table", "title": "哈希表面试题总结", "url": "https://javaguide.cn/cs-basics/data-structure/hash-table.html" },
+        { "id": "tree", "title": "树结构详解", "url": "https://javaguide.cn/cs-basics/data-structure/tree.html" },
+        { "id": "graph", "title": "图详解", "url": "https://javaguide.cn/cs-basics/data-structure/graph.html" },
+        { "id": "heap", "title": "堆详解", "url": "https://javaguide.cn/cs-basics/data-structure/heap.html" },
+        { "id": "red-black-tree", "title": "红黑树详解", "url": "https://javaguide.cn/cs-basics/data-structure/red-black-tree.html" },
+        { "id": "bloom-filter", "title": "布隆过滤器详解", "url": "https://javaguide.cn/cs-basics/data-structure/bloom-filter.html" },
+        { "id": "trie", "title": "Trie 前缀树面试题总结", "url": "https://javaguide.cn/cs-basics/data-structure/trie.html" },
+        { "id": "union-find", "title": "并查集面试题总结", "url": "https://javaguide.cn/cs-basics/data-structure/union-find.html" },
+        { "id": "skip-list", "title": "跳表面试题总结", "url": "https://javaguide.cn/cs-basics/data-structure/skip-list.html" },
+        { "id": "lru-cache", "title": "LRU 缓存面试题总结", "url": "https://javaguide.cn/cs-basics/data-structure/lru-cache.html" }
+      ]
+    },
+    {
+      "id": "algorithms",
+      "title": "算法",
+      "url": "https://javaguide.cn/cs-basics/algorithms/",
+      "topics": [
+        { "id": "complexity-analysis", "title": "时间复杂度和空间复杂度面试指南", "url": "https://javaguide.cn/cs-basics/algorithms/complexity-analysis.html" },
+        { "id": "binary-search", "title": "二分查找面试题总结", "url": "https://javaguide.cn/cs-basics/algorithms/binary-search.html" },
+        { "id": "two-pointers-sliding-window", "title": "双指针与滑动窗口面试题总结", "url": "https://javaguide.cn/cs-basics/algorithms/two-pointers-and-sliding-window.html" },
+        { "id": "dfs-bfs", "title": "DFS 与 BFS 面试题总结", "url": "https://javaguide.cn/cs-basics/algorithms/dfs-bfs.html" },
+        { "id": "backtracking", "title": "回溯算法面试题总结", "url": "https://javaguide.cn/cs-basics/algorithms/backtracking.html" },
+        { "id": "dynamic-programming", "title": "动态规划面试题总结", "url": "https://javaguide.cn/cs-basics/algorithms/dynamic-programming.html" },
+        { "id": "greedy", "title": "贪心算法面试题总结", "url": "https://javaguide.cn/cs-basics/algorithms/greedy.html" },
+        { "id": "top-k", "title": "Top K 问题面试题总结", "url": "https://javaguide.cn/cs-basics/algorithms/top-k.html" },
+        { "id": "classical-algorithm-ideas", "title": "经典算法思想总结", "url": "https://javaguide.cn/cs-basics/algorithms/classical-algorithm-problems-recommendations.html" },
+        { "id": "leetcode-recommendations", "title": "常见数据结构经典 LeetCode 题目推荐", "url": "https://javaguide.cn/cs-basics/algorithms/common-data-structures-leetcode-recommendations.html" },
+        { "id": "string-algorithms", "title": "几道常见的字符串算法题", "url": "https://javaguide.cn/cs-basics/algorithms/string-algorithm-problems.html" },
+        { "id": "linked-list-algorithms", "title": "几道常见的链表算法题", "url": "https://javaguide.cn/cs-basics/algorithms/linkedlist-algorithm-problems.html" },
+        { "id": "sword-refers-to-offer", "title": "剑指 Offer 部分编程题", "url": "https://javaguide.cn/cs-basics/algorithms/the-sword-refers-to-offer.html" },
+        { "id": "sorting-algorithms", "title": "十大经典排序算法总结", "url": "https://javaguide.cn/cs-basics/algorithms/10-classical-sorting-algorithms.html" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "id": "ai-application-development",
+  "title": "AI 应用开发",
+  "source": {
+    "name": "JavaGuide",
+    "url": "https://javaguide.cn/ai/",
+    "localFile": "assets/AI 应用开发知识体系：大模型、Agent、RAG、MCP、Prompt 工程与系统设计 _ JavaGuide.html"
+  },
+  "children": [
+    {
+      "id": "ai-interview-roadmap",
+      "title": "面试与复习路线",
+      "url": "https://javaguide.cn/ai/interview-questions/ai-interview-guide.html",
+      "topics": [
+        {"id":"java-to-ai-roadmap","title":"Java/Go 开发者 AI 应用开发与 Agent 学习路线","url":"https://javaguide.cn/roadmap/java-to-ai-roadmap.html"},
+        {"id":"backend-to-ai-agent-roadmap","title":"后端开发者转型 AI Agent 学习建议","url":"https://javaguide.cn/roadmap/backend-to-ai-agent-roadmap.html"},
+        {"id":"ai-core-concepts","title":"AI 核心概念总览","url":"https://javaguide.cn/ai/ai-core-concepts.html"},
+        {"id":"ai-interview-guide","title":"AI 应用开发面试指南","url":"https://javaguide.cn/ai/interview-questions/ai-interview-guide.html"},
+        {"id":"llm-interview-questions","title":"大模型基础面试题总结","url":"https://javaguide.cn/ai/interview-questions/llm-interview-questions.html"},
+        {"id":"agent-interview-questions","title":"AI Agent 面试题总结","url":"https://javaguide.cn/ai/interview-questions/agent-interview-questions.html"},
+        {"id":"agent-project-interview-guide","title":"Agent 项目面试怎么讲？","url":"https://javaguide.cn/ai/interview-questions/agent-project-interview-guide.html"},
+        {"id":"rag-interview-questions","title":"RAG 面试题总结","url":"https://javaguide.cn/ai/interview-questions/rag-interview-questions.html"},
+        {"id":"ai-system-design-interview","title":"AI 系统设计面试题总结","url":"https://javaguide.cn/ai/interview-questions/ai-system-design-interview-questions.html"}
+      ]
+    },
+    {
+      "id": "llm-basics",
+      "title": "大模型基础",
+      "url": "https://javaguide.cn/ai/llm-basis/",
+      "topics": [
+        {"id":"llm-operation-mechanism","title":"LLM 运行机制：Token、上下文窗口与采样参数","url":"https://javaguide.cn/ai/llm-basis/llm-operation-mechanism.html"},
+        {"id":"llm-api-engineering","title":"大模型 API 调用工程实践","url":"https://javaguide.cn/ai/llm-basis/llm-api-engineering.html"},
+        {"id":"structured-output-function-calling","title":"大模型结构化输出详解","url":"https://javaguide.cn/ai/llm-basis/structured-output-function-calling.html"},
+        {"id":"llm-evaluation","title":"AI 应用评测体系","url":"https://javaguide.cn/ai/llm-basis/llm-evaluation.html"}
+      ]
+    },
+    {
+      "id": "ai-agent",
+      "title": "AI Agent",
+      "url": "https://javaguide.cn/ai/agent/",
+      "topics": [
+        {"id":"agent-basis","title":"AI Agent 核心概念","url":"https://javaguide.cn/ai/agent/agent-basis.html"},
+        {"id":"agent-memory","title":"AI Agent 记忆系统","url":"https://javaguide.cn/ai/agent/agent-memory.html"},
+        {"id":"multi-agent","title":"多 Agent 协作系统设计","url":"https://javaguide.cn/ai/agent/multi-agent.html"},
+        {"id":"prompt-engineering","title":"大模型提示词工程","url":"https://javaguide.cn/ai/agent/prompt-engineering.html"},
+        {"id":"context-engineering","title":"上下文工程","url":"https://javaguide.cn/ai/agent/context-engineering.html"},
+        {"id":"mcp","title":"MCP 协议","url":"https://javaguide.cn/ai/agent/mcp.html"},
+        {"id":"agent-skills","title":"Agent Skills","url":"https://javaguide.cn/ai/agent/skills.html"},
+        {"id":"harness-engineering","title":"Harness Engineering：检查框架、上下文管理与工程实践","url":"https://javaguide.cn/ai/agent/harness-engineering.html"},
+        {"id":"workflow-graph-loop","title":"AI 工作流中的 Workflow、Graph 与 Loop","url":"https://javaguide.cn/ai/agent/workflow-graph-loop.html"},
+        {"id":"loop-engineering","title":"Loop Engineering","url":"https://javaguide.cn/ai/agent/loop-engineering.html"}
+      ]
+    },
+    {
+      "id": "rag",
+      "title": "RAG 检索增强生成",
+      "url": "https://javaguide.cn/ai/rag/",
+      "topics": [
+        {"id":"rag-basis","title":"RAG 基础概念","url":"https://javaguide.cn/ai/rag/rag-basis.html"},
+        {"id":"rag-document-processing","title":"RAG 文档处理与切分策略","url":"https://javaguide.cn/ai/rag/rag-document-processing.html"},
+        {"id":"rag-vector-store","title":"RAG 向量索引算法和向量数据库","url":"https://javaguide.cn/ai/rag/rag-vector-store.html"},
+        {"id":"rag-optimization","title":"RAG 检索优化","url":"https://javaguide.cn/ai/rag/rag-optimization.html"},
+        {"id":"graphrag","title":"GraphRAG","url":"https://javaguide.cn/ai/rag/graphrag.html"},
+        {"id":"rag-knowledge-update","title":"RAG 知识库文档更新策略","url":"https://javaguide.cn/ai/rag/rag-knowledge-update.html"}
+      ]
+    },
+    {
+      "id": "ai-system-design",
+      "title": "AI 系统设计",
+      "url": "https://javaguide.cn/ai/system-design/",
+      "topics": [
+        {"id":"ai-application-architecture","title":"AI 应用系统设计","url":"https://javaguide.cn/ai/system-design/ai-application-architecture.html"},
+        {"id":"llm-security","title":"LLM/Agent 安全实战","url":"https://javaguide.cn/ai/system-design/llm-security.html"},
+        {"id":"llm-gateway","title":"大模型网关详解","url":"https://javaguide.cn/ai/system-design/llm-gateway.html"},
+        {"id":"ai-voice","title":"AI 语音技术详解","url":"https://javaguide.cn/ai/system-design/ai-voice.html"}
+      ]
+    }
+  ]
+}

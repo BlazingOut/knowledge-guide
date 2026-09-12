@@ -1,0 +1,83 @@
+{
+  "id": "backend-development",
+  "title": "后端开发",
+  "source": {
+    "name": "JavaGuide",
+    "url": "https://javaguide.cn/home.html",
+    "localFile": "assets/Java 面试指南（JavaGuide 后端通用面试题总结） _ JavaGuide.html"
+  },
+  "children": [
+    {
+      "id": "backend-database",
+      "title": "数据库",
+      "url": "https://javaguide.cn/database/basis.html",
+      "topics": [
+        { "id": "database-basics", "title": "数据库基础知识总结", "url": "https://javaguide.cn/database/basis.html" },
+        { "id": "sql-syntax", "title": "SQL 语法基础知识总结", "url": "https://javaguide.cn/database/sql/sql-syntax-summary.html" },
+        { "id": "sql-questions", "title": "SQL 常见面试题总结", "url": "https://javaguide.cn/database/sql/sql-questions-01.html" },
+        { "id": "mysql-questions", "title": "MySQL 常见知识点与面试题总结", "url": "https://javaguide.cn/database/mysql/mysql-questions-01.html" },
+        { "id": "mysql-index", "title": "MySQL 索引详解", "url": "https://javaguide.cn/database/mysql/mysql-index.html" },
+        { "id": "mysql-index-invalidation", "title": "MySQL 索引失效场景总结", "url": "https://javaguide.cn/database/mysql/mysql-index-invalidation.html" },
+        { "id": "mysql-transactions", "title": "MySQL 事务隔离级别图文详解", "url": "https://javaguide.cn/database/mysql/transaction-isolation-level.html" },
+        { "id": "mysql-logs", "title": "MySQL 三大日志：binlog、redo log 和 undo log", "url": "https://javaguide.cn/database/mysql/mysql-logs.html" },
+        { "id": "mysql-mvcc", "title": "InnoDB 存储引擎对 MVCC 的实现", "url": "https://javaguide.cn/database/mysql/innodb-implementation-of-mvcc.html" },
+        { "id": "mysql-execution", "title": "SQL 语句在 MySQL 中的执行过程", "url": "https://javaguide.cn/database/mysql/how-sql-executed-in-mysql.html" },
+        { "id": "mysql-explain", "title": "MySQL 执行计划分析", "url": "https://javaguide.cn/database/mysql/mysql-query-execution-plan.html" },
+        { "id": "mysql-optimization", "title": "常见 SQL 优化手段总结", "url": "https://javaguide.cn/high-performance/sql-optimization.html" },
+        { "id": "redis-questions", "title": "Redis 常见知识点与面试题总结", "url": "https://javaguide.cn/database/redis/redis-questions-01.html" },
+        { "id": "redis-data-structures", "title": "Redis 数据结构详解", "url": "https://javaguide.cn/database/redis/redis-data-structures-01.html" },
+        { "id": "redis-cache-strategies", "title": "3 种常用的缓存读写策略详解", "url": "https://javaguide.cn/database/redis/3-commonly-used-cache-read-and-write-strategies.html" },
+        { "id": "redis-persistence", "title": "Redis 持久化机制详解", "url": "https://javaguide.cn/database/redis/redis-persistence.html" },
+        { "id": "redis-lock", "title": "Redis 分布式锁常见实现方案总结", "url": "https://javaguide.cn/distributed-system/distributed-lock-implementations.html" }
+      ]
+    },
+    {
+      "id": "backend-tools",
+      "title": "开发工具",
+      "url": "https://javaguide.cn/tools/git/git-intro.html",
+      "topics": [
+        { "id": "docker-basics", "title": "Docker 核心概念总结", "url": "https://javaguide.cn/tools/docker/docker-intro.html" },
+        { "id": "docker-practice", "title": "Docker 实战", "url": "https://javaguide.cn/tools/docker/docker-in-action.html" },
+        { "id": "git-basics", "title": "Git 核心概念总结", "url": "https://javaguide.cn/tools/git/git-intro.html" },
+        { "id": "github-tips", "title": "GitHub 实用小技巧总结", "url": "https://javaguide.cn/tools/git/github-tips.html" }
+      ]
+    },
+    {
+      "id": "backend-web",
+      "title": "Web 后端",
+      "url": "https://javaguide.cn/system-design/basis/RESTfulAPI.html",
+      "topics": [
+        { "id": "restful-api", "title": "RESTful API 简明教程", "url": "https://javaguide.cn/system-design/basis/RESTfulAPI.html" },
+        { "id": "websocket", "title": "Web 实时消息推送", "url": "https://javaguide.cn/system-design/web-real-time-message-push.html" },
+        { "id": "api-gateway", "title": "API 网关基础知识总结", "url": "https://javaguide.cn/distributed-system/api-gateway.html" },
+        { "id": "spring-transaction", "title": "Spring 事务详解", "url": "https://javaguide.cn/system-design/framework/spring/spring-transaction.html" }
+      ]
+    },
+    {
+      "id": "backend-system-design",
+      "title": "系统设计",
+      "url": "https://javaguide.cn/system-design/system-design-questions.html",
+      "topics": [
+        { "id": "system-design-basics", "title": "系统设计常见面试题总结", "url": "https://javaguide.cn/system-design/system-design-questions.html" },
+        { "id": "load-balancing", "title": "负载均衡常见知识点与面试题总结", "url": "https://javaguide.cn/high-performance/load-balancing.html" },
+        { "id": "message-queue", "title": "消息队列基础知识总结", "url": "https://javaguide.cn/high-performance/message-queue/message-queue.html" },
+        { "id": "rate-limiting", "title": "服务限流详解", "url": "https://javaguide.cn/high-availability/limit-request.html" },
+        { "id": "circuit-breaker", "title": "降级与熔断详解", "url": "https://javaguide.cn/high-availability/fallback-and-circuit-breaker.html" },
+        { "id": "timeout-retry", "title": "超时与重试详解", "url": "https://javaguide.cn/high-availability/timeout-and-retry.html" },
+        { "id": "cdn", "title": "CDN（内容分发网络）常见知识点与面试题总结", "url": "https://javaguide.cn/high-performance/cdn.html" }
+      ]
+    },
+    {
+      "id": "backend-distributed",
+      "title": "分布式基础",
+      "url": "https://javaguide.cn/distributed-system/distributed-system-intro.html",
+      "topics": [
+        { "id": "distributed-intro", "title": "分布式系统入门", "url": "https://javaguide.cn/distributed-system/distributed-system-intro.html" },
+        { "id": "cap-base", "title": "CAP 理论和 BASE 理论解读", "url": "https://javaguide.cn/distributed-system/protocol/cap-and-base-theorem.html" },
+        { "id": "distributed-idempotence", "title": "分布式 ID 常见知识点与面试题总结", "url": "https://javaguide.cn/distributed-system/distributed-id.html" },
+        { "id": "distributed-lock", "title": "分布式锁介绍", "url": "https://javaguide.cn/distributed-system/distributed-lock.html" },
+        { "id": "distributed-transaction", "title": "分布式事务常见知识点与面试题总结", "url": "https://javaguide.cn/distributed-system/distributed-transaction.html" }
+      ]
+    }
+  ]
+}
