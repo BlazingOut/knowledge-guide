@@ -1,0 +1,23 @@
+{
+  "version": "1.0.1",
+  "notes": "星航日志 v1.0.1",
+  "pub_date": "2026-09-13T14:30:00Z",
+  "platforms": {
+    "darwin-aarch64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTVVp3Q21hWDZHclVsSStWc3l1YU42NnkvcEZwTmVReHlFdGpjY1dhSnJvNWRZaVlzS2FGREdneTI2OFJFWUFMVFFGWnlTQytUSncyRHB4Yk5Fam45Y2tjVG1oeklVV0F3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg5Mjc5ODcwCWZpbGU65pif6Iiq5pel5b+XLmFwcC50YXIuZ3oKcTVaRmNhbHM3ZHVBempUcitjeHFOYXdMZFByWG53L2p4QzhWZnRrUmduTmREVXk3YTVqbHRjK3cxbHlwcnNNTkNwdmhyR1lPTURNVjJEODRETFBoQkE9PQo=",
+      "url": "https://github.com/BlazingOut/knowledge-guide/releases/download/v1.0.1/_aarch64.app.tar.gz"
+    },
+    "darwin-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTVVp3Q21hWDZHcmFlZlVFQ0ZXeXc4WlBOczgxdzBqL2psd0c0azhLSm96Q0dLenlkNVd1TE5vb3U3dmdkcmF5bEtrTnpTbTdPaCs3S0tLb0ZMUktzY0lmeTZzM1VjWUF3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg5Mjc5ODczCWZpbGU65pif6Iiq5pel5b+XLmFwcC50YXIuZ3oKTU5BTGFlVFdEbjZZTVQxY2JaWGRYUU1qNTczUDlqa3FCT2dVMno1ajEvZnprMVdxeS82LzUvR1FtZFI2UEhRckVoNTNySHhHTWIrNm9acW9CUVpVQlE9PQo=",
+      "url": "https://github.com/BlazingOut/knowledge-guide/releases/download/v1.0.1/_x64.app.tar.gz"
+    },
+    "linux-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTVVp3Q21hWDZHcmYyVmZYMUlOV2pRN3M5ZEZxaURlNUR6ZW0wZmFXSGFCNFlWbmdpOTAxYjVCb213b2MvaE52UlgzU2x0clZtTTlYYVNVb05kdDc0Y3RWOFJiakRPeXdJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg5Mjc5OTg1CWZpbGU65pif6Iiq5pel5b+XXzEuMC4xX2FtZDY0LkFwcEltYWdlCm1YV1RZR3RRVWw0Y1NwMjJCOXIyZFhrMnZ6QVhMNjMrTmZZRHUzN3AzQ1BOcXM1OTdkaDB3NjRKbklvUTdYWWZqeVNuYW5kZzNEKzVmSlFFaGZ2R0FRPT0K",
+      "url": "https://github.com/BlazingOut/knowledge-guide/releases/download/v1.0.1/_1.0.1_amd64.AppImage"
+    },
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTVVp3Q21hWDZHclVQcnhtNnJTc1NVWTd1YkNTQUwrREdJWmMyemJ4VURBYWZVOFk0dDlDbXVpdldiTWRDTWlQeGI5aU10MXZLSW5mL0JnR2JwZTVhYnpsU3ZjdzdzQUFnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg5MjgwMDM5CWZpbGU65pif6Iiq5pel5b+XXzEuMC4xX3g2NC1zZXR1cC5leGUKTEpvQU9paVo3VzhvMnRrRXJvdDVYSDNMWEpwU2VqZ3RJMk9kSGNoenp2Nk1LOXIrQ0lqOUVhTGpvaVc3YXFsenpNWEV0cWZGcmJnT0pUY2JzWHFzQ2c9PQo=",
+      "url": "https://github.com/BlazingOut/knowledge-guide/releases/download/v1.0.1/_1.0.1_x64-setup.exe"
+    }
+  }
+}
