@@ -64,16 +64,43 @@ jobs:
           includeUpdaterJson: true
           args: ${{ matrix.args }}
 
-  # 把 latest.json 发布到 gh-pages 分支，作为自动更新的固定检查地址
+  # 从 Release 附件生成 latest.json 并发布到 gh-pages，作为自动更新的固定检查地址
   updater-endpoint:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download latest.json from release
+      - name: Generate latest.json from release assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release download "${{ github.ref_name }}" --repo "$GITHUB_REPOSITORY" --pattern 'latest.json' --output latest.json
+          python3 << 'PY'
+          import json, subprocess, os, datetime
+          repo = os.environ["GITHUB_REPOSITORY"]
+          tag = os.environ["GITHUB_REF_NAME"]
+          assets = json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}/releases/tags/{tag}", "--jq", ".assets"]))
+          def find(suffix):
+              return next((a for a in assets if a["name"].endswith(suffix)), None)
+          mapping = {
+              "darwin-aarch64": "_aarch64.app.tar.gz",
+              "darwin-x86_64": "_x64.app.tar.gz",
+              "linux-x86_64": "_amd64.AppImage",
+              "windows-x86_64": "_x64-setup.exe",
+          }
+          platforms = {}
+          for key, suffix in mapping.items():
+              asset, sig_asset = find(suffix), find(suffix + ".sig")
+              if not asset or not sig_asset:
+                  continue
+              sig = subprocess.check_output(["gh", "api", f"repos/{repo}/releases/assets/{sig_asset['id']}", "-H", "Accept: application/octet-stream"]).decode()
+              platforms[key] = {"signature": sig.strip(), "url": asset["browser_download_url"]}
+          data = {
+              "version": tag.lstrip("v"),
+              "notes": f"星航日志 {tag}",
+              "pub_date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "platforms": platforms,
+          }
+          open("latest.json", "w").write(json.dumps(data, ensure_ascii=False, indent=2))
+          PY
           cat latest.json
 
       - name: Publish to gh-pages
