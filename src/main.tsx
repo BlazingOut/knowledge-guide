@@ -109,7 +109,7 @@ function StarLog({ domains, get, completionLog, switchDomain }: { domains: Domai
 function Detail({ active, get, update, filtered, query, setQuery, filter, setFilter, setPage }: { page?: Page; active: Category; get: (id: string) => UserState; update: (id: string, patch: Partial<UserState>) => void; filtered: Topic[]; query: string; setQuery: (value: string) => void; filter: string; setFilter: (value: string) => void; setPage: (page: Page) => void }) {
   const completed = active.topics.filter((topic) => get(topic.id).status !== 'unlearned').length
   const percent = Math.round(completed / active.topics.length * 100)
-  return <><button className="back" onClick={() => setPage('home')}>← 返回知识地图</button><div className="catHead"><div><small>知识星库 · 计算机基础知识</small><h1>{active.title}</h1><p>查看该领域的完整知识点、资料链接和面试标记。</p></div><a className="source-link" href={active.url} target="_blank">打开专题 ↗</a></div><div className="library-overview"><div className="library-progress-copy"><small>当前领域进度</small><strong>{completed}<i> / {active.topics.length}</i></strong><span>已完成 {percent}%</span></div><div className="bar"><i style={{ width: percent + '%' }} /></div></div><div className="toolbar"><h2>知识点</h2><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="⌕ 搜索知识点" /></div><div className="filters">{['all', 'unlearned', 'seen', 'answerable', 'exposed'].map((item) => <button className={filter === item ? 'sel' : ''} onClick={() => setFilter(item)} key={item}>{item === 'all' ? '全部' : item === 'exposed' ? '面试暴露' : labels[item as Status]}</button>)}</div><div className="list">{filtered.map((topic, index) => <Topic key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} checkin={false} />)}</div></>
+  return <><button className="back" onClick={() => setPage('home')}>← 返回知识地图</button><div className="catHead"><div><small>知识星库 · 计算机基础知识</small><h1>{active.title}</h1><p>查看该领域的完整知识点、资料链接和面试标记。</p></div><a className="source-link" href={active.url} target="_blank" onClick={(event) => { event.preventDefault(); openLink(active.url) }}>打开专题 ↗</a></div><div className="library-overview"><div className="library-progress-copy"><small>当前领域进度</small><strong>{completed}<i> / {active.topics.length}</i></strong><span>已完成 {percent}%</span></div><div className="bar"><i style={{ width: percent + '%' }} /></div></div><div className="toolbar"><h2>知识点</h2><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="⌕ 搜索知识点" /></div><div className="filters">{['all', 'unlearned', 'learning', 'completed', 'exposed'].map((item) => <button className={filter === item ? 'sel' : ''} onClick={() => setFilter(item)} key={item}>{item === 'all' ? '全部' : item === 'exposed' ? '面试暴露' : labels[item as Status]}</button>)}</div><div className="list">{filtered.map((topic, index) => <Topic key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} checkin={false} />)}</div></>
 }
 
 function Checkin({ active, get, update, setPage }: { active: Category; get: (id: string) => UserState; update: (id: string, patch: Partial<UserState>) => void; setPage: (page: Page) => void }) {
@@ -121,7 +121,7 @@ function Checkin({ active, get, update, setPage }: { active: Category; get: (id:
 function CheckinCard({ topic, index, state, update }: { topic: Topic; index: number; state: UserState; update: (id: string, patch: Partial<UserState>) => void }) {
   const done = state.status === 'completed'
   const learning = state.status === 'learning'
-  return <article className={'checkin-card ' + (done ? 'card-done' : '')}><div className="card-top"><em>{String(index + 1).padStart(2, '0')}</em><h3>{topic.title}</h3><span className={'card-status ' + (done ? 'done' : '')}>{done ? '● 已完成' : learning ? '● 学习中' : '○ 未开始'}</span></div><div className="checkin-actions"><a href={topic.url} target="_blank">阅读资料 ↗</a><button onClick={() => update(topic.id, { status: done ? 'learning' : learning ? 'completed' : 'learning' })}>{done ? '重新学习 →' : learning ? '已完成 →' : '开始学习 →'}</button></div></article>
+  return <article className={'checkin-card ' + (done ? 'card-done' : '')}><div className="card-top"><em>{String(index + 1).padStart(2, '0')}</em><h3>{topic.title}</h3><span className={'card-status ' + (done ? 'done' : '')}>{done ? '● 已完成' : learning ? '● 学习中' : '○ 未开始'}</span></div><div className="checkin-actions"><a href={topic.url} target="_blank" onClick={(event) => { event.preventDefault(); openLink(topic.url) }}>阅读资料 ↗</a><button onClick={() => update(topic.id, { status: done ? 'learning' : learning ? 'completed' : 'learning' })}>{done ? '重新学习 →' : learning ? '已完成 →' : '开始学习 →'}</button></div></article>
 }
 
 function StudyCard({ topic, index, state, update }: { topic: Topic; index: number; state: UserState; update: (id: string, patch: Partial<UserState>) => void }) {
@@ -130,14 +130,28 @@ function StudyCard({ topic, index, state, update }: { topic: Topic; index: numbe
   const priority = index < 2 ? '必背' : index < 6 ? '高频' : '中频'
   const question = topic.title.includes('握手') ? 'TCP 建立连接时为什么需要三次握手？' : topic.title.includes('HTTP') ? 'HTTP 与 HTTPS 有什么区别？' : `${topic.title}的核心原理是什么？`
   const next: Status = state.status === 'unlearned' ? 'learning' : state.status === 'learning' ? 'completed' : 'learning'
-  return <article className={'study-card ' + (done ? 'card-done' : '')} onClick={() => window.open(topic.url, '_blank', 'noopener,noreferrer')} role="link" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') window.open(topic.url, '_blank', 'noopener,noreferrer') }}><div className="card-top"><em>{String(index + 1).padStart(2, '0')}</em><h3>{topic.title}</h3><span className={'card-status ' + (done ? 'done' : '')}>{done ? '● 已完成' : learning ? '● 学习中' : '○ 未开始'}</span></div><div className="priority">{priority}</div><p className="question">{question}</p>{learning && <div className="learning-progress"><span>学习中</span><i><b /></i><small>进行中</small></div>}<div className="card-foot"><span>◉　JavaGuide　 ·　⌘　{activeTitle(topic.url)}</span><button onClick={(event) => { event.stopPropagation(); update(topic.id, { status: next }) }}>{done ? '重新学习 →' : learning ? '已完成 →' : '开始学习 →'}</button></div></article>
+  return <article className={'study-card ' + (done ? 'card-done' : '')} onClick={() => openLink(topic.url)} role="link" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') openLink(topic.url) }}><div className="card-top"><em>{String(index + 1).padStart(2, '0')}</em><h3>{topic.title}</h3><span className={'card-status ' + (done ? 'done' : '')}>{done ? '● 已完成' : learning ? '● 学习中' : '○ 未开始'}</span></div><div className="priority">{priority}</div><p className="question">{question}</p>{learning && <div className="learning-progress"><span>学习中</span><i><b /></i><small>进行中</small></div>}<div className="card-foot"><span>◉　JavaGuide　 ·　⌘　{activeTitle(topic.url)}</span><button onClick={(event) => { event.stopPropagation(); update(topic.id, { status: next }) }}>{done ? '重新学习 →' : learning ? '已完成 →' : '开始学习 →'}</button></div></article>
+}
+
+// 链接跳转：桌面端通过 Tauri opener 插件调用系统浏览器，网页端走 window.open
+async function openLink(url: string) {
+  if ('__TAURI_INTERNALS__' in window) {
+    try {
+      const { openUrl } = await import('@tauri-apps/plugin-opener')
+      await openUrl(url)
+    } catch {
+      // 插件不可用时静默失败
+    }
+  } else {
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
 }
 
 function activeTitle(url: string) { return url.includes('/network/') ? '计算机网络' : '知识库' }
 
 function Topic({ topic, index, state, update, checkin }: { topic: Topic; index: number; state: UserState; update: (id: string, patch: Partial<UserState>) => void; checkin: boolean }) {
   const next: Status = state.status === 'unlearned' ? 'learning' : state.status === 'learning' ? 'completed' : 'learning'
-  return <article className={checkin ? 'checkin-card' : 'topic'}><em>{String(index + 1).padStart(2, '0')}</em><div><h3>{topic.title} <span className={'st ' + state.status}>{labels[state.status]}</span></h3>{checkin ? <div className="checkin-actions"><a href={topic.url} target="_blank">阅读资料 ↗</a><button className={state.status !== 'unlearned' ? 'done-button' : ''} onClick={() => update(topic.id, { status: next })}>{labels[next]}</button></div> : <section><a href={topic.url} target="_blank">阅读资料 ↗</a><button onClick={() => update(topic.id, { status: next })}>{labels[next]}</button><button onClick={() => update(topic.id, { verified: !state.verified })}>◉ {state.verified ? '已验证' : '面试验证'}</button><button onClick={() => update(topic.id, { exposed: !state.exposed })}>⚑ {state.exposed ? '已暴露' : '标记暴露'}</button></section>}</div></article>
+  return <article className={checkin ? 'checkin-card' : 'topic'}><em>{String(index + 1).padStart(2, '0')}</em><div><h3>{topic.title} <span className={'st ' + state.status}>{labels[state.status]}</span></h3>{checkin ? <div className="checkin-actions"><a href={topic.url} target="_blank" onClick={(event) => { event.preventDefault(); openLink(topic.url) }}>阅读资料 ↗</a><button className={state.status !== 'unlearned' ? 'done-button' : ''} onClick={() => update(topic.id, { status: next })}>{labels[next]}</button></div> : <section><a href={topic.url} target="_blank" onClick={(event) => { event.preventDefault(); openLink(topic.url) }}>阅读资料 ↗</a><button onClick={() => update(topic.id, { status: next })}>{labels[next]}</button><button onClick={() => update(topic.id, { verified: !state.verified })}>◉ {state.verified ? '已验证' : '面试验证'}</button><button onClick={() => update(topic.id, { exposed: !state.exposed })}>⚑ {state.exposed ? '已暴露' : '标记暴露'}</button></section>}</div></article>
 }
 
 // 桌面端自动更新：启动时静默检查更新清单，发现新版本弹窗询问后下载安装并重启。
