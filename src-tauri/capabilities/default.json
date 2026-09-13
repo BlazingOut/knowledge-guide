@@ -1,0 +1,12 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "星航日志主窗口默认权限：核心能力 + 自动更新检查/下载/重启",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "updater:default",
+    "process:allow-restart",
+    "dialog:default"
+  ]
+}

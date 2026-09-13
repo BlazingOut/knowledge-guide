@@ -7,9 +7,10 @@ import './styles.css'
 
 type Topic = { id: string; title: string; url: string }
 type Category = { id: string; title: string; url: string; topics: Topic[] }
-type Status = 'unlearned' | 'seen' | 'answerable'
+type Status = 'unlearned' | 'learning' | 'completed'
 type UserState = { status: Status; verified: boolean; exposed: boolean }
-type Page = 'home' | 'checkin' | 'library'
+type CompletionLog = Record<string, string[]>
+type Page = 'log' | 'home' | 'checkin' | 'library'
 
 type Domain = { id: string; title: string; description: string; data: { children: Category[] } }
 const domains: Domain[] = [
@@ -18,8 +19,24 @@ const domains: Domain[] = [
   { id: 'ai', title: 'AI 应用开发', description: '大模型、Agent、RAG、MCP、Prompt 工程与系统设计。', data: aiRaw as { children: Category[] } },
 ]
 const planetTypes = ['network', 'ringed', 'node', 'comet'] as const
-const labels: Record<Status, string> = { unlearned: '未学习', seen: '已了解', answerable: '可以回答' }
+const warmQuotes = [
+  '每一颗星星的点亮，都是未来面试时的底气。',
+  '慢一点也没关系，星星不会跑，它一直在等你。',
+  '今天的一小步，就是秋招路上的一大步。',
+  '知识像星光，看似微弱，聚起来就是银河。',
+  '别怕遗忘，复习过的星星会第二次发光。',
+  '坚持打卡的你，已经在超越昨天的自己了。',
+  '面试官的每一道题，都是你现在种下的种子。',
+]
+const labels: Record<Status, string> = { unlearned: '未开始', learning: '学习中', completed: '已完成' }
 const empty: UserState = { status: 'unlearned', verified: false, exposed: false }
+
+function readStates(): Record<string, UserState> {
+  const raw = JSON.parse(localStorage.getItem('knowledge-guide:user-state:v1') || '{}') as Record<string, { status?: string; verified?: boolean; exposed?: boolean }>
+  return Object.fromEntries(Object.entries(raw).map(([id, state]) => [id, { ...empty, ...state, status: state.status === 'seen' || state.status === 'answerable' ? 'completed' : state.status === 'learning' || state.status === 'completed' ? state.status : 'unlearned' as Status }]))
+}
+
+function todayKey() { return new Date().toISOString().slice(0, 10) }
 
 function App() {
   const [theme, setTheme] = useState<'night' | 'warm'>(() => {
@@ -27,12 +44,13 @@ function App() {
     if (saved === 'night' || saved === 'warm') return saved
     return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'night' : 'warm'
   })
-  const [page, setPage] = useState<Page>('home')
+  const [page, setPage] = useState<Page>('log')
   const [domainId, setDomainId] = useState('basics')
   const domain = domains.find((item) => item.id === domainId) || domains[0]
   const data = domain.data
   const [activeId, setActiveId] = useState(data.children[0].id)
-  const [states, setStates] = useState<Record<string, UserState>>(() => JSON.parse(localStorage.getItem('knowledge-guide:user-state:v1') || '{}'))
+  const [states, setStates] = useState<Record<string, UserState>>(readStates)
+  const [completionLog, setCompletionLog] = useState<CompletionLog>(() => JSON.parse(localStorage.getItem('knowledge-guide:completion-log:v1') || '{}'))
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState('all')
   const active = data.children.find((item) => item.id === activeId) || data.children[0]
@@ -40,21 +58,52 @@ function App() {
   const update = (id: string, patch: Partial<UserState>) => setStates((old) => {
     const next = { ...old, [id]: { ...get(id), ...patch } }
     localStorage.setItem('knowledge-guide:user-state:v1', JSON.stringify(next))
+    if (patch.status === 'completed' && get(id).status === 'learning') {
+      setCompletionLog((log) => {
+        const key = todayKey()
+        const nextLog = { ...log, [key]: Array.from(new Set([...(log[key] || []), id])) }
+        localStorage.setItem('knowledge-guide:completion-log:v1', JSON.stringify(nextLog))
+        return nextLog
+      })
+    }
     return next
   })
   const open = (id: string, target: Page) => { setActiveId(id); setQuery(''); setFilter('all'); setPage(target) }
   const filtered = active.topics.filter((topic) => { const state = get(topic.id); return (!query || topic.title.includes(query)) && (filter === 'all' || filter === state.status || (filter === 'exposed' && state.exposed)) })
   const switchDomain = (id: string) => { const next = domains.find((item) => item.id === id) || domains[0]; setDomainId(next.id); setActiveId(next.data.children[0].id); setQuery(''); setFilter('all'); setPage('home') }
   const changeTheme = (next: 'night' | 'warm') => { setTheme(next); localStorage.setItem('knowledge-guide:theme:v1', next) }
-  return <Shell page={page} setPage={setPage} theme={theme} setTheme={changeTheme}>{page === 'home' ? <Home domain={domain} domains={domains} get={get} open={open} switchDomain={switchDomain} /> : page === 'checkin' ? <Checkin active={active} get={get} update={update} setPage={setPage} /> : <Detail active={active} get={get} update={update} filtered={filtered} query={query} setQuery={setQuery} filter={filter} setFilter={setFilter} setPage={setPage} />}</Shell>
+  return <Shell page={page} setPage={setPage} theme={theme} setTheme={changeTheme}>{page === 'log' ? <StarLog domains={domains} get={get} completionLog={completionLog} switchDomain={switchDomain} /> : page === 'home' ? <Home domain={domain} domains={domains} get={get} open={open} switchDomain={switchDomain} /> : page === 'checkin' ? <Checkin active={active} get={get} update={update} setPage={setPage} /> : <Detail active={active} get={get} update={update} filtered={filtered} query={query} setQuery={setQuery} filter={filter} setFilter={setFilter} setPage={setPage} />}</Shell>
 }
 
 function Shell({ page, setPage, theme, setTheme, children }: { page: Page; setPage: (page: Page) => void; theme: 'night' | 'warm'; setTheme: (theme: 'night' | 'warm') => void; children: React.ReactNode }) {
-  return <div className="shell" data-theme={theme}><div className="starfield" aria-hidden="true">✦　·　✧　　　·　✦　　·　✧　　✦　·　　　✧　·　✦</div><div className="sky-decoration" aria-hidden="true"><span className="moon"></span><span className="planet"><i></i></span><span className="orbit orbit-one"></span><span className="orbit orbit-two"></span><span className="constellation constellation-one"><i></i><i></i><i></i></span><span className="constellation constellation-two"><i></i><i></i><i></i><i></i></span></div><aside className="side"><div className="brand"><b className="brand-planet" aria-hidden="true"><i></i></b><span><strong>AI 应用开发</strong><small>秋招知识星图</small></span></div><nav><button className={page === 'home' ? 'on' : ''} onClick={() => setPage('home')}>我的星图</button><button className={page === 'checkin' ? 'on' : ''} onClick={() => setPage('checkin')}>今日航行</button><button className={page === 'library' ? 'on' : ''} onClick={() => setPage('library')}>知识星库</button></nav><div className="theme-switch"><small>主题</small><div><button className={theme === 'night' ? 'selected' : ''} onClick={() => setTheme('night')}>☾ 夜航</button><button className={theme === 'warm' ? 'selected' : ''} onClick={() => setTheme('warm')}>☼ 暖阳</button></div></div></aside><div className="mobile-theme-switch"><button className={theme === 'night' ? 'selected' : ''} onClick={() => setTheme('night')}>☾</button><button className={theme === 'warm' ? 'selected' : ''} onClick={() => setTheme('warm')}>☼</button></div><main>{children}</main></div>
+  return <div className="shell" data-theme={theme}><div className="starfield" aria-hidden="true">✦　·　✧　　　·　✦　　·　✧　　✦　·　　　✧　·　✦</div><div className="sky-decoration" aria-hidden="true"><span className="moon"></span><span className="planet"><i></i></span><span className="orbit orbit-one"></span><span className="orbit orbit-two"></span><span className="constellation constellation-one"><i></i><i></i><i></i></span><span className="constellation constellation-two"><i></i><i></i><i></i><i></i></span></div><aside className="side"><div className="brand"><b className="brand-planet" aria-hidden="true"><i></i></b><span><strong>AI 应用开发</strong><small>秋招知识星图</small></span></div><nav><button className={page === 'log' ? 'on' : ''} onClick={() => setPage('log')}>星航日志</button><button className={page === 'home' ? 'on' : ''} onClick={() => setPage('home')}>我的星图</button><button className={page === 'checkin' ? 'on' : ''} onClick={() => setPage('checkin')}>今日航行</button><button className={page === 'library' ? 'on' : ''} onClick={() => setPage('library')}>知识星库</button></nav><div className="theme-switch"><small>主题</small><div><button className={theme === 'night' ? 'selected' : ''} onClick={() => setTheme('night')}>☾ 夜航</button><button className={theme === 'warm' ? 'selected' : ''} onClick={() => setTheme('warm')}>☼ 暖阳</button></div></div></aside><div className="mobile-theme-switch"><button className={theme === 'night' ? 'selected' : ''} onClick={() => setTheme('night')}>☾</button><button className={theme === 'warm' ? 'selected' : ''} onClick={() => setTheme('warm')}>☼</button></div><main>{children}</main></div>
 }
 
 function Home({ domain, domains, get, open, switchDomain }: { domain: Domain; domains: Domain[]; get: (id: string) => UserState; open: (id: string, page: Page) => void; switchDomain: (id: string) => void }) {
   return <><header><div><small>AI 应用开发 · 秋招准备</small><h1>我的知识星图</h1><p>每掌握一个知识点，就点亮一颗星星。</p></div><div className="voyage-badge">✦ 当前航程 <b>探索阶段</b><span>知识准备中</span></div></header><div className="domain-tabs">{domains.map((item) => <button className={item.id === domain.id ? 'active' : ''} onClick={() => switchDomain(item.id)} key={item.id}>{item.title}</button>)}</div><section className="cards">{domain.data.children.map((category, index) => { const done = category.topics.filter((topic) => get(topic.id).status !== 'unlearned').length; return <article className="card" key={category.id} onClick={() => open(category.id, 'checkin')}><div className={'ico planet-orb planet-' + planetTypes[index % planetTypes.length]} aria-hidden="true" /><label>{String(index + 1).padStart(2, '0')}<button className="library-entry" onClick={(event) => { event.stopPropagation(); open(category.id, 'library') }}>知识星库</button></label><h3>{category.title}</h3><p>{category.topics.length} 个知识点 · {done ? '已点亮 ' + done + ' 颗星星' : '还未点亮'}</p><div className="bar"><i style={{ width: done / category.topics.length * 100 + '%' }} /></div></article> })}</section><section className="tip"><strong>✦</strong><div><small>今晚的航行</small><h3>从一颗小星球开始</h3><p>选择一个知识领域，继续建立你的知识宇宙。</p></div></section></>
+}
+
+function StarLog({ domains, get, completionLog, switchDomain }: { domains: Domain[]; get: (id: string) => UserState; completionLog: CompletionLog; switchDomain: (id: string) => void }) {
+  const allTopics = domains.flatMap((item) => item.data.children.flatMap((child) => child.topics))
+  const total = allTopics.length
+  const done = allTopics.filter((topic) => get(topic.id).status === 'completed').length
+  const learning = allTopics.filter((topic) => get(topic.id).status === 'learning').length
+  const verified = allTopics.filter((topic) => get(topic.id).verified).length
+  const exposed = allTopics.filter((topic) => get(topic.id).exposed).length
+  const percent = total ? Math.round(done / total * 100) : 0
+  const keyOf = (offset: number) => { const date = new Date(); date.setDate(date.getDate() - offset); return date.toISOString().slice(0, 10) }
+  const dow = (new Date().getDay() + 6) % 7
+  const cellOf = (offset: number) => { const date = new Date(); date.setDate(date.getDate() - offset); const key = date.toISOString().slice(0, 10); return { key, count: completionLog[key]?.length || 0, month: date.getMonth() + 1, future: false } }
+  const weeks = Array.from({ length: 12 }, (_, week) => Array.from({ length: 7 }, (_, day) => { const offset = (11 - week) * 7 + (dow - day); return offset < 0 ? { key: 'future-' + week + '-' + day, count: 0, month: 0, future: true } : cellOf(offset) }))
+  const seasonTotal = weeks.reduce((sum, week) => sum + week.reduce((s, day) => s + day.count, 0), 0)
+  const weekCount = weeks[11].slice(0, dow + 1).reduce((s, day) => s + day.count, 0)
+  let streak = 0
+  while (streak < 365 && (completionLog[keyOf(streak)]?.length || 0) > 0) streak++
+  const monthLabels = weeks.map((week, index) => { const first = week.find((day) => !day.future); const prevFirst = index > 0 ? weeks[index - 1].find((day) => !day.future) : undefined; if (!first) return ''; return index === 0 || !prevFirst || first.month !== prevFirst.month ? first.month + '月' : '' })
+  const titleOf = new Map(allTopics.map((topic) => [topic.id, topic.title]))
+  const recent = Object.entries(completionLog).flatMap(([date, ids]) => ids.map((id) => ({ date, id }))).sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id)).slice(0, 8)
+  const quote = warmQuotes[new Date().getDate() % warmQuotes.length]
+  return <div className="log"><header><div><small>星航日志 · 全领域统计</small><h1>星航日志</h1><p>每一次点亮都会被记录，这里是你的完整航行轨迹。</p></div><div className="voyage-badge">✦ 累计点亮 <b>{done} / {total}<span>知识覆盖率 {percent}%</span></b></div></header><section className="log-stats"><div className="log-stat"><small>已完成</small><strong>{done}<i> / {total}</i></strong><span>覆盖率 {percent}%</span></div><div className="log-stat"><small>学习中</small><strong>{learning}</strong><span>{learning ? '继续保持节奏' : '暂无进行中'}</span></div><div className="log-stat"><small>面试验证</small><strong>{verified}</strong><span>已通过验证的知识点</span></div><div className="log-stat"><small>面试暴露</small><strong>{exposed}</strong><span>被面试官问到的知识点</span></div></section><div className="log-mid"><section className="heatmap"><div className="heatmap-head"><div><small>学习热力图</small><h2>最近 12 周点亮情况</h2></div><div className="heatmap-head-right"><span>{seasonTotal} 个知识点已点亮</span><div className="heatmap-legend"><span>少</span><i className="level-0" /><i className="level-1" /><i className="level-2" /><i className="level-3" /><i className="level-4" /><span>多</span></div></div></div><div className="heatmap-body"><div className="heatmap-cal"><div className="heatmap-months">{monthLabels.map((label, index) => <span key={index}>{label}</span>)}</div><div className="heatmap-grid-wrap"><div className="heatmap-weeks">{['一', '二', '三', '四', '五', '六', '日'].map((label, index) => <span key={label} className={index % 2 ? 'ghost' : ''}>{label}</span>)}</div><div className="heatmap-grid">{weeks.map((week) => week.map((day) => day.future ? null : <span key={day.key} className={'heat level-' + Math.min(day.count, 4)} title={day.key + '：' + day.count + ' 个'} />))}</div></div></div><div className="heatmap-side"><div className="heatmap-side-item"><small>最长连续</small><strong>{streak}<i> 天</i></strong></div><div className="heatmap-side-item"><small>本周点亮</small><strong>{weekCount}<i> 个</i></strong></div></div></div></section><section className="log-warm"><span className="log-warm-star">✦</span><p>{quote}</p><small>暖心话语 · 今日寄语</small></section></div><div className="log-bottom"><section className="log-panel"><div className="log-panel-head"><small>领域进度</small><h2>三大知识星域</h2></div><div className="log-domains">{domains.map((item) => { const topics = item.data.children.flatMap((child) => child.topics); const domainDone = topics.filter((topic) => get(topic.id).status === 'completed').length; const domainPercent = Math.round(domainDone / topics.length * 100); return <button className="log-domain" key={item.id} onClick={() => switchDomain(item.id)}><span className="log-domain-title">{item.title}</span><span className="log-domain-num">{domainDone} / {topics.length}</span><span className="bar"><i style={{ width: domainPercent + '%' }} /></span><em>{domainPercent}%</em></button> })}</div><p className="log-hint">点击领域卡片可跳转到对应星图 ✦</p></section><section className="log-panel"><div className="log-panel-head"><small>最近点亮</small><h2>航行记录</h2></div>{recent.length ? <ul className="log-recent">{recent.map((item) => <li key={item.date + item.id}><small>{item.date}</small><span>{titleOf.get(item.id) || item.id}</span></li>)}</ul> : <p className="log-empty">还没有点亮记录，去「今日航行」开始第一颗星星吧 ✦</p>}</section></div></div>
 }
 
 function Detail({ active, get, update, filtered, query, setQuery, filter, setFilter, setPage }: { page?: Page; active: Category; get: (id: string) => UserState; update: (id: string, patch: Partial<UserState>) => void; filtered: Topic[]; query: string; setQuery: (value: string) => void; filter: string; setFilter: (value: string) => void; setPage: (page: Page) => void }) {
@@ -64,30 +113,53 @@ function Detail({ active, get, update, filtered, query, setQuery, filter, setFil
 }
 
 function Checkin({ active, get, update, setPage }: { active: Category; get: (id: string) => UserState; update: (id: string, patch: Partial<UserState>) => void; setPage: (page: Page) => void }) {
-  const completed = active.topics.filter((topic) => get(topic.id).status !== 'unlearned').length
+  const completed = active.topics.filter((topic) => get(topic.id).status === 'completed').length
   const percent = Math.round(completed / active.topics.length * 100)
-  return <><button className="back" onClick={() => setPage('home')}>←　知识地图</button><section className="checkin-head"><div className="checkin-copy"><small>每日打卡　›　计算机基础知识</small><h1>{active.title}<span className="sparkle">✦</span></h1><p>按顺序完成今天的知识点学习，逐步建立面试准备的完整闭环。</p></div><div className="checkin-summary"><div className="summary-label"><small>今日学习进度</small><strong>{completed}<i> / {active.topics.length}</i></strong><span>{percent}%</span></div><div className="progress-track"><i style={{ width: percent + '%' }} /></div><p>{completed === active.topics.length ? '今日目标已完成 ✦' : `还有 ${active.topics.length - completed} 个知识点待完成`}</p></div></section><div className="checkin-title"><div><small>今日任务</small><h2>一步一步完成学习</h2></div><span>{completed} / {active.topics.length} 已完成</span></div><div className="checkin-list">{active.topics.map((topic, index) => <StudyCard key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} />)}</div></>
+  return <><button className="back" onClick={() => setPage('home')}>←　知识地图</button><section className="checkin-head"><div className="checkin-copy"><small>每日打卡　›　计算机基础知识</small><h1>{active.title}<span className="sparkle">✦</span></h1><p>按顺序完成今天的知识点学习，逐步建立面试准备的完整闭环。</p></div><div className="checkin-summary"><div className="summary-label"><small>学习完成进度</small><strong>{completed}<i> / {active.topics.length}</i></strong><span>{percent}%</span></div><div className="progress-track"><i style={{ width: percent + '%' }} /></div><p>{completed === active.topics.length ? '今日目标已完成 ✦' : `还有 ${active.topics.length - completed} 个知识点待完成`}</p></div></section><div className="checkin-title"><div><small>今日任务</small><h2>一步一步完成学习</h2></div><span>{completed} / {active.topics.length} 已完成</span></div><div className="checkin-list">{active.topics.map((topic, index) => <StudyCard key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} />)}</div></>
 }
 
 function CheckinCard({ topic, index, state, update }: { topic: Topic; index: number; state: UserState; update: (id: string, patch: Partial<UserState>) => void }) {
-  const done = state.status !== 'unlearned'
-  const learning = state.status === 'seen'
-  return <article className={'checkin-card ' + (done ? 'card-done' : '')}><div className="card-top"><em>{String(index + 1).padStart(2, '0')}</em><h3>{topic.title}</h3><span className={'card-status ' + (done ? 'done' : '')}>{done ? (learning ? '● 学习中' : '● 已完成') : '○ 未开始'}</span></div><div className="checkin-actions"><a href={topic.url} target="_blank">阅读资料 ↗</a><button onClick={() => update(topic.id, { status: done && !learning ? 'unlearned' : learning ? 'answerable' : 'seen' })}>{done ? (learning ? '继续学习 →' : '重新学习') : '开始学习 →'}</button></div></article>
+  const done = state.status === 'completed'
+  const learning = state.status === 'learning'
+  return <article className={'checkin-card ' + (done ? 'card-done' : '')}><div className="card-top"><em>{String(index + 1).padStart(2, '0')}</em><h3>{topic.title}</h3><span className={'card-status ' + (done ? 'done' : '')}>{done ? '● 已完成' : learning ? '● 学习中' : '○ 未开始'}</span></div><div className="checkin-actions"><a href={topic.url} target="_blank">阅读资料 ↗</a><button onClick={() => update(topic.id, { status: done ? 'learning' : learning ? 'completed' : 'learning' })}>{done ? '重新学习 →' : learning ? '已完成 →' : '开始学习 →'}</button></div></article>
 }
 
 function StudyCard({ topic, index, state, update }: { topic: Topic; index: number; state: UserState; update: (id: string, patch: Partial<UserState>) => void }) {
-  const done = state.status !== 'unlearned'
-  const learning = state.status === 'seen'
+  const done = state.status === 'completed'
+  const learning = state.status === 'learning'
   const priority = index < 2 ? '必背' : index < 6 ? '高频' : '中频'
   const question = topic.title.includes('握手') ? 'TCP 建立连接时为什么需要三次握手？' : topic.title.includes('HTTP') ? 'HTTP 与 HTTPS 有什么区别？' : `${topic.title}的核心原理是什么？`
-  return <article className={'study-card ' + (done ? 'card-done' : '')} onClick={() => window.open(topic.url, '_blank', 'noopener,noreferrer')} role="link" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') window.open(topic.url, '_blank', 'noopener,noreferrer') }}><div className="card-top"><em>{String(index + 1).padStart(2, '0')}</em><h3>{topic.title}</h3><span className={'card-status ' + (done ? 'done' : '')}>{done ? '● 已完成' : '○ 未开始'}</span></div><div className="priority">{priority}</div><p className="question">{question}</p>{learning && <div className="learning-progress"><span>学习中</span><i><b /></i><small>3/5</small></div>}<div className="card-foot"><span>◉　JavaGuide　 ·　⌘　{activeTitle(topic.url)}</span><button onClick={(event) => { event.stopPropagation(); update(topic.id, { status: done && !learning ? 'unlearned' : learning ? 'answerable' : 'seen' }) }}>{done ? (learning ? '继续学习 →' : '重新学习') : '开始学习 →'}</button></div></article>
+  const next: Status = state.status === 'unlearned' ? 'learning' : state.status === 'learning' ? 'completed' : 'learning'
+  return <article className={'study-card ' + (done ? 'card-done' : '')} onClick={() => window.open(topic.url, '_blank', 'noopener,noreferrer')} role="link" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') window.open(topic.url, '_blank', 'noopener,noreferrer') }}><div className="card-top"><em>{String(index + 1).padStart(2, '0')}</em><h3>{topic.title}</h3><span className={'card-status ' + (done ? 'done' : '')}>{done ? '● 已完成' : learning ? '● 学习中' : '○ 未开始'}</span></div><div className="priority">{priority}</div><p className="question">{question}</p>{learning && <div className="learning-progress"><span>学习中</span><i><b /></i><small>进行中</small></div>}<div className="card-foot"><span>◉　JavaGuide　 ·　⌘　{activeTitle(topic.url)}</span><button onClick={(event) => { event.stopPropagation(); update(topic.id, { status: next }) }}>{done ? '重新学习 →' : learning ? '已完成 →' : '开始学习 →'}</button></div></article>
 }
 
 function activeTitle(url: string) { return url.includes('/network/') ? '计算机网络' : '知识库' }
 
 function Topic({ topic, index, state, update, checkin }: { topic: Topic; index: number; state: UserState; update: (id: string, patch: Partial<UserState>) => void; checkin: boolean }) {
-  const next: Status = state.status === 'unlearned' ? 'seen' : state.status === 'seen' ? 'answerable' : 'unlearned'
-  return <article className={checkin ? 'checkin-card' : 'topic'}><em>{String(index + 1).padStart(2, '0')}</em><div><h3>{topic.title} <span className={'st ' + state.status}>{labels[state.status]}</span></h3>{checkin ? <div className="checkin-actions"><a href={topic.url} target="_blank">阅读资料 ↗</a><button className={state.status !== 'unlearned' ? 'done-button' : ''} onClick={() => update(topic.id, { status: next })}>{state.status === 'unlearned' ? '完成打卡' : state.status === 'seen' ? '标记为可以回答' : '重新开始'}</button></div> : <section><a href={topic.url} target="_blank">阅读资料 ↗</a><button onClick={() => update(topic.id, { status: next })}>标记为{labels[next]}</button><button onClick={() => update(topic.id, { verified: !state.verified })}>◉ {state.verified ? '已验证' : '面试验证'}</button><button onClick={() => update(topic.id, { exposed: !state.exposed })}>⚑ {state.exposed ? '已暴露' : '标记暴露'}</button></section>}</div></article>
+  const next: Status = state.status === 'unlearned' ? 'learning' : state.status === 'learning' ? 'completed' : 'learning'
+  return <article className={checkin ? 'checkin-card' : 'topic'}><em>{String(index + 1).padStart(2, '0')}</em><div><h3>{topic.title} <span className={'st ' + state.status}>{labels[state.status]}</span></h3>{checkin ? <div className="checkin-actions"><a href={topic.url} target="_blank">阅读资料 ↗</a><button className={state.status !== 'unlearned' ? 'done-button' : ''} onClick={() => update(topic.id, { status: next })}>{labels[next]}</button></div> : <section><a href={topic.url} target="_blank">阅读资料 ↗</a><button onClick={() => update(topic.id, { status: next })}>{labels[next]}</button><button onClick={() => update(topic.id, { verified: !state.verified })}>◉ {state.verified ? '已验证' : '面试验证'}</button><button onClick={() => update(topic.id, { exposed: !state.exposed })}>⚑ {state.exposed ? '已暴露' : '标记暴露'}</button></section>}</div></article>
+}
+
+// 桌面端自动更新：启动时静默检查更新清单，发现新版本弹窗询问后下载安装并重启。
+// 网页环境（无 Tauri 内核）自动跳过，任何失败均静默处理，不打扰正常使用。
+async function setupAutoUpdate() {
+  if (!('__TAURI_INTERNALS__' in window)) return
+  try {
+    const { check } = await import('@tauri-apps/plugin-updater')
+    const { ask } = await import('@tauri-apps/plugin-dialog')
+    const { relaunch } = await import('@tauri-apps/plugin-process')
+    const update = await check()
+    if (update) {
+      const yes = await ask(`发现新版本 ${update.version}，是否立即下载并安装更新？`, { title: '星航日志 · 软件更新', kind: 'info' })
+      if (yes) {
+        await update.downloadAndInstall()
+        await relaunch()
+      }
+    }
+  } catch {
+    // 无网络或更新服务不可用时静默跳过
+  }
 }
 
 createRoot(document.getElementById('root')!).render(<App />)
+setupAutoUpdate()

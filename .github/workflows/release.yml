@@ -1,0 +1,100 @@
+name: Release
+
+# 打 tag（如 v1.0.0）或手动触发：三平台构建 → 挂 Release → 发布更新清单
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            rust_targets: aarch64-apple-darwin
+            args: --target aarch64-apple-darwin
+          - platform: macos-latest
+            rust_targets: x86_64-apple-darwin
+            args: --target x86_64-apple-darwin
+          - platform: ubuntu-22.04
+            rust_targets: ''
+            args: ''
+          - platform: windows-latest
+            rust_targets: ''
+            args: ''
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust_targets }}
+
+      - name: Install Linux dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libgtk-3-dev
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ''
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: '星航日志 ${{ github.ref_name }}'
+          releaseBody: '从下方 Assets 下载对应平台安装包：macOS（Apple Silicon / Intel）· Windows · Linux'
+          releaseDraft: false
+          prerelease: false
+          includeUpdaterJson: true
+          args: ${{ matrix.args }}
+
+  # 把 latest.json 发布到 gh-pages 分支，作为自动更新的固定检查地址
+  updater-endpoint:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download latest.json from release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release download "${{ github.ref_name }}" --repo "$GITHUB_REPOSITORY" --pattern 'latest.json' --output latest.json
+          cat latest.json
+
+      - name: Publish to gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "github-actions[bot]"
+          if git clone --depth 1 --branch gh-pages "https://x-access-token:${GH_TOKEN}@github.com/$GITHUB_REPOSITORY.git" gh-pages 2>/dev/null; then
+            cp latest.json gh-pages/latest.json
+            cd gh-pages
+            git add latest.json
+            git commit -m "chore: update latest.json for ${{ github.ref_name }}" || echo "no changes"
+            git push origin gh-pages
+          else
+            mkdir gh-pages
+            cp latest.json gh-pages/latest.json
+            cd gh-pages
+            git init -b gh-pages
+            git add latest.json
+            git commit -m "chore: init updater endpoint for ${{ github.ref_name }}"
+            git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/$GITHUB_REPOSITORY.git"
+            git push origin gh-pages
+          fi
