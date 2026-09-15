@@ -78,6 +78,69 @@ function playTick() { ensureAudio(); tone(523.25, 0, 0.09, 0.06) } // 开始学�
 function playDing() { ensureAudio(); tone(880, 0, 0.5, 0.12); tone(1318.51, 0.09, 0.6, 0.1) } // 点亮一颗星：叮✦
 function playFanfare() { ensureAudio(); [659.25, 880, 1318.51].forEach((freq, index) => tone(freq, index * 0.12, 0.7, 0.12)) } // 点亮全部：小号角
 
+// 数据备份：学习状态、点亮记录、自定义知识点统一打包为 JSON。
+// 桌面端走系统保存对话框（plugin-dialog + plugin-fs），网页端走浏览器下载。
+const backupKeys = ['knowledge-guide:user-state:v1', 'knowledge-guide:completion-log:v1', 'knowledge-guide:custom-topics:v1']
+
+async function notify(text: string) {
+  if ('__TAURI_INTERNALS__' in window) {
+    try {
+      const { message } = await import('@tauri-apps/plugin-dialog')
+      await message(text, { title: '星航日志 · 数据备份', kind: 'info' })
+      return
+    } catch { /* 插件不可用时退回 alert */ }
+  }
+  window.alert(text)
+}
+
+async function exportBackup() {
+  const payload = {
+    app: 'starlog',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    data: Object.fromEntries(backupKeys.map((key) => [key, localStorage.getItem(key) || ''])),
+  }
+  const json = JSON.stringify(payload, null, 2)
+  const name = `starlog-backup-${todayKey()}.json`
+  if ('__TAURI_INTERNALS__' in window) {
+    try {
+      const { save } = await import('@tauri-apps/plugin-dialog')
+      const { writeTextFile } = await import('@tauri-apps/plugin-fs')
+      const path = await save({ defaultPath: name, filters: [{ name: 'JSON', extensions: ['json'] }] })
+      if (!path) return
+      await writeTextFile(path, json)
+      await notify('备份已保存到：\n' + path)
+    } catch {
+      await notify('备份失败，请重试')
+    }
+    return
+  }
+  const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }))
+  const link = document.createElement('a')
+  link.href = url
+  link.download = name
+  link.click()
+  URL.revokeObjectURL(url)
+}
+
+async function importBackup(file: File) {
+  let payload: { app?: string; data?: Record<string, unknown> }
+  try {
+    payload = JSON.parse(await file.text())
+  } catch {
+    await notify('导入失败：文件不是有效的 JSON')
+    return
+  }
+  if (payload.app !== 'starlog' || typeof payload.data !== 'object' || payload.data === null) {
+    await notify('导入失败：这不是星航日志的备份文件')
+    return
+  }
+  for (const [key, value] of Object.entries(payload.data)) {
+    if (backupKeys.includes(key) && typeof value === 'string') localStorage.setItem(key, value)
+  }
+  location.reload() // 重新挂载应用，从 localStorage 恢复全部状态
+}
+
 function App() {
   const [theme, setTheme] = useState<'night' | 'warm'>(() => {
     const saved = localStorage.getItem('knowledge-guide:theme:v1')
@@ -138,11 +201,11 @@ function App() {
   const filtered = active.topics.filter((topic) => { const state = get(topic.id); return (!query || topic.title.includes(query)) && (filter === 'all' || filter === state.status || (filter === 'exposed' && state.exposed)) })
   const switchDomain = (id: string) => { const next = domains.find((item) => item.id === id) || domains[0]; setDomainId(next.id); setActiveId(next.data.children[0].id); setQuery(''); setFilter('all'); setPage('home') }
   const changeTheme = (next: 'night' | 'warm') => { setTheme(next); localStorage.setItem('knowledge-guide:theme:v1', next) }
-  return <Shell page={page} setPage={setPage} theme={theme} setTheme={changeTheme} soundOn={soundOn} setSound={setSound}>{page === 'log' ? <StarLog domains={domains} get={get} completionLog={completionLog} switchDomain={switchDomain} /> : page === 'home' ? <Home domain={domain} domains={domains} get={get} open={open} switchDomain={switchDomain} /> : page === 'checkin' ? <Checkin active={active} get={get} update={update} setPage={setPage} /> : <Detail active={active} get={get} update={update} filtered={filtered} query={query} setQuery={setQuery} filter={filter} setFilter={setFilter} setPage={setPage} addTopic={addTopic} removeTopic={removeTopic} />}</Shell>
+  return <Shell page={page} setPage={setPage} theme={theme} setTheme={changeTheme} soundOn={soundOn} setSound={setSound}>{page === 'log' ? <StarLog domains={domains} get={get} completionLog={completionLog} switchDomain={switchDomain} /> : page === 'home' ? <Home domain={domain} domains={domains} get={get} open={open} switchDomain={switchDomain} /> : page === 'checkin' ? <Checkin active={active} get={get} update={update} setPage={setPage} domainTitle={domain.title} /> : <Detail active={active} get={get} update={update} filtered={filtered} query={query} setQuery={setQuery} filter={filter} setFilter={setFilter} setPage={setPage} addTopic={addTopic} removeTopic={removeTopic} domainTitle={domain.title} />}</Shell>
 }
 
 function Shell({ page, setPage, theme, setTheme, soundOn, setSound, children }: { page: Page; setPage: (page: Page) => void; theme: 'night' | 'warm'; setTheme: (theme: 'night' | 'warm') => void; soundOn: boolean; setSound: (on: boolean) => void; children: React.ReactNode }) {
-  return <div className="shell" data-theme={theme}><div className="starfield" aria-hidden="true">✦　·　✧　　　·　✦　　·　✧　　✦　·　　　✧　·　✦</div><div className="sky-decoration" aria-hidden="true"><span className="moon"></span><span className="planet"><i></i></span><span className="orbit orbit-one"></span><span className="orbit orbit-two"></span><span className="constellation constellation-one"><i></i><i></i><i></i></span><span className="constellation constellation-two"><i></i><i></i><i></i><i></i></span></div><aside className="side"><div className="brand"><b className="brand-planet" aria-hidden="true"><i></i></b><span><strong>AI 应用开发</strong><small>秋招知识星图</small></span></div><nav><button className={page === 'log' ? 'on' : ''} onClick={() => setPage('log')}>星航日志</button><button className={page === 'home' ? 'on' : ''} onClick={() => setPage('home')}>我的星图</button><button className={page === 'checkin' ? 'on' : ''} onClick={() => setPage('checkin')}>今日航行</button><button className={page === 'library' ? 'on' : ''} onClick={() => setPage('library')}>知识星库</button></nav><div className="theme-switch"><small>主题</small><div><button className={theme === 'night' ? 'selected' : ''} onClick={() => setTheme('night')}>☾ 夜航</button><button className={theme === 'warm' ? 'selected' : ''} onClick={() => setTheme('warm')}>☼ 暖阳</button></div></div><div className="theme-switch"><small>音效</small><div><button className={soundOn ? 'selected' : ''} onClick={() => setSound(true)}>♪ 开</button><button className={!soundOn ? 'selected' : ''} onClick={() => setSound(false)}>♪ 关</button></div></div></aside><div className="mobile-theme-switch"><button className={theme === 'night' ? 'selected' : ''} onClick={() => setTheme('night')}>☾</button><button className={theme === 'warm' ? 'selected' : ''} onClick={() => setTheme('warm')}>☼</button></div><main>{children}</main></div>
+  return <div className="shell" data-theme={theme}><div className="starfield" aria-hidden="true">✦　·　✧　　　·　✦　　·　✧　　✦　·　　　✧　·　✦</div><div className="sky-decoration" aria-hidden="true"><span className="moon"></span><span className="planet"><i></i></span><span className="orbit orbit-one"></span><span className="orbit orbit-two"></span><span className="constellation constellation-one"><i></i><i></i><i></i></span><span className="constellation constellation-two"><i></i><i></i><i></i><i></i></span></div><aside className="side"><div className="brand"><b className="brand-planet" aria-hidden="true"><i></i></b><span><strong>AI 应用开发</strong><small>秋招知识星图</small></span></div><nav><button className={page === 'log' ? 'on' : ''} onClick={() => setPage('log')}>星航日志</button><button className={page === 'home' ? 'on' : ''} onClick={() => setPage('home')}>我的星图</button><button className={page === 'checkin' ? 'on' : ''} onClick={() => setPage('checkin')}>今日航行</button><button className={page === 'library' ? 'on' : ''} onClick={() => setPage('library')}>知识星库</button></nav><div className="theme-switch"><small>主题</small><div><button className={theme === 'night' ? 'selected' : ''} onClick={() => setTheme('night')}>☾ 夜航</button><button className={theme === 'warm' ? 'selected' : ''} onClick={() => setTheme('warm')}>☼ 暖阳</button></div></div><div className="theme-switch"><small>音效</small><div><button className={soundOn ? 'selected' : ''} onClick={() => setSound(true)}>♪ 开</button><button className={!soundOn ? 'selected' : ''} onClick={() => setSound(false)}>♪ 关</button></div></div><div className="theme-switch backup-switch"><small>数据</small><div><button onClick={() => void exportBackup()} title="导出学习记录备份">↑ 导出</button><label className="import-btn" title="从备份文件恢复">↓ 导入<input type="file" accept="application/json,.json" onChange={(event) => { const file = event.target.files?.[0]; if (file) void importBackup(file); event.target.value = '' }} /></label></div></div></aside><div className="mobile-theme-switch"><button className={theme === 'night' ? 'selected' : ''} onClick={() => setTheme('night')}>☾</button><button className={theme === 'warm' ? 'selected' : ''} onClick={() => setTheme('warm')}>☼</button></div><main>{children}</main></div>
 }
 
 function Home({ domain, domains, get, open, switchDomain }: { domain: Domain; domains: Domain[]; get: (id: string) => UserState; open: (id: string, page: Page) => void; switchDomain: (id: string) => void }) {
@@ -172,7 +235,7 @@ function StarLog({ domains, get, completionLog, switchDomain }: { domains: Domai
   return <div className="log"><header><div><small>星航日志 · 全领域统计</small><h1>星航日志</h1><p>每一次点亮都会被记录，这里是你的完整航行轨迹。</p></div><div className="voyage-badge">✦ 累计点亮 <b>{done} / {total}<span>知识覆盖率 {percent}%</span></b></div></header><section className="log-stats"><div className="log-stat"><small>已完成</small><strong>{done}<i> / {total}</i></strong><span>覆盖率 {percent}%</span></div><div className="log-stat"><small>学习中</small><strong>{learning}</strong><span>{learning ? '继续保持节奏' : '暂无进行中'}</span></div><div className="log-stat"><small>面试验证</small><strong>{verified}</strong><span>已通过验证的知识点</span></div><div className="log-stat"><small>面试暴露</small><strong>{exposed}</strong><span>被面试官问到的知识点</span></div></section><div className="log-mid"><section className="heatmap"><div className="heatmap-head"><div><small>学习热力图</small><h2>最近 12 周点亮情况</h2></div><div className="heatmap-head-right"><span>{seasonTotal} 个知识点已点亮</span><div className="heatmap-legend"><span>少</span><i className="level-0" /><i className="level-1" /><i className="level-2" /><i className="level-3" /><i className="level-4" /><span>多</span></div></div></div><div className="heatmap-body"><div className="heatmap-cal"><div className="heatmap-months">{monthLabels.map((label, index) => <span key={index}>{label}</span>)}</div><div className="heatmap-grid-wrap"><div className="heatmap-weeks">{['一', '二', '三', '四', '五', '六', '日'].map((label, index) => <span key={label} className={index % 2 ? 'ghost' : ''}>{label}</span>)}</div><div className="heatmap-grid">{weeks.map((week) => week.map((day) => day.future ? null : <span key={day.key} className={'heat level-' + Math.min(day.count, 4)} title={day.key + '：' + day.count + ' 个'} />))}</div></div></div><div className="heatmap-side"><div className="heatmap-side-item"><small>最长连续</small><strong>{streak}<i> 天</i></strong></div><div className="heatmap-side-item"><small>本周点亮</small><strong>{weekCount}<i> 个</i></strong></div></div></div></section><section className="log-warm"><span className="log-warm-star">✦</span><p>{quote}</p><small>暖心话语 · 今日寄语</small></section></div><div className="log-bottom"><section className="log-panel"><div className="log-panel-head"><small>领域进度</small><h2>三大知识星域</h2></div><div className="log-domains">{domains.map((item) => { const topics = item.data.children.flatMap((child) => child.topics); const domainDone = topics.filter((topic) => get(topic.id).status === 'completed').length; const domainPercent = Math.round(domainDone / topics.length * 100); return <button className="log-domain" key={item.id} onClick={() => switchDomain(item.id)}><span className="log-domain-title">{item.title}</span><span className="log-domain-num">{domainDone} / {topics.length}</span><span className="bar"><i style={{ width: domainPercent + '%' }} /></span><em>{domainPercent}%</em></button> })}</div><p className="log-hint">点击领域卡片可跳转到对应星图 ✦</p></section><section className="log-panel"><div className="log-panel-head"><small>最近点亮</small><h2>航行记录</h2></div>{recent.length ? <ul className="log-recent">{recent.map((item) => <li key={item.date + item.id}><small>{item.date}</small><span>{titleOf.get(item.id) || item.id}</span></li>)}</ul> : <p className="log-empty">还没有点亮记录，去「今日航行」开始第一颗星星吧 ✦</p>}</section></div></div>
 }
 
-function Detail({ active, get, update, filtered, query, setQuery, filter, setFilter, setPage, addTopic, removeTopic }: { page?: Page; active: Category; get: (id: string) => UserState; update: (id: string, patch: Partial<UserState>) => void; filtered: Topic[]; query: string; setQuery: (value: string) => void; filter: string; setFilter: (value: string) => void; setPage: (page: Page) => void; addTopic: (categoryId: string, title: string, url: string) => void; removeTopic: (categoryId: string, topicId: string) => void }) {
+function Detail({ active, get, update, filtered, query, setQuery, filter, setFilter, setPage, addTopic, removeTopic, domainTitle }: { page?: Page; active: Category; get: (id: string) => UserState; update: (id: string, patch: Partial<UserState>) => void; filtered: Topic[]; query: string; setQuery: (value: string) => void; filter: string; setFilter: (value: string) => void; setPage: (page: Page) => void; addTopic: (categoryId: string, title: string, url: string) => void; removeTopic: (categoryId: string, topicId: string) => void; domainTitle: string }) {
   const [showForm, setShowForm] = useState(false)
   const [name, setName] = useState('')
   const [url, setUrl] = useState('')
@@ -185,14 +248,14 @@ function Detail({ active, get, update, filtered, query, setQuery, filter, setFil
     addTopic(active.id, name.trim(), url.trim())
     closeForm()
   }
-  return <><button className="back" onClick={() => setPage('home')}>← 返回知识地图</button><div className="catHead"><div><small>知识星库 · 计算机基础知识</small><h1>{active.title}</h1><p>查看该领域的完整知识点、资料链接和面试标记。</p></div><a className="source-link" href={active.url} target="_blank" onClick={(event) => { event.preventDefault(); openLink(active.url) }}>打开专题 ↗</a></div><div className="library-overview"><div className="library-progress-copy"><small>当前领域进度</small><strong>{completed}<i> / {active.topics.length}</i></strong><span>已完成 {percent}%</span></div><div className="bar"><i style={{ width: percent + '%' }} /></div></div><div className="toolbar"><h2>知识点</h2><div className="toolbar-actions"><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="⌕ 搜索知识点" /><button className="add-topic-btn" title="添加知识点" onClick={() => setShowForm(true)}>＋</button></div></div><div className="filters">{['all', 'unlearned', 'learning', 'completed', 'exposed'].map((item) => <button className={filter === item ? 'sel' : ''} onClick={() => setFilter(item)} key={item}>{item === 'all' ? '全部' : item === 'exposed' ? '面试暴露' : labels[item as Status]}</button>)}</div><div className="list">{filtered.map((topic, index) => <Topic key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} checkin={false} onDelete={topic.id.startsWith('custom-') ? () => removeTopic(active.id, topic.id) : undefined} />)}</div>{showForm && <div className="modal-overlay" onClick={closeForm}><form className="modal" onClick={(event) => event.stopPropagation()} onSubmit={submit}><h3>添加知识点</h3><small>将添加到「{active.title}」</small><input autoFocus value={name} onChange={(event) => setName(event.target.value)} placeholder="课程名" /><input value={url} onChange={(event) => setUrl(event.target.value)} placeholder="网址，如 https://javaguide.cn/..." /><div className="modal-actions"><button type="button" onClick={closeForm}>取消</button><button type="submit" className="primary">添加</button></div></form></div>}</>
+  return <><button className="back" onClick={() => setPage('home')}>← 返回知识地图</button><div className="catHead"><div><small>知识星库 · {domainTitle}</small><h1>{active.title}</h1><p>查看该领域的完整知识点、资料链接和面试标记。</p></div><a className="source-link" href={active.url} target="_blank" onClick={(event) => { event.preventDefault(); openLink(active.url) }}>打开专题 ↗</a></div><div className="library-overview"><div className="library-progress-copy"><small>当前领域进度</small><strong>{completed}<i> / {active.topics.length}</i></strong><span>已完成 {percent}%</span></div><div className="bar"><i style={{ width: percent + '%' }} /></div></div><div className="toolbar"><h2>知识点</h2><div className="toolbar-actions"><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="⌕ 搜索知识点" /><button className="add-topic-btn" title="添加知识点" onClick={() => setShowForm(true)}>＋</button></div></div><div className="filters">{['all', 'unlearned', 'learning', 'completed', 'exposed'].map((item) => <button className={filter === item ? 'sel' : ''} onClick={() => setFilter(item)} key={item}>{item === 'all' ? '全部' : item === 'exposed' ? '面试暴露' : labels[item as Status]}</button>)}</div><div className="list">{filtered.map((topic, index) => <Topic key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} checkin={false} onDelete={topic.id.startsWith('custom-') ? () => removeTopic(active.id, topic.id) : undefined} />)}</div>{showForm && <div className="modal-overlay" onClick={closeForm}><form className="modal" onClick={(event) => event.stopPropagation()} onSubmit={submit}><h3>添加知识点</h3><small>将添加到「{active.title}」</small><input autoFocus value={name} onChange={(event) => setName(event.target.value)} placeholder="课程名" /><input value={url} onChange={(event) => setUrl(event.target.value)} placeholder="网址，如 https://javaguide.cn/..." /><div className="modal-actions"><button type="button" onClick={closeForm}>取消</button><button type="submit" className="primary">添加</button></div></form></div>}</>
 }
 
-function Checkin({ active, get, update, setPage }: { active: Category; get: (id: string) => UserState; update: (id: string, patch: Partial<UserState>) => void; setPage: (page: Page) => void }) {
+function Checkin({ active, get, update, setPage, domainTitle }: { active: Category; get: (id: string) => UserState; update: (id: string, patch: Partial<UserState>) => void; setPage: (page: Page) => void; domainTitle: string }) {
   const completed = active.topics.filter((topic) => get(topic.id).status === 'completed').length
   const percent = Math.round(completed / active.topics.length * 100)
   const allDone = active.topics.length > 0 && completed === active.topics.length
-  return <><button className="back" onClick={() => setPage('home')}>←　知识地图</button><section className={allDone ? 'checkin-head checkin-all-done' : 'checkin-head'}><div className="checkin-copy"><small>每日打卡　›　计算机基础知识</small><h1>{active.title}<span className="sparkle">✦</span></h1><p>按顺序完成今天的知识点学习，逐步建立面试准备的完整闭环。</p></div><div className="checkin-summary"><div className="summary-label"><small>学习完成进度</small><strong>{completed}<i> / {active.topics.length}</i></strong><span>{percent}%</span></div><div className="progress-track"><i style={{ width: percent + '%' }} /></div><p>{allDone ? '今日目标已完成 ✦' : `还有 ${active.topics.length - completed} 个知识点待完成`}</p></div></section><div className="checkin-title"><div><small>今日任务</small><h2>一步一步完成学习</h2></div><span>{completed} / {active.topics.length} 已完成</span></div><div className="checkin-list">{active.topics.map((topic, index) => <StudyCard key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} />)}</div>{allDone && <div className="celebration" aria-hidden="true">{['✦', '✧', '✶', '✧', '✦', '✧'].map((star, index) => <span key={index} style={{ left: 6 + index * 16 + '%', animationDelay: index * 0.35 + 's' }}>{star}</span>)}</div>}</>
+  return <><button className="back" onClick={() => setPage('home')}>←　知识地图</button><section className={allDone ? 'checkin-head checkin-all-done' : 'checkin-head'}><div className="checkin-copy"><small>每日打卡　›　{domainTitle}</small><h1>{active.title}<span className="sparkle">✦</span></h1><p>按顺序完成今天的知识点学习，逐步建立面试准备的完整闭环。</p></div><div className="checkin-summary"><div className="summary-label"><small>学习完成进度</small><strong>{completed}<i> / {active.topics.length}</i></strong><span>{percent}%</span></div><div className="progress-track"><i style={{ width: percent + '%' }} /></div><p>{allDone ? '今日目标已完成 ✦' : `还有 ${active.topics.length - completed} 个知识点待完成`}</p></div></section><div className="checkin-title"><div><small>今日任务</small><h2>一步一步完成学习</h2></div><span>{completed} / {active.topics.length} 已完成</span></div><div className="checkin-list">{active.topics.map((topic, index) => <StudyCard key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} />)}</div>{allDone && <div className="celebration" aria-hidden="true">{['✦', '✧', '✶', '✧', '✦', '✧'].map((star, index) => <span key={index} style={{ left: 6 + index * 16 + '%', animationDelay: index * 0.35 + 's' }}>{star}</span>)}</div>}</>
 }
 
 function CheckinCard({ topic, index, state, update }: { topic: Topic; index: number; state: UserState; update: (id: string, patch: Partial<UserState>) => void }) {

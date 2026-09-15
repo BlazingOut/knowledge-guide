@@ -311,4 +311,11 @@ html,body,#root{height:100%;overflow:hidden}main{height:100vh;overflow:hidden}.l
 .celebration span{position:absolute;bottom:8vh;color:var(--yellow);text-shadow:0 0 14px var(--yellow);font-size:22px;animation:star-rise 3.4s ease-out forwards}
 @media (prefers-reduced-motion:reduce){.study-card .burst,.study-card.card-done,.checkin-list .study-card.card-done:before,.learning-progress i b,.checkin-all-done .sparkle,.celebration span{animation:none}}
 
+/* 数据备份：侧边栏导出/导入按钮（复用 theme-switch 布局） */
+.theme-switch.backup-switch{margin-top:0;padding-top:14px}
+.backup-switch .import-btn{border:1px solid var(--border);background:transparent;color:var(--subtle);border-radius:9px;padding:7px 8px;font-size:10px;cursor:pointer;display:inline-block}
+.backup-switch .import-btn:hover{color:var(--green-soft);border-color:var(--green)}
+.backup-switch input[type=file]{display:none}
+
+
 
