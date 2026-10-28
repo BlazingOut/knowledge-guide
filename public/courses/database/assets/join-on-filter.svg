@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="660" viewBox="0 0 1000 660">
+  <rect width="1000" height="660" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:13;fill:#475569} .label{font-size:14;fill:#475569} .ok{fill:#15803d} .no{fill:#b91c1c} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">JOIN 的执行模型：先做笛卡尔积，再用 ON 筛选</text>
+
+  <rect class="box" x="70" y="70" width="380" height="190" rx="10"/>
+  <text class="name" x="82" y="92">users 表（左表）</text>
+  <text class="desc" x="82" y="118">id        nickname</text>
+  <text class="desc" x="82" y="146">1         Alice</text>
+  <text class="desc" x="82" y="174">2         Bob</text>
+  <text class="desc" x="82" y="202">3         Carol</text>
+
+  <rect class="box" x="550" y="70" width="380" height="190" rx="10"/>
+  <text class="name" x="562" y="92">orders 表（右表）</text>
+  <text class="desc" x="562" y="118">id        user_id   order_no</text>
+  <text class="desc" x="562" y="146">1         1         ORD-001</text>
+  <text class="desc" x="562" y="174">2         2         ORD-002</text>
+
+  <path class="arrow" d="M260 260 V310"/><text class="label" x="272" y="290">无条件的全组合（笛卡尔积）</text>
+  <path class="arrow" d="M740 260 V310"/><text class="label" x="752" y="290">无条件的全组合（笛卡尔积）</text>
+
+  <rect class="box" x="60" y="315" width="880" height="230" rx="10"/>
+  <text class="name" x="72" y="337">笛卡尔积：每行 = 左表所有列 + 右表所有列，共 3 × 2 = 6 行</text>
+  <text class="desc" x="72" y="362">users.id</text><text class="desc" x="190" y="362">nickname</text><text class="desc" x="330" y="362">orders.id</text><text class="desc" x="450" y="362">user_id</text><text class="desc" x="580" y="362">order_no</text><text class="desc" x="730" y="362">匹配</text>
+  <text class="desc" x="72" y="386">1</text><text class="desc" x="190" y="386">Alice</text><text class="desc" x="330" y="386">1</text><text class="desc" x="450" y="386">1</text><text class="desc" x="580" y="386">ORD-001</text><text class="desc ok" x="730" y="386">✓ user_id=1=id</text>
+  <text class="desc" x="72" y="410">1</text><text class="desc" x="190" y="410">Alice</text><text class="desc" x="330" y="410">2</text><text class="desc" x="450" y="410">2</text><text class="desc" x="580" y="410">ORD-002</text><text class="desc no" x="730" y="410">✗</text>
+  <text class="desc" x="72" y="434">2</text><text class="desc" x="190" y="434">Bob</text><text class="desc" x="330" y="434">1</text><text class="desc" x="450" y="434">1</text><text class="desc" x="580" y="434">ORD-001</text><text class="desc no" x="730" y="434">✗</text>
+  <text class="desc" x="72" y="458">2</text><text class="desc" x="190" y="458">Bob</text><text class="desc" x="330" y="458">2</text><text class="desc" x="450" y="458">2</text><text class="desc" x="580" y="458">ORD-002</text><text class="desc ok" x="730" y="458">✓ user_id=2=id</text>
+  <text class="desc" x="72" y="482">3</text><text class="desc" x="190" y="482">Carol</text><text class="desc" x="330" y="482">1</text><text class="desc" x="450" y="482">1</text><text class="desc" x="580" y="482">ORD-001</text><text class="desc no" x="730" y="482">✗</text>
+  <text class="desc" x="72" y="506">3</text><text class="desc" x="190" y="506">Carol</text><text class="desc" x="330" y="506">2</text><text class="desc" x="450" y="506">2</text><text class="desc" x="580" y="506">ORD-002</text><text class="desc no" x="730" y="506">✗</text>
+
+  <path class="arrow" d="M500 545 V580"/><text class="label" x="512" y="567">ON o.user_id = u.id：只保留 user_id 等于左表 id 的行</text>
+
+  <rect class="box" x="150" y="585" width="700" height="55" rx="10"/>
+  <text class="name" x="162" y="617">INNER JOIN 结果：Alice-ORD-001、Bob-ORD-002（Carol 没有匹配，被过滤）</text>
+</svg>

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+  <rect width="1000" height="520" fill="#f8fafc"/>
+  <style>
+    text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033}
+    .box{fill:#fff;stroke:#2563eb;stroke-width:3}
+    .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}
+    .title{font-size:16px;font-weight:bold;fill:#1e3a8a}
+    .desc{font-size:14px;fill:#334155}
+    .count{font-size:13px;fill:#475569}
+  </style>
+  <defs>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <text x="500" y="40" text-anchor="middle" font-size="22" font-weight="bold">一票货从全库到展示：四段链路</text>
+  <text x="500" y="68" text-anchor="middle" font-size="14" fill="#475569">例子：北京到天津、9.6 米、明早装货。本课只分清每段做什么，不讲具体算法。</text>
+
+  <rect class="box" x="40" y="150" width="150" height="150" rx="12"/>
+  <text class="title" x="115" y="190" text-anchor="middle">全库</text>
+  <text class="desc" x="115" y="222" text-anchor="middle">全部司机</text>
+  <text class="count" x="115" y="250" text-anchor="middle">规模：很大</text>
+  <text class="count" x="115" y="274" text-anchor="middle">还没打分</text>
+
+  <path class="arrow" d="M198 225 H228"/>
+
+  <rect class="box" x="236" y="120" width="160" height="210" rx="12"/>
+  <text class="title" x="316" y="160" text-anchor="middle">召回</text>
+  <text class="desc" x="316" y="192" text-anchor="middle">硬条件过滤</text>
+  <text class="desc" x="316" y="216" text-anchor="middle">多路捞候选</text>
+  <text class="count" x="316" y="252" text-anchor="middle">几百个司机</text>
+  <text class="count" x="316" y="276" text-anchor="middle">目标：别漏掉</text>
+  <text class="count" x="316" y="300" text-anchor="middle">还没模型打分</text>
+
+  <path class="arrow" d="M404 225 H434"/>
+
+  <rect class="box" x="442" y="120" width="160" height="210" rx="12"/>
+  <text class="title" x="522" y="160" text-anchor="middle">粗排</text>
+  <text class="desc" x="522" y="192" text-anchor="middle">少量特征</text>
+  <text class="desc" x="522" y="216" text-anchor="middle">轻模型砍量</text>
+  <text class="count" x="522" y="252" text-anchor="middle">几十个司机</text>
+  <text class="count" x="522" y="276" text-anchor="middle">目标：砍到</text>
+  <text class="count" x="522" y="300" text-anchor="middle">精排算得动</text>
+
+  <path class="arrow" d="M610 225 H640"/>
+
+  <rect class="box" x="648" y="120" width="160" height="210" rx="12"/>
+  <text class="title" x="728" y="160" text-anchor="middle">精排</text>
+  <text class="desc" x="728" y="192" text-anchor="middle">更多特征</text>
+  <text class="desc" x="728" y="216" text-anchor="middle">模型打分</text>
+  <text class="count" x="728" y="252" text-anchor="middle">按分数排序</text>
+  <text class="count" x="728" y="276" text-anchor="middle">目标：谁更可能</text>
+  <text class="count" x="728" y="300" text-anchor="middle">成交且履约</text>
+
+  <path class="arrow" d="M816 225 H846"/>
+
+  <rect class="box" x="854" y="120" width="110" height="210" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+  <text class="title" x="909" y="160" text-anchor="middle">重排</text>
+  <text class="desc" x="909" y="192" text-anchor="middle">业务规则</text>
+  <text class="desc" x="909" y="220" text-anchor="middle">去重、保量</text>
+  <text class="count" x="909" y="260" text-anchor="middle">展示</text>
+  <text class="count" x="909" y="284" text-anchor="middle">前几名</text>
+
+  <text x="500" y="390" text-anchor="middle" font-size="15" fill="#334155">数量一路变少。召回负责覆盖，粗排负责省计算，精排负责打准，重排负责业务约束。</text>
+  <text x="500" y="430" text-anchor="middle" font-size="15" fill="#334155">搜索、推荐、车货匹配都走这条链路。差别在请求里有没有明确查询，以及硬条件有多死。</text>
+  <text x="500" y="480" text-anchor="middle" font-size="14" fill="#64748b">粗排和精排的模型、特征、标签放到第 3 课。本课只要能指出：到召回结束为止，还没有按模型分排序。</text>
+</svg>

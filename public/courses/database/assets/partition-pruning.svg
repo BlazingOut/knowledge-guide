@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470">
+  <rect width="1000" height="470" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .box-dim{fill:#f1f5f9;stroke:#cbd5e1;stroke-width:3} .box-green{fill:#f0fdf4;stroke:#16a34a;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:13;fill:#475569} .label{font-size:14;fill:#475569} .pname{font-size:15;font-weight:bold} .t-green{fill:#15803d} .t-gray{fill:#94a3b8} .arrow{stroke:#94a3b8;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-green{stroke:#16a34a;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">分区表：一张逻辑表按范围分成多个物理分区，查询剪枝只扫相关分区</text>
+
+  <rect class="box" x="60" y="80" width="880" height="70" rx="10"/>
+  <text class="name" x="75" y="108">orders（逻辑表）</text>
+  <text class="desc" x="75" y="132">一张表，物理上分成多个区，逻辑上还是一个整体</text>
+
+  <rect class="box-dim" x="120" y="200" width="200" height="90" rx="10"/>
+  <text class="pname t-gray" x="220" y="240" text-anchor="middle">p2022</text>
+  <text class="desc t-gray" x="220" y="264" text-anchor="middle">2022 年订单</text>
+  <rect class="box-green" x="400" y="200" width="200" height="90" rx="10"/>
+  <text class="pname t-green" x="500" y="240" text-anchor="middle">p2023</text>
+  <text class="desc t-green" x="500" y="264" text-anchor="middle">2023 年订单</text>
+  <rect class="box-dim" x="680" y="200" width="200" height="90" rx="10"/>
+  <text class="pname t-gray" x="780" y="240" text-anchor="middle">p2024</text>
+  <text class="desc t-gray" x="780" y="264" text-anchor="middle">2024 年订单</text>
+
+  <path class="arrow" d="M220 150 V200"/>
+  <path class="arrow" d="M500 150 V200"/>
+  <path class="arrow" d="M780 150 V200"/>
+  <text class="label" x="512" y="178">按 created_at 年份落区</text>
+
+  <rect class="box" x="60" y="320" width="880" height="56" rx="10"/>
+  <text class="desc" x="75" y="352">SELECT * FROM orders WHERE created_at &gt;= '2023-01-01' AND created_at &lt; '2024-01-01'</text>
+  <path class="arrow-green" d="M500 322 V296"/>
+  <text class="label t-green" x="512" y="312">查询剪枝：只扫 p2023，跳过 p2022 和 p2024</text>
+
+  <rect class="box" x="60" y="404" width="880" height="50" rx="10"/>
+  <text class="desc" x="75" y="434">限制：WHERE 不带分区键就无法剪枝；主键必须包含分区键（详见课文）</text>
+</svg>

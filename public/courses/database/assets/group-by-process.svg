@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">
+  <rect width="1000" height="560" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:14;fill:#475569} .label{font-size:14;fill:#475569} .t-blue{fill:#1d4ed8} .t-green{fill:#15803d} .t-orange{fill:#b45309} .arrow{stroke:#94a3b8;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-blue{stroke:#3b82f6;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-green{stroke:#22c55e;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-orange{stroke:#f59e0b;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">GROUP BY：按 status 分组，每组执行聚合后返回一行</text>
+
+  <rect class="box" x="140" y="66" width="720" height="232" rx="10"/>
+  <text class="name" x="152" y="90">orders 表（原始行）</text>
+  <text class="desc" x="152" y="116">order_no        status</text>
+  <text class="desc" x="152" y="144">ORD-001</text><text class="desc t-blue" x="320" y="144">paid</text>
+  <text class="desc" x="152" y="170">ORD-002</text><text class="desc t-green" x="320" y="170">shipped</text>
+  <text class="desc" x="152" y="196">ORD-003</text><text class="desc t-orange" x="320" y="196">completed</text>
+  <text class="desc" x="152" y="222">ORD-004</text><text class="desc t-blue" x="320" y="222">paid</text>
+  <text class="desc" x="152" y="248">ORD-005</text><text class="desc t-green" x="320" y="248">shipped</text>
+  <text class="desc" x="152" y="274">ORD-006</text><text class="desc t-blue" x="320" y="274">paid</text>
+
+  <path class="arrow-blue" d="M215 298 V345"/>
+  <path class="arrow-green" d="M500 298 V345"/>
+  <path class="arrow-orange" d="M785 298 V345"/>
+
+  <rect class="box" x="90" y="350" width="250" height="95" rx="10"/>
+  <text class="name t-blue" x="102" y="372">status = paid 组</text>
+  <text class="desc" x="102" y="394">ORD-001、ORD-004、ORD-006</text>
+
+  <rect class="box" x="375" y="350" width="250" height="95" rx="10"/>
+  <text class="name t-green" x="387" y="372">status = shipped 组</text>
+  <text class="desc" x="387" y="394">ORD-002、ORD-005</text>
+
+  <rect class="box" x="660" y="350" width="250" height="95" rx="10"/>
+  <text class="name t-orange" x="672" y="372">status = completed 组</text>
+  <text class="desc" x="672" y="394">ORD-003</text>
+
+  <path class="arrow" d="M500 445 V485"/>
+  <text class="label" x="512" y="470">每组执行 COUNT(*)，每组返回一行</text>
+
+  <rect class="box" x="150" y="492" width="700" height="48" rx="10"/>
+  <text class="name" x="162" y="522">结果：SELECT status, COUNT(*) AS order_count  →  paid | 3   shipped | 2   completed | 1</text>
+</svg>

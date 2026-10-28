@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="460" viewBox="0 0 1000 460">
+  <rect width="1000" height="460" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:13;fill:#475569} .label{font-size:14;fill:#475569} .t-red{fill:#b91c1c} .step{fill:#eff6ff;stroke:#3b82f6;stroke-width:3} .arrow{stroke:#94a3b8;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">两阶段提交：redo prepare → 写 binlog → redo commit</text>
+
+  <rect class="step" x="90" y="120" width="240" height="70" rx="10"/>
+  <text class="name" x="210" y="150" text-anchor="middle">① InnoDB</text>
+  <text class="desc" x="210" y="174" text-anchor="middle">redo log 写入 prepare 状态</text>
+  <rect class="step" x="390" y="120" width="240" height="70" rx="10"/>
+  <text class="name" x="510" y="150" text-anchor="middle">② Server 层</text>
+  <text class="desc" x="510" y="174" text-anchor="middle">写入 binlog</text>
+  <rect class="step" x="690" y="120" width="240" height="70" rx="10"/>
+  <text class="name" x="810" y="150" text-anchor="middle">③ InnoDB</text>
+  <text class="desc" x="810" y="174" text-anchor="middle">redo log 标记为 commit，事务提交</text>
+
+  <path class="arrow" d="M330 155 H390"/>
+  <path class="arrow" d="M630 155 H690"/>
+  <circle cx="360" cy="155" r="7" fill="#dc2626"/>
+  <circle cx="660" cy="155" r="7" fill="#dc2626"/>
+  <text class="label t-red" x="360" y="215" text-anchor="middle">崩溃点 ①：binlog 未写入 → 回滚</text>
+  <text class="label t-red" x="660" y="215" text-anchor="middle">崩溃点 ②：binlog 已写入 → 恢复为已提交</text>
+
+  <rect class="box" x="90" y="250" width="860" height="150" rx="10"/>
+  <text class="desc" x="105" y="276">崩溃点 ①：redo 已 prepare 但 binlog 不存在 → 不视为完整提交，恢复时回滚</text>
+  <text class="desc" x="105" y="302">崩溃点 ②：redo 已 prepare 且 binlog 存在 → 判定为已提交，恢复时补做 commit</text>
+  <text class="desc" x="105" y="328">目的：redo log 与 binlog 对同一事务的提交状态尽量一致</text>
+  <text class="desc" x="105" y="354">避免"InnoDB 认为已提交、binlog 没有记录"，或反过来，导致复制和恢复不一致</text>
+</svg>

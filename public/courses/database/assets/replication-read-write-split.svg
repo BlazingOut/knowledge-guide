@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470">
+  <rect width="1000" height="470" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:13;fill:#475569} .label{font-size:14;fill:#475569} .t-blue{fill:#1d4ed8} .t-green{fill:#15803d} .t-orange{fill:#b45309} .arrow{stroke:#94a3b8;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-blue{stroke:#3b82f6;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-green{stroke:#22c55e;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">主从复制与读写分离：写走主库，binlog 同步到从库，读可走从库</text>
+
+  <rect class="box" x="430" y="80" width="140" height="56" rx="10"/>
+  <text class="name" x="500" y="113" text-anchor="middle">应用</text>
+
+  <rect class="box" x="100" y="240" width="280" height="100" rx="10"/>
+  <text class="name" x="115" y="265">主库</text>
+  <text class="desc" x="115" y="292">接收写请求，事务提交</text>
+  <text class="desc" x="115" y="316">变更写入主库 binlog</text>
+
+  <rect class="box" x="620" y="240" width="280" height="100" rx="10"/>
+  <text class="name" x="635" y="265">从库</text>
+  <text class="desc" x="635" y="292">拉取并回放主库 binlog</text>
+  <text class="desc" x="635" y="316">承担部分读请求</text>
+
+  <path class="arrow-blue" d="M500 136 V240"/>
+  <text class="label t-blue" x="512" y="195">写请求</text>
+  <path class="arrow-green" d="M570 108 H760 V240"/>
+  <text class="label t-green" x="665" y="124">读请求</text>
+  <path class="arrow" d="M380 290 H620"/>
+  <text class="label" x="500" y="280" text-anchor="middle">binlog 传输（异步）</text>
+
+  <rect class="box" x="100" y="370" width="800" height="76" rx="10"/>
+  <text class="desc" x="115" y="396">从库回放落后于主库 = 复制延迟：主库已提交的订单，从库可能暂时查不到</text>
+  <text class="desc" x="115" y="420">读写分离的读旧数据风险就来自这里（刚写入就读从库可能读到旧数据）</text>
+</svg>

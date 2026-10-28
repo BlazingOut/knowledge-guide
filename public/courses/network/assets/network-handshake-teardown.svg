@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="780" viewBox="0 0 1000 780">
+  <rect width="1000" height="780" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .lane{font-size:18;font-weight:bold} .msg{font-family:'Menlo','Consolas',monospace;font-size:15;font-weight:bold;fill:#172033} .state{font-size:13;fill:#475569} .sec{font-size:19;font-weight:bold} .note{font-size:14;fill:#334155}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">三次握手与四次挥手：每一步的报文和状态</text>
+
+  <text class="sec" x="500" y="70" text-anchor="middle">三次握手（建立连接）</text>
+  <text class="lane" x="280" y="100" text-anchor="middle">客户端</text>
+  <text class="lane" x="760" y="100" text-anchor="middle">服务端</text>
+  <line x1="280" y1="110" x2="280" y2="360" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="760" y1="110" x2="760" y2="360" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <text class="msg" x="520" y="132" text-anchor="middle">SYN，seq = x</text>
+  <path d="M280 140 H756" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="state" x="280" y="162" text-anchor="middle">客户端进入 SYN_SENT</text>
+  <text class="state" x="760" y="162" text-anchor="middle">进入 SYN_RCVD，分配接收缓存</text>
+
+  <text class="msg" x="520" y="192" text-anchor="middle">SYN + ACK，seq = y，ack = x+1</text>
+  <path d="M760 200 H284" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+
+  <text class="msg" x="520" y="252" text-anchor="middle">ACK，ack = y+1</text>
+  <path d="M280 260 H756" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="state" x="280" y="282" text-anchor="middle">ESTABLISHED（第三次可携带数据）</text>
+  <text class="state" x="760" y="282" text-anchor="middle">收到后 ESTABLISHED</text>
+
+  <text class="note" x="500" y="330" text-anchor="middle">前两次不携带应用数据；三次报文交换了双方的初始序号 x、y，并确认了双向通路可达</text>
+
+  <text class="sec" x="500" y="392" text-anchor="middle">四次挥手（关闭连接，以客户端主动关闭为例）</text>
+  <line x1="280" y1="410" x2="280" y2="700" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="760" y1="410" x2="760" y2="700" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <text class="msg" x="520" y="432" text-anchor="middle">FIN，seq = u</text>
+  <path d="M280 440 H756" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="state" x="280" y="462" text-anchor="middle">FIN_WAIT_1 → 收到 ACK 后 FIN_WAIT_2</text>
+  <text class="state" x="760" y="462" text-anchor="middle">进入 CLOSE_WAIT（还可能继续发数据）</text>
+
+  <text class="msg" x="520" y="492" text-anchor="middle">ACK，ack = u+1</text>
+  <path d="M760 500 H284" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+
+  <text class="msg" x="520" y="540" text-anchor="middle">FIN，seq = w（服务器的数据也发完了）</text>
+  <path d="M760 548 H284" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="state" x="760" y="570" text-anchor="middle">LAST_ACK</text>
+
+  <text class="msg" x="520" y="600" text-anchor="middle">ACK，ack = w+1</text>
+  <path d="M280 608 H756" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="state" x="280" y="630" text-anchor="middle">TIME_WAIT：等待 2MSL 后 CLOSED</text>
+  <text class="state" x="760" y="630" text-anchor="middle">收到 ACK 即 CLOSED</text>
+
+  <text class="note" x="500" y="678" text-anchor="middle">为什么握手三次、挥手四次？握手的 SYN 和 ACK 可以合并；挥手时被动方收到 FIN 后</text>
+  <text class="note" x="500" y="700" text-anchor="middle">可能还有数据没发完，ACK 和自己的 FIN 必须分成两步，等数据发完再挥手。</text>
+  <text class="note" x="500" y="736" text-anchor="middle">颜色：蓝色 = 建立连接；绿色 = 关闭连接。SYN 消耗一个序号，FIN 也消耗一个序号。</text>
+</svg>

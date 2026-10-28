@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640">
+  <rect width="1000" height="640" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .line{font-family:'Menlo','Consolas',monospace;font-size:15} .sec{font-size:17;font-weight:bold} .note{font-size:14;fill:#334155} .tag{font-size:13;font-weight:bold;fill:#475569}</style>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">HTTP 请求报文与响应报文的结构</text>
+
+  <!-- 请求报文 -->
+  <text class="sec" x="270" y="76" text-anchor="middle">请求报文（客户端 → 服务器）</text>
+  <rect x="70" y="92" width="400" height="34" rx="6" fill="#93c5fd"/><text class="line" x="86" y="114">GET /api/tasks HTTP/1.1</text>
+  <text class="tag" x="486" y="114">← 请求行</text>
+  <rect x="70" y="130" width="400" height="150" rx="6" fill="#e2e8f0"/>
+  <text class="line" x="86" y="154">Host: api.example.com</text>
+  <text class="line" x="86" y="180">Content-Type: application/json</text>
+  <text class="line" x="86" y="206">Content-Length: 26</text>
+  <text class="line" x="86" y="232">Authorization: Bearer eyJhbGci...</text>
+  <text class="line" x="86" y="258">Connection: close</text>
+  <text class="tag" x="486" y="210">← 头部区</text>
+  <rect x="70" y="284" width="400" height="26" rx="6" fill="#fff" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 4"/>
+  <text class="line" x="86" y="302">(空行 \r\n)</text>
+  <text class="tag" x="486" y="300">← 分隔</text>
+  <rect x="70" y="314" width="400" height="40" rx="6" fill="#6ee7b7"/><text class="line" x="86" y="339">{"content": "买牛奶"}</text>
+  <text class="tag" x="486" y="339">← 正文</text>
+
+  <!-- 响应报文 -->
+  <text class="sec" x="730" y="76" text-anchor="middle">响应报文（服务器 → 客户端）</text>
+  <rect x="530" y="92" width="400" height="34" rx="6" fill="#93c5fd"/><text class="line" x="546" y="114">HTTP/1.1 200 OK</text>
+  <text class="tag" x="946" y="114">← 状态行</text>
+  <rect x="530" y="130" width="400" height="106" rx="6" fill="#e2e8f0"/>
+  <text class="line" x="546" y="154">Content-Type: application/json</text>
+  <text class="line" x="546" y="180">Content-Length: 61</text>
+  <text class="line" x="546" y="206">Connection: close</text>
+  <text class="tag" x="946" y="188">← 头部区</text>
+  <rect x="530" y="240" width="400" height="26" rx="6" fill="#fff" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 4"/>
+  <text class="line" x="546" y="258">(空行 \r\n)</text>
+  <rect x="530" y="270" width="400" height="58" rx="6" fill="#6ee7b7"/>
+  <text class="line" x="546" y="294">[{"id": 1, "content": "买牛奶"},</text>
+  <text class="line" x="546" y="318"> {"id": 2, "content": "跑步"}]</text>
+  <text class="tag" x="946" y="303">← 正文</text>
+
+  <text class="note" x="500" y="396" text-anchor="middle">每一行都以 \r\n（回车+换行）结尾；头部区和正文之间必须有一个空行——这是协议的硬性规定。</text>
+  <text class="note" x="500" y="424" text-anchor="middle">请求行 = 方法 + 路径 + 版本；状态行 = 版本 + 状态码 + 短语。两个报文结构完全对称。</text>
+  <text class="note" x="500" y="460" text-anchor="middle">服务器怎么知道正文有多长？两种方式（第 6 课长度前缀的变体）：</text>
+  <text class="note" x="500" y="484" text-anchor="middle">① 读 Content-Length 头部，精确收满那么多字节；② Connection: close 时，读到连接关闭为止。</text>
+  <text class="note" x="500" y="520" text-anchor="middle">GET 请求通常没有正文（参数在路径里）；POST/PUT 的数据放在正文，靠 Content-Type 声明格式。</text>
+  <text class="note" x="500" y="556" text-anchor="middle">HTTP 是文本协议：上面的每一行都是可读的 ASCII 字符——用 socket 发送这些字节，</text>
+  <text class="note" x="500" y="580" text-anchor="middle">任何一个 HTTP 服务器都能理解你，这就是"手写 HTTP 请求"的全部秘密。</text>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680">
+  <rect width="1000" height="680" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .field{font-size:16;font-weight:bold} .sub{font-size:12;fill:#475569} .bits{font-size:13;fill:#475569} .sec{font-size:19;font-weight:bold} .note{font-size:14;fill:#334155}</style>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">UDP 与 TCP 的报文头部结构</text>
+  <text class="bits" x="240" y="66">0</text><text class="bits" x="370" y="66">15 | 16</text><text class="bits" x="742" y="66">31</text>
+
+  <text class="sec" x="240" y="95">UDP 头部（固定 8 字节，只有 4 个字段）</text>
+  <rect x="240" y="108" width="260" height="40" rx="6" fill="#93c5fd"/><text class="field" x="370" y="133" text-anchor="middle">源端口</text><text class="sub" x="370" y="150" text-anchor="middle">16 位</text>
+  <rect x="500" y="108" width="260" height="40" rx="6" fill="#93c5fd"/><text class="field" x="630" y="133" text-anchor="middle">目的端口</text><text class="sub" x="630" y="150" text-anchor="middle">16 位</text>
+  <rect x="240" y="148" width="260" height="40" rx="6" fill="#e2e8f0"/><text class="field" x="370" y="173" text-anchor="middle">长度</text><text class="sub" x="370" y="190" text-anchor="middle">16 位</text>
+  <rect x="500" y="148" width="260" height="40" rx="6" fill="#e2e8f0"/><text class="field" x="630" y="173" text-anchor="middle">校验和</text><text class="sub" x="630" y="190" text-anchor="middle">16 位</text>
+  <rect x="240" y="196" width="520" height="36" rx="6" fill="#fff" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 4"/><text class="note" x="500" y="219" text-anchor="middle">应用层数据（例如一条 DNS 查询）——发出去就不管了，丢了也不重传</text>
+
+  <text class="sec" x="240" y="272">TCP 头部（固定 20 字节，可加选项）</text>
+  <text class="bits" x="240" y="296">0</text><text class="bits" x="370" y="296">15 | 16</text><text class="bits" x="742" y="296">31</text>
+  <rect x="240" y="306" width="260" height="40" rx="6" fill="#93c5fd"/><text class="field" x="370" y="331" text-anchor="middle">源端口</text><text class="sub" x="370" y="348" text-anchor="middle">16 位</text>
+  <rect x="500" y="306" width="260" height="40" rx="6" fill="#93c5fd"/><text class="field" x="630" y="331" text-anchor="middle">目的端口</text><text class="sub" x="630" y="348" text-anchor="middle">16 位</text>
+  <rect x="240" y="346" width="520" height="40" rx="6" fill="#6ee7b7"/><text class="field" x="500" y="371" text-anchor="middle">序号 Sequence Number（32 位）</text><text class="sub" x="500" y="388" text-anchor="middle">本报文数据是整个字节流中的第几字节</text>
+  <rect x="240" y="386" width="520" height="40" rx="6" fill="#6ee7b7"/><text class="field" x="500" y="411" text-anchor="middle">确认号 Acknowledgment Number（32 位）</text><text class="sub" x="500" y="428" text-anchor="middle">期望对方下一个发来的字节序号 = 收到之后的回应</text>
+  <rect x="240" y="426" width="90" height="40" rx="6" fill="#e2e8f0"/><text class="field" x="285" y="444" text-anchor="middle">数据偏移</text><text class="sub" x="285" y="460" text-anchor="middle">+ 保留</text>
+  <rect x="330" y="426" width="170" height="40" rx="6" fill="#fca5a5"/><text class="field" x="415" y="444" text-anchor="middle">标志位</text><text class="sub" x="415" y="460" text-anchor="middle">URG ACK PSH RST SYN FIN</text>
+  <rect x="500" y="426" width="260" height="40" rx="6" fill="#fde68a"/><text class="field" x="630" y="444" text-anchor="middle">窗口大小</text><text class="sub" x="630" y="460" text-anchor="middle">我还能接收多少数据（流量控制）</text>
+  <rect x="240" y="466" width="260" height="40" rx="6" fill="#e2e8f0"/><text class="field" x="370" y="491" text-anchor="middle">校验和</text><text class="sub" x="370" y="508" text-anchor="middle">16 位</text>
+  <rect x="500" y="466" width="260" height="40" rx="6" fill="#e2e8f0"/><text class="field" x="630" y="491" text-anchor="middle">紧急指针</text><text class="sub" x="630" y="508" text-anchor="middle">16 位</text>
+  <rect x="240" y="514" width="520" height="36" rx="6" fill="#fff" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 4"/><text class="note" x="500" y="537" text-anchor="middle">选项（可变长）+ 应用层数据——按序号重组，丢了就重传</text>
+
+  <text class="note" x="240" y="590">颜色说明：蓝色 = 两端的端口；绿色 = 序号与确认号（可靠有序的基础）；</text>
+  <text class="note" x="240" y="612">红色 = 标志位（SYN、ACK、FIN 等，用于建立和关闭连接）；黄色 = 窗口（流量控制的基础）。</text>
+  <text class="note" x="240" y="640">UDP 头没有序号、确认号、标志位和窗口——它不做这些事，所以又小又快。</text>
+</svg>

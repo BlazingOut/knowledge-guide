@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .vbox{fill:#f1f5f9;stroke:#94a3b8;stroke-width:3;stroke-dasharray:6 5} .rbox{fill:#fff;stroke:#475569;stroke-width:2} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-loop{stroke:#475569;stroke-width:2.5;fill:none;marker-end:url(#m)} .label{font-size:12;fill:#475569} .desc{font-size:12;fill:#64748b} .head{font-size:16;font-weight:bold} .note{font-size:13;fill:#475569}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="450" y="36" text-anchor="middle" font-size="24" font-weight="bold">待办处理示例：一条条件边同时表达分支与循环</text>
+
+  <rect class="vbox" x="60" y="80" width="110" height="52" rx="10"/>
+  <text class="head" x="115" y="106" text-anchor="middle">START</text>
+  <text class="desc" x="115" y="124" text-anchor="middle">虚拟入口</text>
+  <path class="arrow" d="M172 106 H228"/>
+  <rect class="box" x="230" y="80" width="190" height="64" rx="10"/>
+  <text class="head" x="325" y="104" text-anchor="middle">process</text>
+  <text class="desc" x="325" y="124" text-anchor="middle">节点：处理一条待办</text>
+
+  <path class="arrow" d="M325 146 V188"/>
+  <rect class="rbox" x="230" y="190" width="190" height="64" rx="10"/>
+  <text class="head" x="325" y="212" text-anchor="middle">route_todo</text>
+  <text class="desc" x="325" y="232" text-anchor="middle">条件边：路由函数（不是节点）</text>
+
+  <path class="arrow-loop" d="M420 222 H520 V112 H434"/>
+  <text class="label" x="502" y="172" text-anchor="middle" transform="rotate(-90 502 172)">还有待办 → 循环回 process</text>
+
+  <path class="arrow" d="M325 256 V298"/>
+  <text class="label" x="340" y="280">处理完 → 走向 summarize（循环终止）</text>
+  <rect class="box" x="230" y="300" width="190" height="64" rx="10"/>
+  <text class="head" x="325" y="324" text-anchor="middle">summarize</text>
+  <text class="desc" x="325" y="344" text-anchor="middle">节点：汇总并结束</text>
+
+  <path class="arrow" d="M325 366 V398"/>
+  <rect class="vbox" x="270" y="400" width="110" height="52" rx="10"/>
+  <text class="head" x="325" y="426" text-anchor="middle">END</text>
+  <text class="desc" x="325" y="444" text-anchor="middle">虚拟出口</text>
+
+  <text class="note" x="450" y="480" text-anchor="middle">本课要记的名字只有三个：节点 process / summarize，路由函数 route_todo（它不是节点）</text>
+</svg>

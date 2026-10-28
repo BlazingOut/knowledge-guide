@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="460" viewBox="0 0 900 460">
+  <rect width="900" height="460" fill="#FFFFFF"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6B5F6B} .title{font-size:20;font-weight:bold} .head{font-size:13;font-weight:bold} .sub{font-size:11;fill:#8A7F8A} .label{font-size:12;fill:#8A7F8A} .note{font-size:12;fill:#8A7F8A} .arrow{stroke:#B3A5B3;stroke-width:2.5;fill:none;marker-end:url(#m)} .dash{stroke:#C77B6B;stroke-width:2;fill:none;stroke-dasharray:6,4;marker-end:url(#m2)}</style>
+  <defs>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#B3A5B3"/></marker>
+    <marker id="m2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#C77B6B"/></marker>
+  </defs>
+
+  <text class="title" x="450" y="32" text-anchor="middle">Agentic RAG 的图形态：检索决策 + 质量判断 + 改写重检</text>
+
+  <!-- 主链（竖排）：decide → retrieve → quality → generate -->
+  <rect x="330" y="45" width="180" height="60" rx="10" fill="#FFDFD3" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="420" y="70" text-anchor="middle">decide 判断</text>
+  <text class="sub" x="420" y="88" text-anchor="middle">查询涉及知识库词？（模型）</text>
+
+  <path class="arrow" d="M420 107 V143"/>
+  <text class="label" x="432" y="130">是：涉及知识库词</text>
+
+  <rect x="330" y="145" width="180" height="60" rx="10" fill="#D4F0F0" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="420" y="170" text-anchor="middle">retrieve 检索工具</text>
+  <text class="sub" x="420" y="188" text-anchor="middle">调向量检索，记分数（工具）</text>
+
+  <path class="arrow" d="M420 207 V243"/>
+
+  <rect x="330" y="245" width="180" height="60" rx="10" fill="#FFFACD" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="420" y="270" text-anchor="middle">quality 质量判断</text>
+  <text class="sub" x="420" y="288" text-anchor="middle">分数够？次数到上限？（规则）</text>
+
+  <path class="arrow" d="M420 307 V343"/>
+  <text class="label" x="432" y="330">分数≥0.5 或达上限</text>
+
+  <rect x="330" y="345" width="180" height="60" rx="10" fill="#D4F0F0" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="420" y="370" text-anchor="middle">generate 生成</text>
+  <text class="sub" x="420" y="388" text-anchor="middle">引用检索证据作答（模型）</text>
+
+  <!-- 右侧：rewrite 改写 + 重检回路 -->
+  <rect x="560" y="245" width="180" height="60" rx="10" fill="#E2DFFF" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="650" y="270" text-anchor="middle">rewrite 改写查询</text>
+  <text class="sub" x="650" y="288" text-anchor="middle">口语 → 知识库措辞（模型）</text>
+
+  <path class="dash" d="M512 275 H558"/>
+  <text class="label" x="516" y="265">分数不够</text>
+
+  <path class="dash" d="M650 307 V335 H420 V207"/>
+  <text class="label" x="432" y="330">重检（次数 +1）</text>
+  <text class="label" x="432" y="346">← 回到 retrieve</text>
+
+  <!-- 否分支：decide 右侧绕到 generate -->
+  <path class="dash" d="M512 75 H760 V375 H512"/>
+  <text class="label" x="766" y="220" transform="rotate(-90 766 220)">否：不涉及知识库，跳过检索直接生成</text>
+
+  <text class="note" x="450" y="440" text-anchor="middle">运行示例：'我晚上老是睡不着怎么办' → 检索 0.25 不足 → 改写 '失眠 睡不着 睡眠' → 重检 0.75 足够 → 生成</text>
+</svg>

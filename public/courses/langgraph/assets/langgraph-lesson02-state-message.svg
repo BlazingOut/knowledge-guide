@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360">
+  <rect width="900" height="360" fill="#FFFFFF"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6B5F6B} .title{font-size:22;font-weight:bold} .head{font-size:15;font-weight:bold} .sub{font-size:12;fill:#8A7F8A} .box-title{font-size:14;font-weight:bold} .chip-text{font-size:12} .emph{font-size:12;fill:#C77B6B} .arrow{stroke:#B3A5B3;stroke-width:2.5;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#B3A5B3"/></marker></defs>
+
+  <text class="title" x="450" y="34" text-anchor="middle">State、字段与消息对象：三层结构</text>
+
+  <!-- State 大框 -->
+  <rect x="50" y="70" width="800" height="260" rx="14" fill="#FFFACD" stroke="#B3A5B3" stroke-width="2"/>
+  <text class="head" x="80" y="100">State（TypedDict）：图的工作区</text>
+  <text class="sub" x="80" y="122">字段名就是节点之间的接口</text>
+
+  <!-- messages 字段 -->
+  <rect x="80" y="140" width="300" height="78" rx="10" fill="#D4F0F0" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="box-title" x="100" y="163">messages 字段</text>
+  <text class="sub" x="100" y="183">Annotated[list, add_messages]</text>
+  <text class="sub" x="100" y="201">追加语义（reducer，3.4）</text>
+
+  <!-- 字段 → 元素 箭头 -->
+  <path class="arrow" d="M230 220 V252"/>
+  <text class="sub" x="242" y="244">元素：list 里的消息对象</text>
+
+  <!-- 四个消息对象 chips -->
+  <rect x="80" y="258" width="140" height="44" rx="8" fill="#FFDFD3" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="chip-text" x="150" y="284" text-anchor="middle">HumanMessage</text>
+  <text class="sub" x="150" y="298" text-anchor="middle">用户</text>
+  <rect x="235" y="258" width="140" height="44" rx="8" fill="#E2DFFF" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="chip-text" x="305" y="284" text-anchor="middle">AIMessage</text>
+  <text class="sub" x="305" y="298" text-anchor="middle">助手</text>
+  <rect x="390" y="258" width="140" height="44" rx="8" fill="#FFDFD3" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="chip-text" x="460" y="284" text-anchor="middle">SystemMessage</text>
+  <text class="sub" x="460" y="298" text-anchor="middle">系统</text>
+  <rect x="545" y="258" width="140" height="44" rx="8" fill="#E2DFFF" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="chip-text" x="615" y="284" text-anchor="middle">ToolMessage</text>
+  <text class="sub" x="615" y="298" text-anchor="middle">工具</text>
+
+  <!-- 例外与提示 -->
+  <text class="emph" x="80" y="318">例外：只存一条消息的字段直接写消息类（如 final_answer: AIMessage）</text>
+  <text class="sub" x="450" y="345" text-anchor="middle">MessagesState = 只含 messages 字段的预置 State（第 1 课 3.4）</text>
+</svg>

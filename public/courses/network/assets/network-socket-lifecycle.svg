@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .lane{font-size:18;font-weight:bold} .code{font-family:'Menlo','Consolas',monospace;font-size:14} .note{font-size:13;fill:#475569} .label{font-size:14;fill:#334155;font-weight:bold}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">TCP socket 的生命周期：双方各自调用什么</text>
+  <text class="lane" x="280" y="82" text-anchor="middle">客户端进程</text>
+  <text class="lane" x="760" y="82" text-anchor="middle">服务端进程</text>
+  <line x1="280" y1="92" x2="280" y2="575" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="760" y1="92" x2="760" y2="575" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <rect class="box" x="150" y="102" width="260" height="34" rx="8"/><text class="code" x="280" y="124" text-anchor="middle">s = socket.socket()</text>
+  <rect class="box" x="630" y="102" width="260" height="34" rx="8"/><text class="code" x="760" y="124" text-anchor="middle">s = socket.socket()</text>
+  <rect class="box" x="630" y="144" width="260" height="34" rx="8"/><text class="code" x="760" y="166" text-anchor="middle">s.bind(('127.0.0.1', 8000))</text>
+  <rect class="box" x="630" y="186" width="260" height="34" rx="8"/><text class="code" x="760" y="208" text-anchor="middle">s.listen(1)</text>
+
+  <text class="label" x="520" y="252" text-anchor="middle">s.connect(('127.0.0.1', 8000))</text>
+  <path d="M280 262 H756" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="520" y="282" text-anchor="middle">TCP 握手由操作系统内核完成（第 4 课）</text>
+
+  <rect class="box" x="630" y="300" width="260" height="34" rx="8"/><text class="code" x="760" y="322" text-anchor="middle">conn, addr = s.accept()</text>
+  <text class="note" x="760" y="352" text-anchor="middle">返回新的 socket conn，专门服务这一个客户端</text>
+
+  <text class="label" x="520" y="378" text-anchor="middle">s2.sendall(b'你好')</text>
+  <path d="M280 388 H756" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="760" y="408" text-anchor="middle">conn.recv() 收到 b'你好'</text>
+
+  <text class="label" x="520" y="432" text-anchor="middle">conn.sendall(b'已收到')</text>
+  <path d="M760 442 H284" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="280" y="462" text-anchor="middle">s2.recv() 收到 b'已收到'</text>
+
+  <rect class="box" x="150" y="478" width="260" height="34" rx="8"/><text class="code" x="280" y="500" text-anchor="middle">s2.close()  关闭连接</text>
+  <text class="note" x="760" y="500" text-anchor="middle">conn.recv() 返回 b''</text>
+  <text class="note" x="760" y="520" text-anchor="middle">空字节 = 对方已正常关闭</text>
+
+  <text class="note" x="500" y="560" text-anchor="middle">连接一旦建立，收发只需要记住地址：服务端用 accept 给的 conn，客户端用 connect 过的 s</text>
+  <text class="note" x="500" y="584" text-anchor="middle">握手挥手等连接管理动作由内核完成，应用程序只管读写</text>
+</svg>

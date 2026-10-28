@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .sec{font-size:18;font-weight:bold} .title{font-size:16;font-weight:bold} .note{font-size:14;fill:#334155} .small{font-size:13;fill:#475569} .box{fill:#fff;stroke:#2563eb;stroke-width:3}</style>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">为什么 HTTPS 要混合加密</text>
+
+  <!-- 左：对称 -->
+  <text class="sec" x="250" y="78" text-anchor="middle">对称加密（AES 等）</text>
+  <rect class="box" x="70" y="98" width="360" height="210" rx="12"/>
+  <rect x="150" y="118" width="200" height="36" rx="8" fill="#93c5fd"/>
+  <text class="title" x="250" y="142" text-anchor="middle">同一把密钥 K</text>
+  <text class="note" x="250" y="178" text-anchor="middle">加密和解密用同一把钥匙</text>
+  <text class="note" x="250" y="206" text-anchor="middle">快，适合加密大量 HTTP 正文</text>
+  <text class="small" x="250" y="240" text-anchor="middle">问题：K 怎么安全送到对方？</text>
+  <text class="small" x="250" y="264" text-anchor="middle">网上明文传 K，中间人直接拿走</text>
+  <text class="small" x="250" y="288" text-anchor="middle">N 个网站就要存 N 把不同的 K</text>
+
+  <!-- 右：非对称 -->
+  <text class="sec" x="750" y="78" text-anchor="middle">非对称加密（RSA / ECDHE）</text>
+  <rect class="box" x="570" y="98" width="360" height="210" rx="12"/>
+  <rect x="590" y="118" width="150" height="36" rx="8" fill="#6ee7b7"/>
+  <text class="title" x="665" y="142" text-anchor="middle">公钥 可公开</text>
+  <rect x="760" y="118" width="150" height="36" rx="8" fill="#fdba74"/>
+  <text class="title" x="835" y="142" text-anchor="middle">私钥 不离手</text>
+  <text class="note" x="750" y="178" text-anchor="middle">公钥加密 → 只有私钥能解密</text>
+  <text class="note" x="750" y="206" text-anchor="middle">私钥签名 → 任何人用公钥能验</text>
+  <text class="small" x="750" y="240" text-anchor="middle">问题：比对称慢一到三个数量级</text>
+  <text class="small" x="750" y="264" text-anchor="middle">不能拿它加密每一个数据包</text>
+  <text class="small" x="750" y="288" text-anchor="middle">公钥本身还可能被掉包</text>
+
+  <!-- 下：混合 -->
+  <text class="sec" x="500" y="348" text-anchor="middle">HTTPS 的答案：只在握手时用非对称，通信全程用对称</text>
+  <rect x="70" y="368" width="860" height="210" rx="12" fill="#fff" stroke="#059669" stroke-width="3"/>
+
+  <rect x="100" y="392" width="200" height="70" rx="8" fill="#e2e8f0"/>
+  <text class="title" x="200" y="420" text-anchor="middle">① 证书证明公钥</text>
+  <text class="small" x="200" y="444" text-anchor="middle">CA 签名，防掉包</text>
+
+  <rect x="340" y="392" width="200" height="70" rx="8" fill="#e2e8f0"/>
+  <text class="title" x="440" y="420" text-anchor="middle">② 协商会话密钥</text>
+  <text class="small" x="440" y="444" text-anchor="middle">非对称，只此一次</text>
+
+  <rect x="580" y="392" width="200" height="70" rx="8" fill="#bbf7d0"/>
+  <text class="title" x="680" y="420" text-anchor="middle">③ 对称加密通信</text>
+  <text class="small" x="680" y="444" text-anchor="middle">后续所有 HTTP 报文</text>
+
+  <text class="note" x="500" y="500" text-anchor="middle">非对称解决"第一次见面怎么换钥匙"；对称解决"换完之后怎么传得快"。</text>
+  <text class="note" x="500" y="528" text-anchor="middle">每次 TLS 握手都会生成一把新的会话密钥，这次连接用完即弃——即使某次密钥泄露，</text>
+  <text class="note" x="500" y="556" text-anchor="middle">也解不开以前的流量。这就是前向保密（Forward Secrecy）的来源，ECDHE 负责这件事。</text>
+</svg>

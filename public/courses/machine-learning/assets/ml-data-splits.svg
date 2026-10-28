@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360">
+  <rect width="1000" height="360" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:16;font-weight:bold} .desc{font-size:15;fill:#334155}</style>
+  <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="bold">同一批历史记录拆成三份，各看一次</text>
+  <rect class="box" x="40" y="90" width="290" height="200" rx="10"/>
+  <text class="name" x="185" y="128" text-anchor="middle">训练集</text>
+  <text class="desc" x="185" y="170" text-anchor="middle">调整参数 w</text>
+  <text class="desc" x="185" y="202" text-anchor="middle">模型可以反复看</text>
+  <text class="desc" x="185" y="234" text-anchor="middle">误差下降只说明</text>
+  <text class="desc" x="185" y="262" text-anchor="middle">记住了这些样本</text>
+  <rect class="box" x="355" y="90" width="290" height="200" rx="10"/>
+  <text class="name" x="500" y="128" text-anchor="middle">验证集</text>
+  <text class="desc" x="500" y="170" text-anchor="middle">比较模型形式</text>
+  <text class="desc" x="500" y="202" text-anchor="middle">和学习率等设定</text>
+  <text class="desc" x="500" y="234" text-anchor="middle">看过之后会改选择</text>
+  <text class="desc" x="500" y="262" text-anchor="middle">不能当最终成绩</text>
+  <rect class="box" x="670" y="90" width="290" height="200" rx="10"/>
+  <text class="name" x="815" y="128" text-anchor="middle">测试集</text>
+  <text class="desc" x="815" y="170" text-anchor="middle">模型选定之后</text>
+  <text class="desc" x="815" y="202" text-anchor="middle">只评估一次</text>
+  <text class="desc" x="815" y="234" text-anchor="middle">不回头改 w</text>
+  <text class="desc" x="815" y="262" text-anchor="middle">也不改模型选择</text>
+</svg>

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="660" viewBox="0 0 1000 660">
+  <rect width="1000" height="660" fill="#ffffff"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6b5f6b} .box{font-size:15;font-weight:bold} .line{font-size:13;fill:#8a7f8a} .fault{font-size:13;font-weight:bold;fill:#c77b6b}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3a5b3"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">一条点餐请求的完整旅程：七个阶段</text>
+
+  <!-- 第一行：阶段 1-4 -->
+  <rect x="35" y="70" width="210" height="140" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="140" y="96" text-anchor="middle">① 浏览器发请求</text>
+  <text class="line" x="140" y="120" text-anchor="middle">用户点"下单"</text>
+  <text class="line" x="140" y="140" text-anchor="middle">组装 HTTP POST</text>
+  <text class="line" x="140" y="160" text-anchor="middle">（token、菜品、地址）</text>
+  <text class="fault" x="140" y="192" text-anchor="middle">慢：本地网络、token 过期</text>
+
+  <rect x="275" y="70" width="210" height="140" rx="8" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="380" y="96" text-anchor="middle">② DNS 与连接建立</text>
+  <text class="line" x="380" y="120" text-anchor="middle">域名解析成 IP</text>
+  <text class="line" x="380" y="140" text-anchor="middle">TCP 握手 + TLS</text>
+  <text class="line" x="380" y="160" text-anchor="middle">发出 HTTP 请求</text>
+  <text class="fault" x="380" y="192" text-anchor="middle">慢：解析慢、丢包重传</text>
+
+  <rect x="515" y="70" width="210" height="140" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="620" y="96" text-anchor="middle">③ Nginx 网关转发</text>
+  <text class="line" x="620" y="120" text-anchor="middle">按路径转发请求</text>
+  <text class="line" x="620" y="140" text-anchor="middle">可配超时与限流</text>
+  <text class="line" x="620" y="160" text-anchor="middle">静态资源直接返回</text>
+  <text class="fault" x="620" y="192" text-anchor="middle">慢：后端不健康、连接打满</text>
+
+  <rect x="755" y="70" width="210" height="140" rx="8" fill="#e2dfff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="860" y="96" text-anchor="middle">④ 鉴权与参数校验</text>
+  <text class="line" x="860" y="120" text-anchor="middle">FastAPI 验证 token</text>
+  <text class="line" x="860" y="140" text-anchor="middle">查用户、验参数</text>
+  <text class="line" x="860" y="160" text-anchor="middle">进入下单逻辑</text>
+  <text class="fault" x="860" y="192" text-anchor="middle">慢：鉴权查询慢</text>
+
+  <!-- 第二行：阶段 5-7 -->
+  <rect x="155" y="260" width="210" height="140" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="260" y="286" text-anchor="middle">⑤ 缓存与数据库</text>
+  <text class="line" x="260" y="310" text-anchor="middle">先查 Redis 缓存</text>
+  <text class="line" x="260" y="330" text-anchor="middle">未命中查 MySQL 并回填</text>
+  <text class="line" x="260" y="350" text-anchor="middle">读取菜品价格与库存</text>
+  <text class="fault" x="260" y="382" text-anchor="middle">慢：缓存穿透、慢 SQL</text>
+
+  <rect x="395" y="260" width="210" height="140" rx="8" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="286" text-anchor="middle">⑥ 下单事务</text>
+  <text class="line" x="500" y="310" text-anchor="middle">订单 + 明细 + 扣库存</text>
+  <text class="line" x="500" y="330" text-anchor="middle">一起成功或一起失败</text>
+  <text class="line" x="500" y="350" text-anchor="middle">状态 = 待支付</text>
+  <text class="fault" x="500" y="382" text-anchor="middle">慢：库存不足、锁等待</text>
+
+  <rect x="635" y="260" width="210" height="140" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="740" y="286" text-anchor="middle">⑦ 异步化与响应</text>
+  <text class="line" x="740" y="310" text-anchor="middle">投递任务给 Worker</text>
+  <text class="line" x="740" y="330" text-anchor="middle">返回"待支付"给浏览器</text>
+  <text class="line" x="740" y="350" text-anchor="middle">Worker 处理回调/超时</text>
+  <text class="fault" x="740" y="382" text-anchor="middle">慢：队列积压、回调重复</text>
+
+  <!-- 连接箭头 -->
+  <line x1="245" y1="140" x2="273" y2="140" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="485" y1="140" x2="513" y2="140" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="725" y1="140" x2="753" y2="140" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 860 210 L 860 232 L 260 232 L 260 258" fill="none" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="365" y1="330" x2="393" y2="330" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="605" y1="330" x2="633" y2="330" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="500" y="600" text-anchor="middle" font-size="14" fill="#8a7f8a">每个阶段都可能变慢或失败；排查时先定位到具体阶段，再进该阶段找根因（见第三节排错地图）。</text>
+</svg>

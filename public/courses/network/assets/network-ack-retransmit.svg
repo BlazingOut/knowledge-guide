@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">
+  <rect width="1000" height="560" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .lane{font-size:17;font-weight:bold} .msg{font-family:'Menlo','Consolas',monospace;font-size:14;font-weight:bold} .note{font-size:13;fill:#475569} .sec{font-size:17;font-weight:bold}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker><marker id="r" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">确认应答与超时重传：可靠从哪里来</text>
+
+  <text class="sec" x="500" y="70" text-anchor="middle">一、一切顺利：发一段，确认一段</text>
+  <text class="lane" x="280" y="100" text-anchor="middle">发送方</text>
+  <text class="lane" x="760" y="100" text-anchor="middle">接收方</text>
+  <line x1="280" y1="108" x2="280" y2="250" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="760" y1="108" x2="760" y2="250" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <text class="msg" x="520" y="126" text-anchor="middle">seq=1，数据 100 字节</text>
+  <path d="M280 132 H756" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="msg" x="520" y="162" text-anchor="middle">ACK，ack=101</text>
+  <path d="M760 168 H284" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="msg" x="520" y="198" text-anchor="middle">seq=101，数据 100 字节</text>
+  <path d="M280 204 H756" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="msg" x="520" y="234" text-anchor="middle">ACK，ack=201</text>
+  <path d="M760 240 H284" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="500" y="278" text-anchor="middle">确认号 = 我期望的下一个序号：ack=101 表示"1~100 都收到了"。这就是"累积确认"。</text>
+
+  <text class="sec" x="500" y="318" text-anchor="middle">二、出了意外：超时重传</text>
+  <line x1="280" y1="356" x2="280" y2="500" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="760" y1="356" x2="760" y2="500" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <text class="msg" x="520" y="374" text-anchor="middle">seq=201，数据 100 字节</text>
+  <path d="M280 380 H700" stroke="#dc2626" stroke-width="3" fill="none" marker-end="url(#r)"/>
+  <text class="note" x="640" y="402" text-anchor="middle">✕ 在网络中丢失</text>
+  <text class="msg" x="520" y="426" text-anchor="middle">（计时器到点，没有等到 ACK）</text>
+  <text class="msg" x="520" y="450" text-anchor="middle">重传 seq=201，数据 100 字节</text>
+  <path d="M280 456 H756" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="msg" x="520" y="486" text-anchor="middle">ACK，ack=301</text>
+  <path d="M760 492 H284" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="500" y="530" text-anchor="middle">发送方在计时器超时前收不到确认，就认为丢包，重新发送——"可靠"来自确认 + 重传的组合。</text>
+</svg>

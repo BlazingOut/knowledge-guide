@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="400" viewBox="0 0 900 400">
+  <rect width="900" height="400" fill="#FFFFFF"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6B5F6B} .title{font-size:20;font-weight:bold} .head{font-size:13;font-weight:bold} .sub{font-size:11;fill:#8A7F8A} .label{font-size:12;fill:#8A7F8A} .note{font-size:12;fill:#8A7F8A} .arrow{stroke:#B3A5B3;stroke-width:2.5;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#B3A5B3"/></marker></defs>
+
+  <text class="title" x="450" y="32" text-anchor="middle">stream_mode="messages" 的事件流：增量 token 与工具调用事件</text>
+
+  <!-- 顶部：节点/super-step 顺序 -->
+  <text class="sub" x="450" y="62" text-anchor="middle">图的执行（三个 super-step，node 元数据就是它的名字）：</text>
+  <rect x="150" y="76" width="180" height="44" rx="8" fill="#FFDFD3" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="240" y="95" text-anchor="middle">super-step 1：model</text>
+  <text class="sub" x="240" y="111" text-anchor="middle">发起工具调用</text>
+  <path class="arrow" d="M332 98 H358"/>
+  <rect x="360" y="76" width="180" height="44" rx="8" fill="#D4F0F0" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="450" y="95" text-anchor="middle">super-step 2：tools</text>
+  <text class="sub" x="450" y="111" text-anchor="middle">执行工具</text>
+  <path class="arrow" d="M542 98 H568"/>
+  <rect x="570" y="76" width="180" height="44" rx="8" fill="#E2DFFF" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="660" y="95" text-anchor="middle">super-step 3：model</text>
+  <text class="sub" x="660" y="111" text-anchor="middle">生成最终答案</text>
+
+  <!-- 事件流：messages 模式收到的事件序列 -->
+  <text class="sub" x="450" y="158" text-anchor="middle">messages 模式收到的事件序列（一次 ReAct）：</text>
+
+  <rect x="60" y="176" width="150" height="56" rx="8" fill="#FFDFD3" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="135" y="198" text-anchor="middle">AIMessageChunk</text>
+  <text class="sub" x="135" y="214" text-anchor="middle">token 增量 ×N（"我来计算。"）</text>
+  <text class="sub" x="135" y="228" text-anchor="middle">node=model</text>
+
+  <path class="arrow" d="M212 204 H238"/>
+
+  <rect x="240" y="176" width="160" height="56" rx="8" fill="#FFDFD3" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="320" y="198" text-anchor="middle">AIMessage</text>
+  <text class="sub" x="320" y="214" text-anchor="middle">工具调用事件（tool_calls）</text>
+  <text class="sub" x="320" y="228" text-anchor="middle">node=model</text>
+
+  <path class="arrow" d="M402 204 H428"/>
+
+  <rect x="430" y="176" width="160" height="56" rx="8" fill="#D4F0F0" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="510" y="198" text-anchor="middle">ToolMessage</text>
+  <text class="sub" x="510" y="214" text-anchor="middle">工具结果（"2"）</text>
+  <text class="sub" x="510" y="228" text-anchor="middle">node=tools</text>
+
+  <path class="arrow" d="M592 204 H618"/>
+
+  <rect x="620" y="176" width="190" height="56" rx="8" fill="#E2DFFF" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="715" y="198" text-anchor="middle">AIMessageChunk ×N</text>
+  <text class="sub" x="715" y="214" text-anchor="middle">最终答案（"最终答案：2"）</text>
+  <text class="sub" x="715" y="228" text-anchor="middle">node=model</text>
+
+  <!-- 底部说明 -->
+  <text class="note" x="450" y="300" text-anchor="middle">真实 LLM：token 一条条蹦出来（AIMessageChunk），前端可以逐字渲染——这是 SSE 流式返回的主要内容；</text>
+  <text class="note" x="450" y="322" text-anchor="middle">工具调用不是 token 增量，是"一整条带 tool_calls 的 AIMessage"事件——前端据此展示"正在调用工具"；</text>
+  <text class="note" x="450" y="344" text-anchor="middle">本课离线替身一次给整条消息（事件数少），但事件顺序和真实模型一致；metadata 里带 langgraph_node 可区分来源。</text>
+</svg>

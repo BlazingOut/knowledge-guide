@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="390" viewBox="0 0 1000 390">
+  <rect width="1000" height="390" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:16;font-weight:bold} .desc{font-size:15;fill:#334155}</style>
+  <text x="500" y="40" text-anchor="middle" font-size="24" font-weight="bold">同一批样本，梯度用多少条来平均</text>
+  <rect class="box" x="40" y="80" width="290" height="250" rx="10"/>
+  <text class="name" x="185" y="118" text-anchor="middle">批量梯度下降</text>
+  <text class="desc" x="185" y="162" text-anchor="middle">每次用全部训练样本</text>
+  <text class="desc" x="185" y="194" text-anchor="middle">方向稳，一步的计算量大</text>
+  <text class="desc" x="185" y="226" text-anchor="middle">一批就是整个训练集</text>
+  <text class="desc" x="185" y="274" text-anchor="middle">一个 epoch：看完一遍</text>
+  <rect class="box" x="355" y="80" width="290" height="250" rx="10"/>
+  <text class="name" x="500" y="118" text-anchor="middle">随机梯度下降</text>
+  <text class="desc" x="500" y="162" text-anchor="middle">每次只用 1 条样本</text>
+  <text class="desc" x="500" y="194" text-anchor="middle">方向抖，更新很频繁</text>
+  <text class="desc" x="500" y="226" text-anchor="middle">一批的大小是 1</text>
+  <text class="desc" x="500" y="274" text-anchor="middle">一个 epoch：每条都用过一次</text>
+  <rect class="box" x="670" y="80" width="290" height="250" rx="10"/>
+  <text class="name" x="815" y="118" text-anchor="middle">小批量梯度下降</text>
+  <text class="desc" x="815" y="162" text-anchor="middle">每次用固定的一小批</text>
+  <text class="desc" x="815" y="194" text-anchor="middle">方向比单条稳，又不必等全量</text>
+  <text class="desc" x="815" y="226" text-anchor="middle">这一批的条数叫 batch size</text>
+  <text class="desc" x="815" y="274" text-anchor="middle">常见的实际训练方式</text>
+</svg>

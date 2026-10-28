@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420">
+  <rect width="980" height="420" fill="#FFFFFF"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6B5F6B} .title{font-size:20;font-weight:bold} .phase{font-size:13;font-weight:bold} .head{font-size:12;font-weight:bold} .sub{font-size:11;fill:#8A7F8A} .emph{font-size:12;fill:#C77B6B} .arrow{stroke:#B3A5B3;stroke-width:2.5;fill:none;marker-end:url(#m)} .dash{stroke:#C77B6B;stroke-width:2;fill:none;stroke-dasharray:6,4;marker-end:url(#m2)}</style>
+  <defs>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#B3A5B3"/></marker>
+    <marker id="m2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#C77B6B"/></marker>
+  </defs>
+
+  <text class="title" x="490" y="32" text-anchor="middle">工具调用的六道防线：覆盖调用前 → 调用中 → 调用后 → 重试 → 全程</text>
+
+  <!-- 四个阶段卡片 -->
+  <text class="phase" x="120" y="68" text-anchor="middle">调用前</text>
+  <rect x="20" y="82" width="200" height="150" rx="10" fill="#FFDFD3" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="120" y="106" text-anchor="middle">①② 参数"合同"定死</text>
+  <text class="sub" x="120" y="128" text-anchor="middle">① schema 合同：类型标注、</text>
+  <text class="sub" x="120" y="144" text-anchor="middle">Literal 枚举——docstring 的取值</text>
+  <text class="sub" x="120" y="160" text-anchor="middle">说明只是建议，不是约束</text>
+  <text class="sub" x="120" y="184" text-anchor="middle">② 幻觉参数：ValidationError</text>
+  <text class="sub" x="120" y="200" text-anchor="middle">拦截，错误文本回给模型自修正</text>
+
+  <text class="phase" x="370" y="68" text-anchor="middle">调用中</text>
+  <rect x="270" y="82" width="200" height="150" rx="10" fill="#D4F0F0" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="370" y="106" text-anchor="middle">⑤ 超时：限时执行</text>
+  <text class="sub" x="370" y="130" text-anchor="middle">异步工具 wait_for 超时后</text>
+  <text class="sub" x="370" y="146" text-anchor="middle">真正取消，无后台残留</text>
+  <text class="sub" x="370" y="170" text-anchor="middle">同步工具只能放弃等待——</text>
+  <text class="sub" x="370" y="186" text-anchor="middle">线程杀不死，副作用可能仍在发生</text>
+
+  <text class="phase" x="620" y="68" text-anchor="middle">调用后</text>
+  <rect x="520" y="82" width="200" height="150" rx="10" fill="#E2DFFF" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="620" y="106" text-anchor="middle">③ 结果也要防</text>
+  <text class="sub" x="620" y="130" text-anchor="middle">超大结果截断并注明"已截断"，</text>
+  <text class="sub" x="620" y="146" text-anchor="middle">别把巨文本整个塞给模型</text>
+  <text class="sub" x="620" y="170" text-anchor="middle">尽量返回结构化数据（JSON），</text>
+  <text class="sub" x="620" y="186" text-anchor="middle">模型解析字段比抠散文可靠</text>
+
+  <text class="phase" x="870" y="68" text-anchor="middle">重试时</text>
+  <rect x="770" y="82" width="190" height="150" rx="10" fill="#FFFACD" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="865" y="106" text-anchor="middle">④ 幂等：去重</text>
+  <text class="sub" x="865" y="130" text-anchor="middle">唯一请求号（幂等键）由调用方</text>
+  <text class="sub" x="865" y="146" text-anchor="middle">生成，随每次重试保持不变</text>
+  <text class="sub" x="865" y="170" text-anchor="middle">同键第二次调用直接忽略，</text>
+  <text class="sub" x="865" y="186" text-anchor="middle">副作用只发生一次</text>
+
+  <!-- 阶段之间的箭头 -->
+  <path class="arrow" d="M222 157 H268"/>
+  <path class="arrow" d="M472 157 H518"/>
+  <path class="arrow" d="M722 157 H768"/>
+
+  <!-- 重试回路：调用后/重试时 回到 调用前 -->
+  <path class="dash" d="M865 234 C865 285 120 285 120 234"/>
+  <text class="emph" x="490" y="308" text-anchor="middle">重试回路：模型读到"校验失败 / 超时"文本后可能重来一遍 —— 重试时靠 ④ 幂等挡住重复副作用</text>
+
+  <!-- 全程：可观测性 -->
+  <rect x="20" y="330" width="940" height="58" rx="10" fill="#D4F0F0" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="60" y="354">⑥ 全程：可观测日志</text>
+  <text class="sub" x="60" y="376">每次工具调用的入参、出参、耗时、状态都记一行 —— 状态=error 命中哪道防线、耗时异常指向哪个外部依赖，复盘才有据可依</text>
+</svg>

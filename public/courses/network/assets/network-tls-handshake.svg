@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="820" viewBox="0 0 1000 820">
+  <rect width="1000" height="820" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .lane{font-size:17;font-weight:bold} .msg{font-family:'Menlo','Consolas',monospace;font-size:14;font-weight:bold;fill:#172033} .state{font-size:13;fill:#475569} .sec{font-size:18;font-weight:bold} .note{font-size:14;fill:#334155} .title{font-size:16;font-weight:bold}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">TLS 握手：先验证身份，再换会话密钥</text>
+
+  <text class="lane" x="220" y="78" text-anchor="middle">客户端（浏览器 / curl）</text>
+  <text class="lane" x="780" y="78" text-anchor="middle">服务器（443 端口）</text>
+  <line x1="220" y1="90" x2="220" y2="620" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="780" y1="90" x2="780" y2="620" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <rect x="360" y="96" width="280" height="28" rx="6" fill="#e2e8f0"/>
+  <text class="state" x="500" y="115" text-anchor="middle">TCP 三次握手已经完成（第 4 课）</text>
+
+  <text class="msg" x="500" y="158" text-anchor="middle">Client Hello：版本、密码套件、随机数</text>
+  <path d="M220 166 H776" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="state" x="220" y="188" text-anchor="middle">我支持 TLS 1.2 / 1.3，这些算法</text>
+
+  <text class="msg" x="500" y="228" text-anchor="middle">Server Hello：选中的版本和算法</text>
+  <path d="M780 236 H224" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+
+  <text class="msg" x="500" y="278" text-anchor="middle">Certificate：服务器证书（含公钥）</text>
+  <path d="M780 286 H224" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="state" x="220" y="308" text-anchor="middle">用系统信任的 CA 公钥验签</text>
+  <text class="state" x="220" y="328" text-anchor="middle">核对域名、有效期、信任锚</text>
+
+  <text class="msg" x="500" y="372" text-anchor="middle">密钥交换（ECDHE 公钥 / 参数）</text>
+  <path d="M220 388 H776" stroke="#d97706" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <path d="M780 412 H224" stroke="#d97706" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="state" x="500" y="444" text-anchor="middle">双方各自算出同一把会话密钥，密钥本身从不在网上传递</text>
+
+  <text class="msg" x="500" y="484" text-anchor="middle">Finished：用会话密钥加密的校验</text>
+  <path d="M220 492 H776" stroke="#7c3aed" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <path d="M780 516 H224" stroke="#7c3aed" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="state" x="500" y="548" text-anchor="middle">双方确认：密钥一致，握手没被篡改</text>
+
+  <rect x="300" y="568" width="400" height="36" rx="8" fill="#bbf7d0"/>
+  <text class="title" x="500" y="592" text-anchor="middle" font-size="16" font-weight="bold">之后所有 HTTP 报文都用这把会话密钥对称加密</text>
+
+  <text class="note" x="500" y="640" text-anchor="middle">面试常按 TLS 1.2 的"四次交互"来答：Client Hello → Server Hello+证书 → 客户端密钥交换 → 双方 Finished。</text>
+  <text class="note" x="500" y="668" text-anchor="middle">TLS 1.3 把证书和密钥交换合并进更少的来回（1-RTT），curl -v 看到的就是这个更快的版本；目的没变。</text>
+  <text class="note" x="500" y="696" text-anchor="middle">证书验证失败（自签、过期、域名不匹配、CA 不被信任）会在这一步中止，HTTP 请求根本发不出去。</text>
+  <text class="note" x="500" y="724" text-anchor="middle">SNI（Server Name Indication，服务器名称指示）在 Client Hello 里带上域名，</text>
+  <text class="note" x="500" y="752" text-anchor="middle">一台服务器托管多个 HTTPS 站点时，才能在加密开始前选出正确的证书。</text>
+  <text class="note" x="500" y="788" text-anchor="middle">握手完成之前，应用层的 Cookie、Token、JSON 都还没出现——它们之后会作为密文走在这条隧道里。</text>
+</svg>

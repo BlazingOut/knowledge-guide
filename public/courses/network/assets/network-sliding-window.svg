@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360">
+  <rect width="1000" height="360" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .cell{font-family:'Menlo','Consolas',monospace;font-size:14;font-weight:bold} .note{font-size:14;fill:#334155}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">滑动窗口：从第一个未确认字节开始的连续区间</text>
+  <text x="500" y="62" text-anchor="middle" font-size="14" fill="#475569">窗口同时覆盖"在途未确认"（蓝）和"可以立即发送"（黄）两部分</text>
+
+  <!-- 字节序号格子：每格 100 字节 -->
+  <rect x="80"  y="100" width="80" height="56" rx="6" fill="#bbf7d0"/><text class="cell" x="120" y="133" text-anchor="middle">1~100</text>
+  <rect x="160" y="100" width="80" height="56" rx="6" fill="#93c5fd"/><text class="cell" x="200" y="133" text-anchor="middle">101~200</text>
+  <rect x="240" y="100" width="80" height="56" rx="6" fill="#93c5fd"/><text class="cell" x="280" y="133" text-anchor="middle">201~300</text>
+  <rect x="320" y="100" width="80" height="56" rx="6" fill="#93c5fd"/><text class="cell" x="360" y="133" text-anchor="middle">301~400</text>
+  <rect x="400" y="100" width="80" height="56" rx="6" fill="#93c5fd"/><text class="cell" x="440" y="133" text-anchor="middle">401~500</text>
+  <rect x="480" y="100" width="80" height="56" rx="6" fill="#fef08a"/><text class="cell" x="520" y="133" text-anchor="middle">501~600</text>
+  <rect x="560" y="100" width="80" height="56" rx="6" fill="#fef08a"/><text class="cell" x="600" y="133" text-anchor="middle">601~700</text>
+  <rect x="640" y="100" width="80" height="56" rx="6" fill="#fef08a"/><text class="cell" x="680" y="133" text-anchor="middle">701~800</text>
+  <rect x="720" y="100" width="80" height="56" rx="6" fill="#fde68a"/><text class="cell" x="760" y="133" text-anchor="middle">801~900</text>
+  <rect x="800" y="100" width="80" height="56" rx="6" fill="#fde68a"/><text class="cell" x="840" y="133" text-anchor="middle">901~1000</text>
+  <rect x="880" y="100" width="40" height="56" rx="6" fill="#fde68a"/><text class="cell" x="900" y="133" text-anchor="middle">…</text>
+
+  <!-- 发送窗口：左沿 = 第一个未确认字节（101），覆盖在途 + 可发送 -->
+  <rect x="156" y="96" width="568" height="64" fill="none" stroke="#dc2626" stroke-width="4" rx="10"/>
+  <text x="440" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#dc2626">发送窗口（左沿 = 第一个未确认的字节）</text>
+
+  <!-- 分区标注 -->
+  <text class="note" x="120" y="180" text-anchor="middle">已发送</text>
+  <text class="note" x="120" y="200" text-anchor="middle">已确认</text>
+  <text class="note" x="320" y="180" text-anchor="middle">已发送</text>
+  <text class="note" x="320" y="200" text-anchor="middle">未确认（在途）</text>
+  <text class="note" x="600" y="180" text-anchor="middle">窗口内未发送</text>
+  <text class="note" x="600" y="200" text-anchor="middle">可以立即发出</text>
+  <text class="note" x="840" y="180" text-anchor="middle">窗口外：</text>
+  <text class="note" x="840" y="200" text-anchor="middle">暂时不能发</text>
+
+  <!-- 滑动示意 -->
+  <path d="M220 224 H340" stroke="#dc2626" stroke-width="3" fill="none" stroke-dasharray="8 6" marker-end="url(#m)"/>
+  <text class="note" x="352" y="229">101~200 被确认后，左沿右移，窗口整体滑动</text>
+
+  <text class="note" x="500" y="272" text-anchor="middle">蓝色 = 已发送未确认（在途），黄色 = 窗口内还能立即新发的部分，深黄 = 窗口外。窗口内的字节"允许被发送"：蓝色已经发出，黄色随时可发。</text>
+  <text class="note" x="500" y="300" text-anchor="middle">窗口大小取两个限制的较小值：接收方还能存多少（流量控制 rwnd）和网络能承受多少（拥塞控制 cwnd）。</text>
+</svg>

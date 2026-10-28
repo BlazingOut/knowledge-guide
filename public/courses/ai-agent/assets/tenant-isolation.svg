@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#ffffff"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6b5f6b} .box{font-size:15;font-weight:bold} .line{font-size:13;fill:#8a7f8a} .fault{font-size:13;font-weight:bold;fill:#c77b6b}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3a5b3"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">权限与多租户：RBAC 闸门 + 三层隔离</text>
+
+  <!-- 用户 -->
+  <rect x="40" y="70" width="200" height="90" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="140" y="96" text-anchor="middle">用户 Alice</text>
+  <text class="line" x="140" y="118" text-anchor="middle">租户 A · 角色 member</text>
+  <text class="line" x="140" y="138" text-anchor="middle">租户 ID 来自会话注入</text>
+
+  <!-- RBAC 闸门 -->
+  <rect x="40" y="210" width="200" height="150" rx="8" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="140" y="236" text-anchor="middle">RBAC 权限检查</text>
+  <text class="line" x="140" y="260" text-anchor="middle">角色 → 工具权限表</text>
+  <text class="line" x="140" y="280" text-anchor="middle">add_plan 要 member</text>
+  <text class="line" x="140" y="300" text-anchor="middle">delete_records 要 admin</text>
+  <text class="fault" x="140" y="330" text-anchor="middle">越权调用 → 拒绝</text>
+
+  <!-- 审计 -->
+  <rect x="40" y="410" width="200" height="100" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="140" y="436" text-anchor="middle">审计日志</text>
+  <text class="line" x="140" y="460" text-anchor="middle">谁 / 何时 / 工具 / 参数 / 结果</text>
+  <text class="fault" x="140" y="484" text-anchor="middle">被拒的调用也记录</text>
+
+  <!-- 三层隔离 -->
+  <rect x="320" y="70" width="300" height="90" rx="8" fill="#e2dfff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="470" y="96" text-anchor="middle">数据层隔离</text>
+  <text class="line" x="470" y="118" text-anchor="middle">records[A] · 租户 ID 贯穿、行级过滤</text>
+  <text class="fault" x="470" y="140" text-anchor="middle">伪造 tenant 参数 → 拒绝</text>
+
+  <rect x="320" y="190" width="300" height="90" rx="8" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="470" y="216" text-anchor="middle">记忆层隔离</text>
+  <text class="line" x="470" y="238" text-anchor="middle">memory[A] 分区 · 只召回本租户</text>
+  <text class="fault" x="470" y="260" text-anchor="middle">跨租户召回 → 拒绝</text>
+
+  <rect x="320" y="310" width="300" height="90" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="470" y="336" text-anchor="middle">资源层隔离</text>
+  <text class="line" x="470" y="358" text-anchor="middle">配额 quota[A] · 限流与 token 预算</text>
+  <text class="fault" x="470" y="380" text-anchor="middle">超限 → 拒绝</text>
+
+  <!-- 租户 B 越权尝试 -->
+  <rect x="680" y="500" width="240" height="60" rx="8" fill="#ffffff" stroke="#c77b6b" stroke-width="2"/>
+  <text class="fault" x="800" y="526" text-anchor="middle">租户 B 的越权尝试：</text>
+  <text class="fault" x="800" y="546" text-anchor="middle">伪造租户 / 跨租户召回 / 越角色调用</text>
+
+  <!-- 连接箭头 -->
+  <line x1="140" y1="160" x2="140" y2="208" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="140" y1="360" x2="140" y2="408" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 240 285 L 300 115 L 318 115" fill="none" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 240 285 L 300 235 L 318 235" fill="none" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 240 285 L 300 355 L 318 355" fill="none" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 680 490 C 660 380, 640 160, 622 115" fill="none" stroke="#c77b6b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+
+  <text x="500" y="590" text-anchor="middle" font-size="14" fill="#8a7f8a">租户 ID 由运行时从会话注入，不是模型输出或请求参数提供；被拦与通过都写审计。</text>
+</svg>

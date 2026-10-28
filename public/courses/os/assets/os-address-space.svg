@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+  <rect width="1000" height="520" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:15;font-weight:bold;fill:#334155} .desc{font-size:13;fill:#334155} .addr{font-size:13;fill:#64748b} .note{font-size:14;fill:#334155} .grow{font-size:13;fill:#dc2626;font-weight:bold}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">进程的虚拟地址空间：五段布局</text>
+  <text x="500" y="62" text-anchor="middle" font-size="14" fill="#475569">地址从上（高）到下（低）；每个进程都认为自己独享这样一套连续空间（怎么做到的，第 6 课讲）</text>
+
+  <text class="addr" x="90" y="105" text-anchor="middle">高地址</text>
+  <text class="addr" x="90" y="480" text-anchor="middle">低地址</text>
+  <path d="M90 115 V468" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#m)"/>
+
+  <rect class="box" x="140" y="85" width="420" height="50" rx="8"/>
+  <text class="name" x="160" y="115">命令行参数与环境变量</text>
+  <text class="desc" x="620" y="115">启动时内核放进去的：argv、PATH 等</text>
+
+  <rect class="box" x="140" y="150" width="420" height="60" rx="8"/>
+  <text class="name" x="160" y="185">栈（Stack）</text>
+  <text class="desc" x="620" y="175">函数调用帧：每次调用函数压入一层，</text>
+  <text class="desc" x="620" y="195">局部变量住在这里；调用结束自动弹出</text>
+
+  <!-- 生长箭头 -->
+  <path d="M180 296 V216" stroke="#dc2626" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="grow" x="192" y="252">堆向上生长</text>
+  <path d="M520 216 V296" stroke="#dc2626" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="grow" x="440" y="252">栈向下生长</text>
+  <text class="desc" x="340" y="278" text-anchor="middle">中间是空闲区：谁需要谁扩张，相向而行长满内存为止</text>
+
+  <rect class="box" x="140" y="300" width="420" height="60" rx="8"/>
+  <text class="name" x="160" y="335">堆（Heap）</text>
+  <text class="desc" x="620" y="325">动态分配的内存：Python 的对象、列表、字典</text>
+  <text class="desc" x="620" y="345">本体都在堆上；new / malloc 申请，需要手动或 GC 释放</text>
+
+  <rect class="box" x="140" y="375" width="420" height="50" rx="8"/>
+  <text class="name" x="160" y="405">数据段（Data）</text>
+  <text class="desc" x="620" y="405">全局变量、静态变量；程序一启动就存在</text>
+
+  <rect class="box" x="140" y="440" width="420" height="50" rx="8"/>
+  <text class="name" x="160" y="470">代码段（Text）</text>
+  <text class="desc" x="620" y="470">程序的机器指令，通常只读，可被多个进程共享</text>
+
+  <text class="note" x="500" y="505" text-anchor="middle">Python 对照：局部变量在栈，a = [1, 2, 3] 的列表本体在堆，全局变量 counter 在数据段，print 执行的指令在代码段。</text>
+</svg>

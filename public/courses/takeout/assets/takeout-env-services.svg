@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">
+  <rect width="1000" height="560" fill="#ffffff"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6b5f6b} .box{font-size:16;font-weight:bold} .sub{font-size:13;fill:#8a7f8a} .note{font-size:14;fill:#8a7f8a}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3a5b3"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">开发环境：一条命令跑起四个服务</text>
+
+  <!-- Nginx 网关 -->
+  <rect x="350" y="70" width="300" height="66" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="96" text-anchor="middle">Nginx 网关</text>
+  <text class="sub" x="500" y="118" text-anchor="middle">本机 8080 → 容器 80，转发到 backend</text>
+
+  <!-- FastAPI backend -->
+  <rect x="350" y="210" width="300" height="66" rx="8" fill="#e2dfff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="236" text-anchor="middle">backend（FastAPI）</text>
+  <text class="sub" x="500" y="258" text-anchor="middle">本机 8000 → 容器 8000；依赖 MySQL/Redis</text>
+
+  <!-- MySQL 与 Redis -->
+  <rect x="120" y="360" width="330" height="66" rx="8" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="285" y="386" text-anchor="middle">MySQL 8</text>
+  <text class="sub" x="285" y="408" text-anchor="middle">本机 3306 → 容器 3306；数据存卷 mysql-data</text>
+
+  <rect x="550" y="360" width="330" height="66" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="715" y="386" text-anchor="middle">Redis 7</text>
+  <text class="sub" x="715" y="408" text-anchor="middle">本机 6379 → 容器 6379</text>
+
+  <!-- 箭头 -->
+  <line x1="500" y1="136" x2="500" y2="208" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="450" y1="276" x2="310" y2="358" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="550" y1="276" x2="690" y2="358" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text class="note" x="500" y="470" text-anchor="middle">backend 容器内通过服务名（mysql / redis）访问数据库，不是 localhost。</text>
+  <text class="note" x="500" y="500" text-anchor="middle">一条命令启动：docker compose up -d；停止：docker compose down。</text>
+</svg>

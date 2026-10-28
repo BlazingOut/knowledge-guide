@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="470" viewBox="0 0 900 470">
+  <rect width="900" height="470" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .vbox{fill:#f1f5f9;stroke:#94a3b8;stroke-width:3;stroke-dasharray:6 5} .sbox{fill:#eff6ff;stroke:#2563eb;stroke-width:2;stroke-dasharray:5 4} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-dashed{stroke:#475569;stroke-width:2.5;stroke-dasharray:6 5;fill:none;marker-end:url(#m)} .name{font-size:15;fill:#334155} .desc{font-size:13;fill:#64748b} .label{font-size:12;fill:#475569} .node-name{font-size:16;font-weight:bold} .chip{font-size:14} .chip-msg{fill:#93c5fd} .chip-count{fill:#6ee7b7} .chip-reply{fill:#fdba74}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="450" y="38" text-anchor="middle" font-size="24" font-weight="bold">第一个 StateGraph：节点、边与共享状态</text>
+
+  <rect class="vbox" x="60" y="100" width="120" height="64" rx="10"/>
+  <text class="node-name" x="120" y="128" text-anchor="middle">START</text>
+  <text class="desc" x="120" y="150" text-anchor="middle">虚拟入口</text>
+
+  <rect class="box" x="250" y="100" width="150" height="64" rx="10"/>
+  <text class="node-name" x="325" y="128" text-anchor="middle">receive</text>
+  <text class="desc" x="325" y="150" text-anchor="middle">接收消息</text>
+
+  <rect class="box" x="470" y="100" width="150" height="64" rx="10"/>
+  <text class="node-name" x="545" y="128" text-anchor="middle">reply</text>
+  <text class="desc" x="545" y="150" text-anchor="middle">生成回复</text>
+
+  <rect class="vbox" x="690" y="100" width="120" height="64" rx="10"/>
+  <text class="node-name" x="750" y="128" text-anchor="middle">END</text>
+  <text class="desc" x="750" y="150" text-anchor="middle">虚拟出口</text>
+
+  <path class="arrow" d="M182 132 H248"/>
+  <text class="label" x="215" y="122" text-anchor="middle">add_edge</text>
+  <path class="arrow" d="M402 132 H468"/>
+  <text class="label" x="435" y="122" text-anchor="middle">add_edge</text>
+  <path class="arrow" d="M622 132 H688"/>
+  <text class="label" x="655" y="122" text-anchor="middle">add_edge</text>
+
+  <rect class="sbox" x="60" y="250" width="750" height="150" rx="12"/>
+  <text font-size="16" font-weight="bold" x="80" y="282">共享 State</text>
+  <text class="label" x="600" y="282">节点之间唯一的通信方式</text>
+
+  <rect class="chip-msg" x="80" y="300" width="200" height="44" rx="8"/>
+  <text class="chip" x="180" y="327" text-anchor="middle">user_message: str</text>
+  <rect class="chip-count" x="300" y="300" width="200" height="44" rx="8"/>
+  <text class="chip" x="400" y="327" text-anchor="middle">echo_count: int</text>
+  <rect class="chip-reply" x="520" y="300" width="200" height="44" rx="8"/>
+  <text class="chip" x="620" y="327" text-anchor="middle">reply: str</text>
+
+  <path class="arrow-dashed" d="M325 166 V248"/>
+  <text class="label" x="335" y="215">写 echo_count</text>
+  <path class="arrow-dashed" d="M545 166 V248"/>
+  <text class="label" x="555" y="215">读 user_message / 写 reply</text>
+</svg>

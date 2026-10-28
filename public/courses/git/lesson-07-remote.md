@@ -1,0 +1,258 @@
+# 第七课：远程仓库与本地仓库协作
+
+前面几课学习的 Git 操作主要发生在本地仓库中。本课学习远程仓库：远程仓库是什么、本地分支和远程分支有什么区别、如何查看远程地址、如何获取远程变化，以及如何把本地提交推送到远程。
+
+## 1. 什么是远程仓库
+
+远程仓库是存放在另一台计算机或服务器上的 Git 仓库，常见位置包括 GitHub、GitLab、公司内部 Git 服务或自建服务器。它和本地仓库使用相同的 Git 历史格式，但位于不同位置。
+
+```text
+本地仓库                         远程仓库
+提交、分支、工作区        ←网络→    提交和分支
+```
+
+远程仓库常见用途：
+
+- 备份本地代码；
+- 与其他人共享提交；
+- 协作开发；
+- 保存代码评审和持续集成所需的分支。
+
+## 2. remote 名称和远程地址
+
+一个本地仓库可以记录多个远程仓库。每个远程仓库有一个本地名称和一个 URL。最常见的名称是 `origin`，它只是约定俗成的名字，不是 Git 的特殊关键字。
+
+查看远程仓库：
+
+```bash
+git remote
+git remote -v
+```
+
+可能看到：
+
+```text
+origin  git@github.com:example/life-manager.git (fetch)
+origin  git@github.com:example/life-manager.git (push)
+```
+
+同一个 `origin` 可能同时有 fetch 和 push 地址。fetch 表示获取代码时使用的地址，push 表示上传提交时使用的地址。
+
+添加远程仓库：
+
+```bash
+git remote add origin <远程仓库 URL>
+```
+
+修改地址：
+
+```bash
+git remote set-url origin <新的远程仓库 URL>
+```
+
+删除本地记录的远程仓库：
+
+```bash
+git remote remove origin
+```
+
+这些命令只修改本地仓库对远程地址的记录，不会删除服务器上的远程仓库。
+
+## 3. 远程分支和本地分支
+
+假设有：
+
+```text
+本地分支：      main
+远程跟踪分支：  origin/main
+服务器分支：    远程仓库中的 main
+```
+
+三者不是同一个对象：
+
+- `main` 是你本地可以直接切换和提交的分支；
+- `origin/main` 是本地保存的一份远程状态记录，表示上次获取时远程 main 的位置；
+- 服务器上的 main 是远程仓库真正的分支。
+
+`origin/main` 不会因为服务器上有人提交就自动变化，必须执行 `git fetch` 更新本地记录。
+
+## 4. `git fetch`：获取远程变化
+
+`git fetch` 会从远程仓库下载新的提交和分支信息，并更新本地的远程跟踪分支。它不会修改当前工作区，也不会自动把远程提交合并到当前本地分支。
+
+```bash
+git fetch origin
+```
+
+执行后可以查看：
+
+```bash
+git log --oneline --decorate --graph --all
+git status
+```
+
+fetch 后你可能看到：
+
+```text
+本地 main：      A —— B
+                          ↑ main
+远程跟踪分支：  A —— B —— C
+                               ↑ origin/main
+```
+
+此时远程比本地多了 C，但你的工作区仍然是本地 main 的内容。
+
+## 5. `git pull`：获取并整合
+
+`git pull` 通常会先执行 fetch，再把远程跟踪分支的变化整合到当前本地分支。常见整合方式是 merge，也可以配置为 rebase。
+
+```bash
+git pull origin main
+```
+
+初学阶段先把它理解为：
+
+```text
+git pull = git fetch + 把远程变化整合到当前分支
+```
+
+因为 pull 同时包含获取和整合，执行前应该知道当前分支、远程分支以及本地是否有未提交修改。
+
+## 6. `git push`：上传本地提交
+
+`git push` 把本地提交发送到远程仓库：
+
+```bash
+git push origin main
+```
+
+含义是：把本地 `main` 的新提交推送到 `origin` 远程仓库的 `main` 分支。成功后，服务器上的分支和本地提交可以同步。
+
+第一次推送新分支时，通常设置上游分支：
+
+```bash
+git push -u origin feature/hello
+```
+
+`-u` 会建立本地 `feature/hello` 与 `origin/feature/hello` 的跟踪关系。之后在该分支上通常可以直接运行：
+
+```bash
+git push
+git pull
+```
+
+如果远程分支包含本地没有的提交，Git 可能拒绝 push。这是为了防止你覆盖别人的新提交。应先 fetch，查看差异，再决定如何整合。
+
+## 7. 远程仓库的完整协作流程
+
+一个常见流程是：
+
+```text
+本地修改
+   ↓ git add / git commit
+本地提交
+   ↓ git push
+远程分支
+   ↓ 他人提交或远程变化
+git fetch
+   ↓
+origin/main 更新
+   ↓ git pull 或手动 merge
+本地 main 更新
+```
+
+## 8. 使用本地目录模拟远程仓库
+
+不需要连接 GitHub，也可以用本地 bare repository 练习。bare repository 没有普通工作区，只保存 Git 历史和分支，适合充当远程仓库。
+
+在课程实验目录外创建模拟远程仓库：
+
+```bash
+cd /Users/yyma/workspace/agents/lifestyle-manager-study/code/git
+git init --bare git-remote-lab.git
+cd git-state-lab
+git remote add origin ../git-remote-lab.git
+git remote -v
+```
+
+第一次推送：
+
+```bash
+git push -u origin main
+```
+
+查看远程跟踪关系：
+
+```bash
+git branch -vv
+git log --oneline --decorate --graph --all
+```
+
+模拟另一个工作目录从远程克隆：
+
+```bash
+cd /Users/yyma/workspace/agents/lifestyle-manager-study/code/git
+git clone git-remote-lab.git git-clone-lab
+cd git-clone-lab
+git remote -v
+git branch -vv
+```
+
+在 clone 目录修改并提交：
+
+```bash
+printf '来自另一个本地副本\n' >> note.txt
+git add note.txt
+git commit -m "Add change from clone"
+git push
+```
+
+回到原来的 `git-state-lab`：
+
+```bash
+cd ../git-state-lab
+git fetch origin
+git log --oneline --decorate --graph --all
+```
+
+这时可以观察到 `origin/main` 先移动，而本地 `main` 仍然停留在原位置。
+
+## 9. 常见问题
+
+### 远程地址写错了怎么办？
+
+用 `git remote -v` 查看，再用 `git remote set-url` 修改。
+
+### 为什么 push 被拒绝？
+
+通常是远程有本地没有的提交。先 `git fetch`，再查看两个分支的历史和 diff。
+
+### fetch 后为什么文件没有变化？
+
+fetch 只更新本地对远程状态的记录，不会自动改变当前工作区。需要 pull、merge 或其他整合操作。
+
+### commit 后为什么远程没有变化？
+
+commit 只写入本地仓库；需要执行 push 才会发送到远程。
+
+## 10. 本课小结
+
+```text
+git remote -v        查看远程地址
+git remote add       记录远程仓库
+git fetch            获取远程变化，不改当前工作区
+git pull             获取并整合远程变化
+git push             上传本地提交
+origin/main          本地的远程分支状态记录
+```
+
+## 11. 课后练习
+
+1. 使用本地 bare repository 模拟一个远程仓库。
+2. 将 `main` 推送到远程，并用 `git branch -vv` 观察跟踪关系。
+3. 用另一个 clone 产生一个提交并 push。
+4. 在原仓库执行 `git fetch`，观察 `origin/main` 和本地 `main` 的区别。
+5. 使用 `git pull` 整合远程变化。
+6. 用自己的话解释：为什么 `git fetch` 不会改变当前工作区？为什么 commit 后还需要 push？
+
+完成本课后，进入第八课综合实践。

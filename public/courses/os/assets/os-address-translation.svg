@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430">
+  <style>
+    .title { font: 700 22px sans-serif; fill: #1f2937; }
+    .label { font: 600 16px sans-serif; fill: #1f2937; }
+    .text { font: 14px sans-serif; fill: #374151; }
+    .small { font: 12px sans-serif; fill: #4b5563; }
+    .box { fill: #f8fafc; stroke: #64748b; stroke-width: 2; rx: 8; }
+    .page { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; rx: 6; }
+    .table { fill: #dcfce7; stroke: #16a34a; stroke-width: 2; rx: 6; }
+    .physical { fill: #fef3c7; stroke: #d97706; stroke-width: 2; rx: 6; }
+    .arrow { stroke: #475569; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <text x="500" y="32" text-anchor="middle" class="title">虚拟地址到物理地址的翻译</text>
+
+  <rect x="35" y="72" width="220" height="270" class="box"/>
+  <text x="145" y="102" text-anchor="middle" class="label">CPU 产生虚拟地址</text>
+  <rect x="65" y="135" width="160" height="72" class="page"/>
+  <text x="145" y="162" text-anchor="middle" class="text">虚拟地址</text>
+  <text x="145" y="187" text-anchor="middle" class="label">页号 3 | 页内偏移 120</text>
+  <text x="145" y="255" text-anchor="middle" class="small">地址被拆成两部分：</text>
+  <text x="145" y="278" text-anchor="middle" class="small">页号用于查表</text>
+  <text x="145" y="299" text-anchor="middle" class="small">偏移量原样保留</text>
+
+  <rect x="350" y="72" width="270" height="270" class="box"/>
+  <text x="485" y="102" text-anchor="middle" class="label">页表 / MMU</text>
+  <rect x="380" y="128" width="210" height="42" class="table"/>
+  <text x="485" y="154" text-anchor="middle" class="text">页号 3 → 物理页号 8</text>
+  <rect x="380" y="191" width="210" height="42" class="table"/>
+  <text x="485" y="217" text-anchor="middle" class="text">权限：可读、可写、有效</text>
+  <rect x="380" y="254" width="210" height="52" class="table"/>
+  <text x="485" y="276" text-anchor="middle" class="small">未命中页表或无权限</text>
+  <text x="485" y="295" text-anchor="middle" class="small">可能触发缺页或异常</text>
+
+  <rect x="715" y="72" width="250" height="270" class="box"/>
+  <text x="840" y="102" text-anchor="middle" class="label">物理内存</text>
+  <rect x="750" y="125" width="180" height="43" class="physical"/>
+  <text x="840" y="151" text-anchor="middle" class="text">物理页 7</text>
+  <rect x="750" y="181" width="180" height="43" class="physical"/>
+  <text x="840" y="207" text-anchor="middle" class="text">物理页 8 + 偏移 120</text>
+  <rect x="750" y="237" width="180" height="43" class="physical"/>
+  <text x="840" y="263" text-anchor="middle" class="text">物理页 9</text>
+  <text x="840" y="315" text-anchor="middle" class="small">物理地址 = 物理页号 + 页内偏移</text>
+
+  <path d="M255 175 L350 175" class="arrow"/>
+  <path d="M620 175 L715 202" class="arrow"/>
+  <text x="302" y="158" text-anchor="middle" class="small">拆分页号</text>
+  <text x="666" y="158" text-anchor="middle" class="small">查表替换页号</text>
+</svg>

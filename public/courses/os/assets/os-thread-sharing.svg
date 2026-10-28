@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470">
+  <rect width="1000" height="470" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .thread{fill:#fff;stroke:#7c3aed;stroke-width:3} .name{font-size:15;font-weight:bold;fill:#334155} .desc{font-size:13;fill:#334155} .label{font-size:14;fill:#475569} .note{font-size:14;fill:#334155} .chip{font-size:13}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">同一进程里的两个线程：独享什么，共享什么</text>
+
+  <!-- 两个线程 -->
+  <rect class="thread" x="180" y="70" width="280" height="96" rx="10"/>
+  <text class="name" x="320" y="98" text-anchor="middle">线程 1</text>
+  <text class="desc" x="320" y="122" text-anchor="middle">独享：自己的栈、寄存器组、</text>
+  <text class="desc" x="320" y="142" text-anchor="middle">程序计数器（执行到哪了）、线程 ID</text>
+
+  <rect class="thread" x="540" y="70" width="280" height="96" rx="10"/>
+  <text class="name" x="680" y="98" text-anchor="middle">线程 2</text>
+  <text class="desc" x="680" y="122" text-anchor="middle">独享：自己的栈、寄存器组、</text>
+  <text class="desc" x="680" y="142" text-anchor="middle">程序计数器（执行到哪了）、线程 ID</text>
+
+  <path d="M320 166 V216" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <path d="M680 166 V216" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="label" x="500" y="200" text-anchor="middle">两个执行流同时住在一个进程的资源容器里，共享下面的一切</text>
+
+  <!-- 进程容器 -->
+  <rect x="60" y="220" width="880" height="180" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="3"/>
+  <text class="name" x="80" y="248" fill="#166534">进程（资源容器：内核只建一份，两个线程共用）</text>
+
+  <rect class="box" x="90" y="266" width="190" height="52" rx="8"/>
+  <text class="name" x="185" y="298" text-anchor="middle">代码段</text>
+
+  <rect class="box" x="300" y="266" width="230" height="52" rx="8"/>
+  <text class="name" x="415" y="290" text-anchor="middle">数据段</text>
+  <text class="desc" x="415" y="308" text-anchor="middle">全局变量 counter 在这里</text>
+
+  <rect class="box" x="550" y="266" width="190" height="52" rx="8"/>
+  <text class="name" x="645" y="290" text-anchor="middle">堆</text>
+  <text class="desc" x="645" y="308" text-anchor="middle">所有对象、动态内存</text>
+
+  <rect class="box" x="760" y="266" width="150" height="52" rx="8"/>
+  <text class="name" x="835" y="298" text-anchor="middle">打开的文件</text>
+
+  <rect fill="#6ee7b7" x="90" y="340" width="180" height="24" rx="6"/><text class="chip" x="180" y="357" text-anchor="middle">两个线程都能读写</text>
+  <text class="desc" x="500" y="357" text-anchor="middle">← 共享是"协作"的基础，也是"互相干扰"的根源（第 4 课）</text>
+
+  <text class="note" x="500" y="432" text-anchor="middle">独享的只有"执行所需的最小现场"（栈、寄存器、程序计数器）——这就是线程切换比进程切换便宜的原因：不用换地址空间；</text>
+  <text class="note" x="500" y="456" text-anchor="middle">但栈依然各自一份：一个线程的函数调用不会长到另一个线程的栈上。</text>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">
+  <rect width="1000" height="560" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:14;fill:#475569} .red{fill:#b91c1c} .green{fill:#15803d} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .label{font-size:14;fill:#475569}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">INNER JOIN 与 LEFT JOIN：users ⋈ orders</text>
+  <text class="label" x="500" y="64" text-anchor="middle">输入：users 与 orders，按 o.user_id = u.id 关联；Carol 没有订单</text>
+
+  <rect class="box" x="70" y="76" width="380" height="170" rx="10"/>
+  <text class="name" x="82" y="98">users 表（左表）</text>
+  <text class="desc" x="82" y="124">id        nickname</text>
+  <text class="desc" x="82" y="152">1         Alice</text>
+  <text class="desc" x="82" y="180">2         Bob</text>
+  <text class="desc" x="82" y="208">3         Carol</text>
+
+  <rect class="box" x="550" y="76" width="380" height="170" rx="10"/>
+  <text class="name" x="562" y="98">orders 表（右表）</text>
+  <text class="desc" x="562" y="124">id        user_id</text>
+  <text class="desc" x="562" y="152">1         1</text>
+  <text class="desc" x="562" y="180">2         2</text>
+
+  <path class="arrow" d="M260 246 V290"/><text class="label" x="272" y="272">关联</text>
+  <path class="arrow" d="M740 246 V290"/><text class="label" x="752" y="272">关联</text>
+
+  <rect class="box" x="70" y="300" width="430" height="230" rx="10"/>
+  <text class="name" x="82" y="322">INNER JOIN 结果（只保留能匹配的行）</text>
+  <text class="desc" x="82" y="352">nickname    order_no</text>
+  <text class="desc" x="82" y="380">Alice       ORD-001</text>
+  <text class="desc" x="82" y="408">Bob         ORD-002</text>
+  <text class="red desc" x="82" y="450">Carol 没有匹配订单</text>
+  <text class="red desc" x="82" y="474">→ 不出现在结果中</text>
+
+  <rect class="box" x="510" y="300" width="430" height="230" rx="10"/>
+  <text class="name" x="522" y="322">LEFT JOIN 结果（保留左表全部行）</text>
+  <text class="desc" x="522" y="352">nickname    order_no</text>
+  <text class="desc" x="522" y="380">Alice       ORD-001</text>
+  <text class="desc" x="522" y="408">Bob         ORD-002</text>
+  <text class="desc" x="522" y="436">Carol       NULL</text>
+  <text class="green desc" x="522" y="474">Carol 保留，右表字段为 NULL</text>
+</svg>

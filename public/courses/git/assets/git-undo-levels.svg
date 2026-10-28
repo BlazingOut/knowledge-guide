@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="300" viewBox="0 0 1000 300">
+  <rect width="1000" height="300" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033}.box{fill:#fff;stroke:#dc2626;stroke-width:3}.arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}.sub{font-size:16px}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="42" text-anchor="middle" font-size="27" font-weight="bold">Git 中“撤销”的层级</text>
+  <rect class="box" x="45" y="95" width="230" height="105" rx="14"/><text x="160" y="137" text-anchor="middle" font-size="23">工作区</text><text x="160" y="170" text-anchor="middle" class="sub">当前编辑的内容</text>
+  <rect class="box" x="385" y="95" width="230" height="105" rx="14"/><text x="500" y="137" text-anchor="middle" font-size="23">暂存区</text><text x="500" y="170" text-anchor="middle" class="sub">下一次提交的候选</text>
+  <rect class="box" x="725" y="95" width="230" height="105" rx="14"/><text x="840" y="137" text-anchor="middle" font-size="23">提交区（HEAD）</text><text x="840" y="170" text-anchor="middle" class="sub">最近一次提交的版本</text>
+  <path class="arrow" d="M275 148 H375"/><text x="325" y="130" text-anchor="middle" class="sub">restore</text><path class="arrow" d="M615 148 H715"/><text x="665" y="130" text-anchor="middle" class="sub">restore --staged</text>
+  <text x="500" y="255" text-anchor="middle" class="sub">撤销 = 让某一层回到它左侧的参考版本</text>
+</svg>

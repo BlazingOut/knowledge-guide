@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:13;fill:#475569} .label{font-size:14;fill:#475569} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">多字段分组：GROUP BY user_id, status 按复合键分堆</text>
+
+  <rect class="box" x="300" y="66" width="400" height="180" rx="10"/>
+  <text class="name" x="312" y="88">orders 表（原始行）</text>
+  <text class="desc" x="312" y="114">order_no    user_id   status</text>
+  <text class="desc" x="312" y="140">ORD-001     1         paid</text>
+  <text class="desc" x="312" y="164">ORD-002     1         shipped</text>
+  <text class="desc" x="312" y="188">ORD-003     2         paid</text>
+  <text class="desc" x="312" y="212">ORD-004     2         shipped</text>
+  <text class="desc" x="312" y="226">ORD-005     1         paid</text>
+  <text class="desc" x="312" y="240">ORD-006     2         paid</text>
+
+  <path class="arrow" d="M500 246 V290"/><text class="label" x="512" y="272">按 (user_id, status) 复合键分堆：组合值相同进同一组</text>
+
+  <rect class="box" x="60" y="295" width="420" height="80" rx="10"/>
+  <text class="name" x="72" y="317">组：(1, paid)</text>
+  <text class="desc" x="72" y="343">ORD-001、ORD-005</text>
+
+  <rect class="box" x="520" y="295" width="420" height="80" rx="10"/>
+  <text class="name" x="532" y="317">组：(1, shipped)</text>
+  <text class="desc" x="532" y="343">ORD-002</text>
+
+  <rect class="box" x="60" y="385" width="420" height="80" rx="10"/>
+  <text class="name" x="72" y="407">组：(2, paid)</text>
+  <text class="desc" x="72" y="433">ORD-003、ORD-006</text>
+
+  <rect class="box" x="520" y="385" width="420" height="80" rx="10"/>
+  <text class="name" x="532" y="407">组：(2, shipped)</text>
+  <text class="desc" x="532" y="433">ORD-004</text>
+
+  <path class="arrow" d="M500 465 V505"/><text class="label" x="512" y="490">每组执行 COUNT(*)，每组返回一行</text>
+
+  <rect class="box" x="130" y="510" width="740" height="90" rx="10"/>
+  <text class="name" x="142" y="532">结果（4 行）：(1,paid)|2、(1,shipped)|1、(2,paid)|2、(2,shipped)|1</text>
+  <text class="desc" x="142" y="556">组数上限 = 用户数 × 状态数 = 2 × 2 = 4；实际组数是"出现过的组合数"，可能小于上限</text>
+  <text class="desc" x="142" y="578">两列独立变化才会相乘；若两列被主键绑定（如 u.id 与 u.nickname），组合数 = 主键数，不会放大</text>
+</svg>

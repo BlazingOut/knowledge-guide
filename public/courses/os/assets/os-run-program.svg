@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .name{font-size:15;font-weight:bold;fill:#334155} .desc{font-size:13;fill:#334155} .label{font-size:14;fill:#475569} .chip{font-size:13} .chip-proc{fill:#93c5fd} .chip-mem{fill:#fdba74} .chip-fs{fill:#6ee7b7} .chip-io{fill:#c4b5fd}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="bold">执行 python server.py 时，四个子系统如何接力</text>
+  <text x="500" y="70" text-anchor="middle" font-size="14" fill="#475569">彩色标签标出该步骤主要依赖的子系统（详细过程在第 11 课复盘）</text>
+
+  <rect class="box" x="300" y="95" width="400" height="66" rx="10"/>
+  <text class="name" x="500" y="122" text-anchor="middle">shell 解析命令，准备启动新程序</text>
+  <rect class="chip chip-proc" x="340" y="134" width="80" height="22" rx="6"/><text class="chip" x="380" y="150" text-anchor="middle">进程管理</text>
+
+  <path class="arrow" d="M500 161 V197"/>
+  <text class="label" x="515" y="185">fork()：复制当前进程，得到一个空壳子进程</text>
+
+  <rect class="box" x="300" y="201" width="400" height="66" rx="10"/>
+  <text class="name" x="500" y="228" text-anchor="middle">exec()：把进程"变身"为 python 解释器</text>
+  <rect class="chip chip-proc" x="340" y="240" width="80" height="22" rx="6"/><text class="chip" x="380" y="256" text-anchor="middle">进程管理</text>
+
+  <path class="arrow" d="M500 267 V303"/>
+  <text class="label" x="515" y="291">加载可执行文件，建立全新的虚拟地址空间</text>
+
+  <rect class="box" x="300" y="307" width="400" height="66" rx="10"/>
+  <text class="name" x="500" y="334" text-anchor="middle">内核建立虚拟地址空间，按需载入代码和数据</text>
+  <rect class="chip chip-mem" x="340" y="346" width="80" height="22" rx="6"/><text class="chip" x="380" y="362" text-anchor="middle">内存管理</text>
+
+  <path class="arrow" d="M500 373 V409"/>
+  <text class="label" x="515" y="397">从磁盘读出 python 文件和依赖的动态库</text>
+
+  <rect class="box" x="300" y="413" width="400" height="66" rx="10"/>
+  <text class="name" x="500" y="440" text-anchor="middle">打开 server.py，读出源代码</text>
+  <rect class="chip chip-fs" x="340" y="452" width="80" height="22" rx="6"/><text class="chip" x="380" y="468" text-anchor="middle">文件系统</text>
+
+  <path class="arrow" d="M500 479 V515"/>
+  <text class="label" x="515" y="503">解释执行：缺内存找内存管理，读请求经过网卡由 IO 管理收上来</text>
+
+  <rect class="box" x="300" y="519" width="400" height="66" rx="10"/>
+  <text class="name" x="500" y="546" text-anchor="middle">程序运行，print 输出、日志落盘、监听端口</text>
+  <rect class="chip chip-io" x="340" y="558" width="80" height="22" rx="6"/><text class="chip" x="380" y="574" text-anchor="middle">IO 管理</text>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="350" viewBox="0 0 1000 350">
+  <rect width="1000" height="350" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .bits{font-family:'Menlo','Consolas',monospace;font-size:15} .rowlabel{font-size:17;font-weight:bold} .rowvalue{font-size:14;fill:#475569} .byteval{font-size:14;fill:#475569} .legend{font-size:14;fill:#334155}</style>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">子网掩码：把 32 位 IP 地址分成网络位和主机位</text>
+
+  <!-- 第一行：IP 地址 -->
+  <text class="rowlabel" x="40" y="95">IP 地址</text>
+  <text class="rowvalue" x="40" y="116">192.168.1.130</text>
+  <rect x="260" y="80" width="168" height="30" rx="6" fill="#93c5fd"/><text class="bits" x="344" y="100" text-anchor="middle">11000000</text>
+  <text x="428" y="100" text-anchor="middle" font-size="16">.</text>
+  <rect x="438" y="80" width="168" height="30" rx="6" fill="#93c5fd"/><text class="bits" x="522" y="100" text-anchor="middle">10101000</text>
+  <text x="606" y="100" text-anchor="middle" font-size="16">.</text>
+  <rect x="616" y="80" width="168" height="30" rx="6" fill="#93c5fd"/><text class="bits" x="700" y="100" text-anchor="middle">00000001</text>
+  <text x="784" y="100" text-anchor="middle" font-size="16">.</text>
+  <rect x="794" y="80" width="168" height="30" rx="6" fill="#fde68a"/><text class="bits" x="878" y="100" text-anchor="middle">10000010</text>
+  <text class="byteval" x="344" y="126" text-anchor="middle">192</text>
+  <text class="byteval" x="522" y="126" text-anchor="middle">168</text>
+  <text class="byteval" x="700" y="126" text-anchor="middle">1</text>
+  <text class="byteval" x="878" y="126" text-anchor="middle">130</text>
+
+  <!-- 第二行：子网掩码 -->
+  <text class="rowlabel" x="40" y="172">子网掩码</text>
+  <text class="rowvalue" x="40" y="193">255.255.255.0</text>
+  <rect x="260" y="157" width="168" height="30" rx="6" fill="#6ee7b7"/><text class="bits" x="344" y="177" text-anchor="middle">11111111</text>
+  <text x="428" y="177" text-anchor="middle" font-size="16">.</text>
+  <rect x="438" y="157" width="168" height="30" rx="6" fill="#6ee7b7"/><text class="bits" x="522" y="177" text-anchor="middle">11111111</text>
+  <text x="606" y="177" text-anchor="middle" font-size="16">.</text>
+  <rect x="616" y="157" width="168" height="30" rx="6" fill="#6ee7b7"/><text class="bits" x="700" y="177" text-anchor="middle">11111111</text>
+  <text x="784" y="177" text-anchor="middle" font-size="16">.</text>
+  <rect x="794" y="157" width="168" height="30" rx="6" fill="#e2e8f0"/><text class="bits" x="878" y="177" text-anchor="middle">00000000</text>
+  <text class="byteval" x="344" y="203" text-anchor="middle">255</text>
+  <text class="byteval" x="522" y="203" text-anchor="middle">255</text>
+  <text class="byteval" x="700" y="203" text-anchor="middle">255</text>
+  <text class="byteval" x="878" y="203" text-anchor="middle">0</text>
+
+  <!-- 第三行：按位与结果 -->
+  <text class="rowlabel" x="40" y="249">网络地址</text>
+  <text class="rowvalue" x="40" y="270">按位与的结果</text>
+  <rect x="260" y="234" width="168" height="30" rx="6" fill="#93c5fd"/><text class="bits" x="344" y="254" text-anchor="middle">11000000</text>
+  <text x="428" y="254" text-anchor="middle" font-size="16">.</text>
+  <rect x="438" y="234" width="168" height="30" rx="6" fill="#93c5fd"/><text class="bits" x="522" y="254" text-anchor="middle">10101000</text>
+  <text x="606" y="254" text-anchor="middle" font-size="16">.</text>
+  <rect x="616" y="234" width="168" height="30" rx="6" fill="#93c5fd"/><text class="bits" x="700" y="254" text-anchor="middle">00000001</text>
+  <text x="784" y="254" text-anchor="middle" font-size="16">.</text>
+  <rect x="794" y="234" width="168" height="30" rx="6" fill="#e2e8f0"/><text class="bits" x="878" y="254" text-anchor="middle">00000000</text>
+  <text class="byteval" x="344" y="280" text-anchor="middle">192</text>
+  <text class="byteval" x="522" y="280" text-anchor="middle">168</text>
+  <text class="byteval" x="700" y="280" text-anchor="middle">1</text>
+  <text class="byteval" x="878" y="280" text-anchor="middle">0</text>
+
+  <!-- 图例 -->
+  <rect x="60" y="308" width="20" height="20" rx="4" fill="#93c5fd"/><text class="legend" x="88" y="323">网络位（子网的共同前缀）</text>
+  <rect x="330" y="308" width="20" height="20" rx="4" fill="#fde68a"/><text class="legend" x="358" y="323">主机位（子网内的编号）</text>
+  <rect x="590" y="308" width="20" height="20" rx="4" fill="#e2e8f0"/><text class="legend" x="618" y="323">掩码为 0 的位，按位与后变 0</text>
+</svg>

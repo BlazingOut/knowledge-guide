@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420">
+  <rect width="1000" height="420" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .name{font-size:16;font-weight:bold} .desc{font-size:15;fill:#334155}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="40" text-anchor="middle" font-size="24" font-weight="bold">一次参数更新：用损失的梯度决定方向和步长</text>
+  <rect class="box" x="40" y="80" width="200" height="120" rx="10"/>
+  <text class="name" x="140" y="118" text-anchor="middle">当前参数 w</text>
+  <text class="desc" x="140" y="156" text-anchor="middle">例如面积系数 2</text>
+  <path class="arrow" d="M240 140 H310"/>
+  <rect class="box" x="310" y="80" width="200" height="120" rx="10"/>
+  <text class="name" x="410" y="118" text-anchor="middle">损失 L(w)</text>
+  <text class="desc" x="410" y="156" text-anchor="middle">预测和标签差多少</text>
+  <path class="arrow" d="M510 140 H580"/>
+  <rect class="box" x="580" y="80" width="200" height="120" rx="10"/>
+  <text class="name" x="680" y="118" text-anchor="middle">梯度 g</text>
+  <text class="desc" x="680" y="156" text-anchor="middle">损失上升的方向</text>
+  <path class="arrow" d="M780 140 H850"/>
+  <rect class="box" x="700" y="250" width="250" height="120" rx="10"/>
+  <text class="name" x="825" y="288" text-anchor="middle">新参数</text>
+  <text class="desc" x="825" y="326" text-anchor="middle">w ← w − η g</text>
+  <path class="arrow" d="M680 200 V250"/>
+  <text class="desc" x="500" y="300" text-anchor="middle">η 是学习率，只决定这一步走多远</text>
+  <text class="desc" x="500" y="332" text-anchor="middle">减号是因为要让损失变小，所以逆着梯度走</text>
+</svg>

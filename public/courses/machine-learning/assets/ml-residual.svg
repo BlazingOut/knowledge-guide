@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="340" viewBox="0 0 1000 340">
+  <rect width="1000" height="340" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:16;font-weight:bold} .desc{font-size:15;fill:#334155}</style>
+  <text x="500" y="40" text-anchor="middle" font-size="24" font-weight="bold">残差：标签减去预测，正负表示偏高还是偏低</text>
+  <rect class="box" x="50" y="90" width="250" height="170" rx="10"/>
+  <text class="name" x="175" y="135" text-anchor="middle">标签 y</text>
+  <text class="desc" x="175" y="185" text-anchor="middle">真实成交价</text>
+  <text class="desc" x="175" y="220" text-anchor="middle">例：200</text>
+  <rect class="box" x="375" y="90" width="250" height="170" rx="10"/>
+  <text class="name" x="500" y="135" text-anchor="middle">预测 ŷ</text>
+  <text class="desc" x="500" y="185" text-anchor="middle">w 和 b 算出来的</text>
+  <text class="desc" x="500" y="220" text-anchor="middle">例：180</text>
+  <rect class="box" x="700" y="90" width="250" height="170" rx="10"/>
+  <text class="name" x="825" y="135" text-anchor="middle">残差 y − ŷ</text>
+  <text class="desc" x="825" y="185" text-anchor="middle">200 − 180 = 20</text>
+  <text class="desc" x="825" y="220" text-anchor="middle">正：预测偏低</text>
+</svg>

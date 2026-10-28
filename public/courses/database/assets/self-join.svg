@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="790" viewBox="0 0 1000 790">
+  <rect width="1000" height="790" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:13;fill:#475569} .cell{font-size:12;fill:#475569} .label{font-size:14;fill:#475569} .ok{fill:#15803d} .no{fill:#b91c1c} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="34" text-anchor="middle" font-size="22" font-weight="bold">自连接的执行模型：同一张表两个别名，先做笛卡尔积，再用 ON 筛选</text>
+
+  <rect class="box" x="60" y="64" width="420" height="170" rx="10"/>
+  <text class="name" x="72" y="86">e（员工侧，employees 表）</text>
+  <text class="desc" x="72" y="112">name        manager_id</text>
+  <text class="desc" x="72" y="140">张伟         NULL</text>
+  <text class="desc" x="72" y="168">李娜         1</text>
+  <text class="desc" x="72" y="196">王强         1</text>
+  <text class="desc" x="72" y="214">赵敏         2</text>
+
+  <rect class="box" x="520" y="64" width="420" height="170" rx="10"/>
+  <text class="name" x="532" y="86">m（上级侧，同一张 employees 表）</text>
+  <text class="desc" x="532" y="112">id          name</text>
+  <text class="desc" x="532" y="140">1           张伟</text>
+  <text class="desc" x="532" y="168">2           李娜</text>
+  <text class="desc" x="532" y="196">3           王强</text>
+  <text class="desc" x="532" y="214">4           赵敏</text>
+
+  <path class="arrow" d="M270 234 V285"/><text class="label" x="282" y="264">无条件的全组合（笛卡尔积）：4 × 4 = 16 行</text>
+  <path class="arrow" d="M730 234 V285"/><text class="label" x="742" y="264">无条件的全组合（笛卡尔积）：4 × 4 = 16 行</text>
+
+  <rect class="box" x="60" y="290" width="880" height="370" rx="10"/>
+  <text class="name" x="72" y="312">笛卡尔积：每行 = e 侧列 + m 侧列，共 16 行</text>
+  <text class="cell" x="72" y="334">e.name</text><text class="cell" x="210" y="334">e.manager_id</text><text class="cell" x="370" y="334">m.id</text><text class="cell" x="480" y="334">m.name</text><text class="cell" x="680" y="334">匹配</text>
+  <text class="cell" x="72" y="354">张伟</text><text class="cell" x="210" y="354">NULL</text><text class="cell" x="370" y="354">1</text><text class="cell" x="480" y="354">张伟</text><text class="cell no" x="680" y="354">✗</text>
+  <text class="cell" x="72" y="374">张伟</text><text class="cell" x="210" y="374">NULL</text><text class="cell" x="370" y="374">2</text><text class="cell" x="480" y="374">李娜</text><text class="cell no" x="680" y="374">✗</text>
+  <text class="cell" x="72" y="394">张伟</text><text class="cell" x="210" y="394">NULL</text><text class="cell" x="370" y="394">3</text><text class="cell" x="480" y="394">王强</text><text class="cell no" x="680" y="394">✗</text>
+  <text class="cell" x="72" y="414">张伟</text><text class="cell" x="210" y="414">NULL</text><text class="cell" x="370" y="414">4</text><text class="cell" x="480" y="414">赵敏</text><text class="cell no" x="680" y="414">✗</text>
+  <text class="cell" x="72" y="434">李娜</text><text class="cell" x="210" y="434">1</text><text class="cell" x="370" y="434">1</text><text class="cell" x="480" y="434">张伟</text><text class="cell ok" x="680" y="434">✓ manager_id=1=id</text>
+  <text class="cell" x="72" y="454">李娜</text><text class="cell" x="210" y="454">1</text><text class="cell" x="370" y="454">2</text><text class="cell" x="480" y="454">李娜</text><text class="cell no" x="680" y="454">✗</text>
+  <text class="cell" x="72" y="474">李娜</text><text class="cell" x="210" y="474">1</text><text class="cell" x="370" y="474">3</text><text class="cell" x="480" y="474">王强</text><text class="cell no" x="680" y="474">✗</text>
+  <text class="cell" x="72" y="494">李娜</text><text class="cell" x="210" y="494">1</text><text class="cell" x="370" y="494">4</text><text class="cell" x="480" y="494">赵敏</text><text class="cell no" x="680" y="494">✗</text>
+  <text class="cell" x="72" y="514">王强</text><text class="cell" x="210" y="514">1</text><text class="cell" x="370" y="514">1</text><text class="cell" x="480" y="514">张伟</text><text class="cell ok" x="680" y="514">✓ manager_id=1=id</text>
+  <text class="cell" x="72" y="534">王强</text><text class="cell" x="210" y="534">1</text><text class="cell" x="370" y="534">2</text><text class="cell" x="480" y="534">李娜</text><text class="cell no" x="680" y="534">✗</text>
+  <text class="cell" x="72" y="554">王强</text><text class="cell" x="210" y="554">1</text><text class="cell" x="370" y="554">3</text><text class="cell" x="480" y="554">王强</text><text class="cell no" x="680" y="554">✗</text>
+  <text class="cell" x="72" y="574">王强</text><text class="cell" x="210" y="574">1</text><text class="cell" x="370" y="574">4</text><text class="cell" x="480" y="574">赵敏</text><text class="cell no" x="680" y="574">✗</text>
+  <text class="cell" x="72" y="594">赵敏</text><text class="cell" x="210" y="594">2</text><text class="cell" x="370" y="594">1</text><text class="cell" x="480" y="594">张伟</text><text class="cell no" x="680" y="594">✗</text>
+  <text class="cell" x="72" y="614">赵敏</text><text class="cell" x="210" y="614">2</text><text class="cell" x="370" y="614">2</text><text class="cell" x="480" y="614">李娜</text><text class="cell ok" x="680" y="614">✓ manager_id=2=id</text>
+  <text class="cell" x="72" y="634">赵敏</text><text class="cell" x="210" y="634">2</text><text class="cell" x="370" y="634">3</text><text class="cell" x="480" y="634">王强</text><text class="cell no" x="680" y="634">✗</text>
+  <text class="cell" x="72" y="654">赵敏</text><text class="cell" x="210" y="654">2</text><text class="cell" x="370" y="654">4</text><text class="cell" x="480" y="654">赵敏</text><text class="cell no" x="680" y="654">✗</text>
+
+  <path class="arrow" d="M500 660 V695"/><text class="label" x="512" y="682">ON m.id = e.manager_id：只保留 manager_id 等于上级 id 的行</text>
+
+  <rect class="box" x="130" y="700" width="740" height="70" rx="10"/>
+  <text class="name" x="142" y="728">LEFT JOIN 结果（4 行）：张伟-NULL、李娜-张伟、王强-张伟、赵敏-李娜</text>
+  <text class="desc" x="142" y="752">INNER JOIN 只保留 3 行匹配（张伟没有上级，被过滤）</text>
+</svg>

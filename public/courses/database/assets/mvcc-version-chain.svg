@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">
+  <rect width="1000" height="560" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .box-blue{fill:#eff6ff;stroke:#3b82f6;stroke-width:3} .box-green{fill:#f0fdf4;stroke:#16a34a;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:13;fill:#475569} .label{font-size:14;fill:#475569} .key{font-size:16;font-weight:bold} .t-green{fill:#15803d} .arrow{stroke:#94a3b8;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-blue{stroke:#3b82f6;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-green{stroke:#16a34a;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">MVCC 版本链：当前版本 + undo log 历史版本，ReadView 决定看到哪个</text>
+
+  <rect class="box-blue" x="80" y="80" width="420" height="104" rx="10"/>
+  <text class="name" x="95" y="110">当前数据行（accounts.id = 1）</text>
+  <text class="desc" x="95" y="138">balance = 50（由事务 T3 写入）</text>
+  <text class="desc" x="95" y="162">行内隐藏字段：DB_TRX_ID = T3，DB_ROLL_PTR → 旧版本</text>
+
+  <rect class="box" x="560" y="80" width="360" height="150" rx="10"/>
+  <text class="name" x="575" y="108">事务 B 的 ReadView</text>
+  <text class="desc" x="575" y="132">记录建立时刻仍活跃的事务集合</text>
+  <text class="desc" x="575" y="156">B 开始读时：T3 尚未提交 → 版本 50 不可见</text>
+  <text class="desc" x="575" y="180">T1 已提交、不在活跃集合 → 版本 100 可见</text>
+
+  <text class="label" x="500" y="288" text-anchor="middle">版本链：DB_ROLL_PTR 指向旧版本，undo log 保存旧版本内容</text>
+  <rect class="box" x="160" y="300" width="220" height="64" rx="8"/>
+  <text x="270" y="330" text-anchor="middle" class="key">[50]</text>
+  <text x="270" y="352" text-anchor="middle" class="desc">由 T3 写入（最新）</text>
+  <rect class="box" x="420" y="300" width="220" height="64" rx="8"/>
+  <text x="530" y="330" text-anchor="middle" class="key">[80]</text>
+  <text x="530" y="352" text-anchor="middle" class="desc">由 T2 写入</text>
+  <rect class="box-green" x="680" y="300" width="220" height="64" rx="8"/>
+  <text x="790" y="330" text-anchor="middle" class="key t-green">[100]</text>
+  <text x="790" y="352" text-anchor="middle" class="desc t-green">由 T1 写入（B 读到的版本）</text>
+  <path class="arrow" d="M380 332 H420"/>
+  <path class="arrow" d="M640 332 H680"/>
+
+  <path class="arrow-blue" d="M290 184 V300"/>
+  <path class="arrow-green" d="M740 230 V300"/>
+
+  <rect class="box" x="80" y="404" width="840" height="136" rx="10"/>
+  <text class="desc" x="95" y="430">版本链：越靠左越新；旧版本由 undo log 保留，供回滚与可见性判断（undo log 机制见第十二课）</text>
+  <text class="desc" x="95" y="456">普通读：当前版本 50 对 B 不可见 → 沿版本链找到已提交的 100 → 读到 100，不必等 T3 提交</text>
+  <text class="desc" x="95" y="482">写事务 T3 仍持有锁：其他写操作和当前读要等待它（见第五节以后）</text>
+</svg>

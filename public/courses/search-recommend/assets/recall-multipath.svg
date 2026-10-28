@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420">
+  <rect width="1000" height="420" fill="#f8fafc"/>
+  <style>
+    text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033}
+    .box{fill:#fff;stroke:#2563eb;stroke-width:3}
+    .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}
+    .title{font-size:16px;font-weight:bold;fill:#1e3a8a}
+    .desc{font-size:14px;fill:#334155}
+  </style>
+  <defs>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <text x="500" y="42" text-anchor="middle" font-size="22" font-weight="bold">召回：从全库到候选集合</text>
+
+  <rect class="box" x="36" y="150" width="150" height="110" rx="12"/>
+  <text class="title" x="111" y="198" text-anchor="middle">全库</text>
+  <text class="desc" x="111" y="228" text-anchor="middle">全部文档</text>
+
+  <path class="arrow" d="M194 205 H230"/>
+
+  <rect class="box" x="238" y="130" width="170" height="150" rx="12"/>
+  <text class="title" x="323" y="178" text-anchor="middle">硬过滤</text>
+  <text class="desc" x="323" y="210" text-anchor="middle">不满足即删除</text>
+  <text class="desc" x="323" y="236" text-anchor="middle">没有分数</text>
+
+  <path class="arrow" d="M416 205 H452"/>
+
+  <rect class="box" x="460" y="90" width="250" height="230" rx="12"/>
+  <text class="title" x="585" y="128" text-anchor="middle">多路召回</text>
+  <text class="desc" x="585" y="168" text-anchor="middle">倒排：按词项取文档</text>
+  <text class="desc" x="585" y="198" text-anchor="middle">行为：按历史取文档</text>
+  <text class="desc" x="585" y="228" text-anchor="middle">向量或地理：按相近取文档</text>
+  <text class="desc" x="585" y="268" text-anchor="middle">每路只保证覆盖</text>
+
+  <path class="arrow" d="M718 205 H754"/>
+
+  <rect class="box" x="762" y="130" width="200" height="150" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+  <text class="title" x="862" y="178" text-anchor="middle">合并</text>
+  <text class="desc" x="862" y="210" text-anchor="middle">去重并记录来源</text>
+  <text class="desc" x="862" y="236" text-anchor="middle">限制每路名额</text>
+
+  <text x="500" y="380" text-anchor="middle" font-size="15" fill="#334155">输出仍是候选集合。谁排第一，不属于召回。</text>
+</svg>

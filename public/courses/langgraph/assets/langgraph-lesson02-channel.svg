@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="380" viewBox="0 0 900 380">
+  <rect width="900" height="380" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .sbox{fill:#eff6ff;stroke:#2563eb;stroke-width:2;stroke-dasharray:5 4} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .label{font-size:12;fill:#475569} .desc{font-size:12;fill:#64748b} .chip-cur{fill:#e2e8f0} .chip-upd{fill:#93c5fd} .chip-new{fill:#6ee7b7} .chip-text{font-size:14} .head{font-size:15;font-weight:bold}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="450" y="36" text-anchor="middle" font-size="24" font-weight="bold">channel：字段背后的值容器</text>
+
+  <rect class="box" x="140" y="80" width="140" height="56" rx="10"/>
+  <text class="head" x="210" y="106" text-anchor="middle">节点 a</text>
+  <text class="desc" x="210" y="126" text-anchor="middle">返回部分状态</text>
+  <rect class="box" x="380" y="80" width="140" height="56" rx="10"/>
+  <text class="head" x="450" y="106" text-anchor="middle">节点 b</text>
+  <text class="desc" x="450" y="126" text-anchor="middle">返回部分状态</text>
+
+  <path class="arrow" d="M210 138 V168"/>
+  <path class="arrow" d="M450 138 V168"/>
+
+  <rect class="sbox" x="100" y="170" width="340" height="110" rx="10"/>
+  <text class="head" x="270" y="192" text-anchor="middle">channel：字段背后的值容器</text>
+  <rect class="chip-cur" x="120" y="205" width="130" height="40" rx="8"/>
+  <text class="chip-text" x="185" y="231" text-anchor="middle">当前值：旧值</text>
+  <rect class="chip-upd" x="270" y="205" width="150" height="40" rx="8"/>
+  <text class="chip-text" x="345" y="231" text-anchor="middle">本步写入：u1、u2</text>
+
+  <path class="arrow" d="M442 225 H598"/>
+  <text class="label" x="520" y="217" text-anchor="middle">步末按规则合并</text>
+
+  <rect class="box" x="600" y="170" width="240" height="110" rx="10"/>
+  <text class="head" x="720" y="192" text-anchor="middle">合并后的 channel</text>
+  <rect class="chip-new" x="620" y="205" width="200" height="40" rx="8"/>
+  <text class="chip-text" x="720" y="231" text-anchor="middle">新当前值</text>
+  <text class="desc" x="720" y="262" text-anchor="middle">对下一个 super-step 的节点可见</text>
+
+  <text class="label" x="60" y="320">LastValue（普通字段）：一步只允许一个写入，多个写入抛 InvalidUpdateError</text>
+  <text class="label" x="60" y="344">BinaryOperatorAggregate（reducer 字段）：一步内多个写入依次用 reducer 合并</text>
+</svg>

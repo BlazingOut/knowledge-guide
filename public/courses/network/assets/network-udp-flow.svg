@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">
+  <rect width="1000" height="560" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .lane{font-size:18;font-weight:bold} .code{font-family:'Menlo','Consolas',monospace;font-size:14} .note{font-size:13;fill:#475569} .label{font-size:14;font-weight:bold;fill:#334155}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">一次完整的 UDP 收发流程</text>
+  <text class="lane" x="280" y="80" text-anchor="middle">客户端进程</text>
+  <text class="lane" x="760" y="80" text-anchor="middle">服务端进程</text>
+  <line x1="280" y1="90" x2="280" y2="470" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="760" y1="90" x2="760" y2="470" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <rect class="box" x="610" y="102" width="300" height="40" rx="8"/><text class="code" x="760" y="122" text-anchor="middle">socket() + bind(('127.0.0.1', 0))</text>
+  <text class="note" x="760" y="160" text-anchor="middle">占住端口（端口 0 = 系统挑一个空闲端口，如 55015）</text>
+
+  <rect class="box" x="150" y="172" width="260" height="34" rx="8"/><text class="code" x="280" y="194" text-anchor="middle">socket()</text>
+
+  <text class="label" x="520" y="222" text-anchor="middle">sendto('你好', 服务器地址)</text>
+  <path d="M280 232 H756" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="520" y="252" text-anchor="middle">内核隐式分配临时端口（如 63962），写进 UDP 头部的源端口；函数立即返回，不等对方</text>
+
+  <rect class="box" x="610" y="272" width="300" height="46" rx="8"/><text class="code" x="760" y="291" text-anchor="middle">data, addr = recvfrom(1024)</text>
+  <text class="note" x="760" y="311" text-anchor="middle">返回 (b'你好', ('127.0.0.1', 63962))——addr 就是回信地址</text>
+
+  <text class="label" x="520" y="352" text-anchor="middle">sendto('收到', 刚才的 addr)</text>
+  <path d="M760 362 H284" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="520" y="382" text-anchor="middle">UDP 头部：源端口 55015，目的端口 63962——按收到的地址原样寄回</text>
+
+  <rect class="box" x="150" y="402" width="260" height="40" rx="8"/><text class="code" x="280" y="422" text-anchor="middle">data = recv(1024)</text>
+  <text class="note" x="280" y="458" text-anchor="middle">从自己的接收队列取出 b'收到'（不需要 addr，因为客户端不回信）</text>
+
+  <text class="note" x="500" y="508" text-anchor="middle">全程没有握手、没有确认：每个数据报独立到达，丢了不重传，先后顺序不保证</text>
+  <text class="note" x="500" y="532" text-anchor="middle">收发的关键就是两端都在对方的 UDP 头部里留下"回信地址"（自己的 IP 和端口）</text>
+</svg>

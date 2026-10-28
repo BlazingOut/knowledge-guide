@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470">
+  <rect width="1000" height="470" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .row{fill:#fff;stroke:#94a3b8;stroke-width:2} .name{font-size:15;fill:#334155} .desc{font-size:13;fill:#475569} .label{font-size:14;fill:#475569} .t-blue{fill:#1d4ed8} .t-green{fill:#15803d} .arrow{stroke:#94a3b8;stroke-width:3;fill:none;marker-end:url(#m)} .arrow-blue{stroke:#3b82f6;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">Nested-Loop Join：驱动表每读一行，就按关联条件查一次被驱动表</text>
+
+  <rect class="box" x="60" y="70" width="300" height="250" rx="10"/>
+  <text class="name" x="72" y="92">驱动表（orders，先过滤小）</text>
+  <rect class="row" x="75" y="110" width="270" height="40" rx="6"/>
+  <text class="desc" x="210" y="135" text-anchor="middle">第 1 行：user_id=1</text>
+  <rect class="row" x="75" y="160" width="270" height="40" rx="6"/>
+  <text class="desc" x="210" y="185" text-anchor="middle">第 2 行：user_id=1</text>
+  <rect class="row" x="75" y="210" width="270" height="40" rx="6"/>
+  <text class="desc" x="210" y="235" text-anchor="middle">第 3 行：user_id=1</text>
+  <text class="desc t-blue" x="210" y="302" text-anchor="middle">外层循环：逐行读驱动表</text>
+
+  <rect class="box" x="560" y="70" width="380" height="250" rx="10"/>
+  <text class="name" x="572" y="92">被驱动表（users，按关联列 id 匹配）</text>
+  <rect class="row" x="575" y="110" width="350" height="40" rx="6"/>
+  <text class="desc" x="750" y="135" text-anchor="middle">id=1  Alice</text>
+  <rect class="row" x="575" y="160" width="350" height="40" rx="6"/>
+  <text class="desc" x="750" y="185" text-anchor="middle">id=2  Bob</text>
+  <rect class="row" x="575" y="210" width="350" height="40" rx="6"/>
+  <text class="desc" x="750" y="235" text-anchor="middle">id=3  Carol</text>
+  <text class="desc t-green" x="750" y="302" text-anchor="middle">关联列有索引（主键 id）：每次匹配走索引</text>
+
+  <path class="arrow-blue" d="M345 130 H560"/>
+  <path class="arrow" d="M345 180 H560"/>
+  <path class="arrow" d="M345 230 H560"/>
+  <text class="label t-blue" x="452" y="122" text-anchor="middle">按 user_id=1 找 users.id</text>
+
+  <rect class="box" x="60" y="350" width="880" height="100" rx="10"/>
+  <text class="desc" x="72" y="376">外层循环：驱动表的每一行都发起一次对被驱动表的查找（内层循环），直到驱动表读完</text>
+  <text class="desc" x="72" y="400">被驱动表关联列有索引：每次查找走索引（type 常见 ref / eq_ref），快</text>
+  <text class="desc" x="72" y="424">被驱动表关联列没有索引：每次查找都可能全表扫（type=ALL），慢——所以 JOIN 的关联列通常要建索引</text>
+</svg>

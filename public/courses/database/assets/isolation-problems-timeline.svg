@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <rect width="1000" height="760" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .panel{fill:#fff;stroke:#cbd5e1;stroke-width:2} .ev{fill:#fff;stroke:#94a3b8;stroke-width:2} .ev-key{fill:#fef2f2;stroke:#dc2626;stroke-width:2} .evt{font-size:14;fill:#334155} .evt-key{font-size:14;fill:#b91c1c} .conc{font-size:14;fill:#475569} .plabel{font-size:17;font-weight:bold;fill:#172033} .badge-a{fill:#2563eb} .badge-b{fill:#15803d} .badge-text{font-size:13;font-weight:bold;fill:#fff} .timeline{stroke:#cbd5e1;stroke-width:2} .arrow{stroke:#94a3b8;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#94a3b8"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">三个并发问题：脏读、不可重复读、幻读（会话时序）</text>
+
+  <rect class="panel" x="40" y="64" width="920" height="210" rx="10"/>
+  <text class="plabel" x="62" y="88">脏读</text>
+  <path class="timeline" d="M95 92 V244"/>
+  <rect class="ev" x="130" y="92" width="700" height="36" rx="6"/>
+  <circle class="badge-a" cx="95" cy="110" r="13"/>
+  <text class="badge-text" x="95" y="115" text-anchor="middle">A</text>
+  <text class="evt" x="145" y="115">会话 A：UPDATE 余额 100 → 50（未提交）</text>
+  <rect class="ev-key" x="130" y="144" width="700" height="36" rx="6"/>
+  <circle class="badge-b" cx="95" cy="162" r="13"/>
+  <text class="badge-text" x="95" y="167" text-anchor="middle">B</text>
+  <text class="evt-key" x="145" y="167">会话 B：SELECT 读到 50 —— 读到未提交的修改</text>
+  <rect class="ev" x="130" y="196" width="700" height="36" rx="6"/>
+  <circle class="badge-a" cx="95" cy="214" r="13"/>
+  <text class="badge-text" x="95" y="219" text-anchor="middle">A</text>
+  <text class="evt" x="145" y="219">会话 A：ROLLBACK，50 从未真正生效</text>
+  <path class="arrow" d="M95 130 V142"/>
+  <path class="arrow" d="M95 182 V194"/>
+  <text class="conc" x="145" y="254">结果：B 读到从未提交的数据<tspan font-weight="bold" fill="#dc2626"> → 脏读</tspan></text>
+
+  <rect class="panel" x="40" y="286" width="920" height="210" rx="10"/>
+  <text class="plabel" x="62" y="310">不可重复读</text>
+  <path class="timeline" d="M95 314 V466"/>
+  <rect class="ev" x="130" y="314" width="700" height="36" rx="6"/>
+  <circle class="badge-b" cx="95" cy="332" r="13"/>
+  <text class="badge-text" x="95" y="337" text-anchor="middle">B</text>
+  <text class="evt" x="145" y="337">会话 B：第一次 SELECT 余额 100</text>
+  <rect class="ev" x="130" y="366" width="700" height="36" rx="6"/>
+  <circle class="badge-a" cx="95" cy="384" r="13"/>
+  <text class="badge-text" x="95" y="389" text-anchor="middle">A</text>
+  <text class="evt" x="145" y="389">会话 A：UPDATE 余额 → 50 并 COMMIT</text>
+  <rect class="ev-key" x="130" y="418" width="700" height="36" rx="6"/>
+  <circle class="badge-b" cx="95" cy="436" r="13"/>
+  <text class="badge-text" x="95" y="441" text-anchor="middle">B</text>
+  <text class="evt-key" x="145" y="441">会话 B：第二次 SELECT 余额 50 —— 同一事务两次读取结果不同</text>
+  <path class="arrow" d="M95 352 V364"/>
+  <path class="arrow" d="M95 404 V416"/>
+  <text class="conc" x="145" y="476">结果：同一事务两次读同一行，结果不同<tspan font-weight="bold" fill="#dc2626"> → 不可重复读</tspan></text>
+
+  <rect class="panel" x="40" y="508" width="920" height="210" rx="10"/>
+  <text class="plabel" x="62" y="532">幻读</text>
+  <path class="timeline" d="M95 536 V688"/>
+  <rect class="ev" x="130" y="536" width="700" height="36" rx="6"/>
+  <circle class="badge-b" cx="95" cy="554" r="13"/>
+  <text class="badge-text" x="95" y="559" text-anchor="middle">B</text>
+  <text class="evt" x="145" y="559">会话 B：SELECT stock &gt; 0，得到 0 行</text>
+  <rect class="ev" x="130" y="588" width="700" height="36" rx="6"/>
+  <circle class="badge-a" cx="95" cy="606" r="13"/>
+  <text class="badge-text" x="95" y="611" text-anchor="middle">A</text>
+  <text class="evt" x="145" y="611">会话 A：INSERT 一件新商品并 COMMIT</text>
+  <rect class="ev-key" x="130" y="640" width="700" height="36" rx="6"/>
+  <circle class="badge-b" cx="95" cy="658" r="13"/>
+  <text class="badge-text" x="95" y="663" text-anchor="middle">B</text>
+  <text class="evt-key" x="145" y="663">会话 B：再次 SELECT stock &gt; 0，出现 1 行 —— 结果里多了一行</text>
+  <path class="arrow" d="M95 574 V586"/>
+  <path class="arrow" d="M95 626 V638"/>
+  <text class="conc" x="145" y="698">结果：同一条件查询两次，行数变多<tspan font-weight="bold" fill="#dc2626"> → 幻读</tspan></text>
+</svg>

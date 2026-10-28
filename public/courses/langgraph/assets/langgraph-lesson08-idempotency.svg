@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="360" viewBox="0 0 940 360">
+  <rect width="940" height="360" fill="#FFFFFF"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6B5F6B} .title{font-size:20;font-weight:bold} .head{font-size:12;font-weight:bold} .sub{font-size:11;fill:#8A7F8A} .emph{font-size:12;fill:#C77B6B} .arrow{stroke:#B3A5B3;stroke-width:2.5;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#B3A5B3"/></marker></defs>
+
+  <text class="title" x="470" y="32" text-anchor="middle">幂等：同一幂等键的第二次调用被去重（副作用只发生一次）</text>
+
+  <!-- 第一行：第一次调用 -->
+  <rect x="40" y="70" width="180" height="76" rx="8" fill="#FFFACD" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="130" y="94" text-anchor="middle">第一次调用</text>
+  <text class="sub" x="130" y="114" text-anchor="middle">携带幂等键 req-abc</text>
+  <text class="sub" x="130" y="130" text-anchor="middle">（模型 / 用户 / 网络首次发起）</text>
+
+  <path class="arrow" d="M222 108 H250"/>
+
+  <rect x="252" y="70" width="180" height="76" rx="8" fill="#E2DFFF" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="342" y="94" text-anchor="middle">查键表：无此键</text>
+  <text class="sub" x="342" y="116" text-anchor="middle">EXECUTED_KEYS 里没有 req-abc</text>
+  <text class="sub" x="342" y="132" text-anchor="middle">→ 放行</text>
+
+  <path class="arrow" d="M434 108 H462"/>
+
+  <rect x="464" y="70" width="180" height="76" rx="8" fill="#D4F0F0" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="554" y="94" text-anchor="middle">真正执行副作用</text>
+  <text class="sub" x="554" y="114" text-anchor="middle">写存储：RECORD_STORE[rec-1]=100</text>
+  <text class="sub" x="554" y="130" text-anchor="middle">并把 req-abc 记入键表</text>
+
+  <path class="arrow" d="M646 108 H674"/>
+
+  <rect x="676" y="70" width="200" height="76" rx="8" fill="#D4F0F0" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="776" y="94" text-anchor="middle">返回"record rec-1 已更新"</text>
+  <text class="sub" x="776" y="116" text-anchor="middle">存储被写入一次，键被记录</text>
+
+  <!-- 第二行：第二次调用（同键重试） -->
+  <rect x="40" y="200" width="180" height="76" rx="8" fill="#FFDFD3" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="130" y="224" text-anchor="middle">第二次调用（重试）</text>
+  <text class="sub" x="130" y="244" text-anchor="middle">还是同一个键 req-abc</text>
+  <text class="sub" x="130" y="260" text-anchor="middle">（模型自修正 / 用户重复提交 / 网络重发）</text>
+
+  <path class="arrow" d="M222 238 H250"/>
+
+  <rect x="252" y="200" width="180" height="76" rx="8" fill="#E2DFFF" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="342" y="224" text-anchor="middle">查键表：已有此键</text>
+  <text class="sub" x="342" y="246" text-anchor="middle">req-abc 已执行过 → 拦截</text>
+
+  <path class="arrow" d="M434 238 H462"/>
+
+  <rect x="464" y="200" width="200" height="76" rx="8" fill="#FFDFD3" stroke="#B3A5B3" stroke-width="1.5"/>
+  <text class="head" x="564" y="224" text-anchor="middle">不执行，直接返回</text>
+  <text class="sub" x="564" y="244" text-anchor="middle">"重复请求已忽略（键 req-abc</text>
+  <text class="sub" x="564" y="260" text-anchor="middle">之前已执行）"</text>
+
+  <text class="emph" x="470" y="310" text-anchor="middle">关键：幂等键必须由【调用方】生成并随每次重试保持不变；工具内部用时间戳 / 随机数当键，每次调用键都不同，去重立刻失效</text>
+  <text class="sub" x="470" y="335" text-anchor="middle">超时之后尤其重要：同步工具超时线程还在后台跑，你不知道它到底写完没有——重试时必须带同一个幂等键</text>
+</svg>

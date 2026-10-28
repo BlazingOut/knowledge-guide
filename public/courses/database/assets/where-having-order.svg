@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="340" viewBox="0 0 1000 340">
+  <rect width="1000" height="340" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:15;fill:#334155} .desc{font-size:14;fill:#475569} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .note{font-size:15;fill:#334155}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">WHERE 与 HAVING 的执行顺序</text>
+
+  <rect class="box" x="20" y="120" width="170" height="110" rx="10"/>
+  <text class="name" x="32" y="142">原始行</text>
+  <text class="desc" x="32" y="168">所有订单行</text>
+  <text class="desc" x="32" y="190">含各种 status</text>
+
+  <path class="arrow" d="M190 175 H210"/>
+
+  <rect class="box" x="210" y="120" width="190" height="110" rx="10"/>
+  <text class="name" x="222" y="142">WHERE status='paid'</text>
+  <text class="desc" x="222" y="168">先过滤原始行</text>
+  <text class="desc" x="222" y="190">只剩已支付订单</text>
+
+  <path class="arrow" d="M400 175 H420"/>
+
+  <rect class="box" x="420" y="120" width="180" height="110" rx="10"/>
+  <text class="name" x="432" y="142">GROUP BY user_id</text>
+  <text class="desc" x="432" y="168">按用户分组</text>
+  <text class="desc" x="432" y="190">每组对应一个用户</text>
+
+  <path class="arrow" d="M600 175 H620"/>
+
+  <rect class="box" x="620" y="120" width="150" height="110" rx="10"/>
+  <text class="name" x="632" y="142">COUNT(*)</text>
+  <text class="desc" x="632" y="168">每组统计订单数</text>
+  <text class="desc" x="632" y="190">order_count</text>
+
+  <path class="arrow" d="M770 175 H790"/>
+
+  <rect class="box" x="790" y="120" width="190" height="110" rx="10"/>
+  <text class="name" x="802" y="142">HAVING order_count>=3</text>
+  <text class="desc" x="802" y="168">过滤分组结果</text>
+  <text class="desc" x="802" y="190">只留订单数≥3的用户</text>
+
+  <text class="note" x="500" y="295" text-anchor="middle">WHERE 在分组前过滤行；HAVING 在分组后过滤组。聚合条件（如 COUNT(*) &gt;= 3）只能写在 HAVING。</text>
+</svg>

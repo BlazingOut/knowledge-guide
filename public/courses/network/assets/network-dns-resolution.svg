@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600">
+  <rect width="1000" height="600" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .lane{font-size:17;font-weight:bold} .step{font-size:14;font-weight:bold;fill:#334155} .note{font-size:13;fill:#475569} .label{font-size:15;font-weight:bold}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">一次完整的 DNS 查询：递归 + 迭代</text>
+
+  <rect class="box" x="60" y="240" width="190" height="110" rx="12"/>
+  <text class="lane" x="155" y="285" text-anchor="middle">你的电脑</text>
+  <text class="note" x="155" y="312" text-anchor="middle">浏览器、系统缓存都没有</text>
+
+  <rect class="box" x="380" y="240" width="210" height="110" rx="12"/>
+  <text class="lane" x="485" y="280" text-anchor="middle">本地 DNS 服务器</text>
+  <text class="note" x="485" y="305" text-anchor="middle">运营商或公共 DNS</text>
+  <text class="note" x="485" y="325" text-anchor="middle">如 223.5.5.5、8.8.8.8</text>
+
+  <rect class="box" x="740" y="90" width="220" height="90" rx="12"/>
+  <text class="lane" x="850" y="125" text-anchor="middle">根域名服务器</text>
+  <text class="note" x="850" y="150" text-anchor="middle">全球 13 组：管理各顶级域</text>
+
+  <rect class="box" x="740" y="250" width="220" height="90" rx="12"/>
+  <text class="lane" x="850" y="285" text-anchor="middle">顶级域服务器</text>
+  <text class="note" x="850" y="310" text-anchor="middle">.com/.cn/.org 各有一套</text>
+
+  <rect class="box" x="740" y="410" width="220" height="90" rx="12"/>
+  <text class="lane" x="850" y="445" text-anchor="middle">权威域名服务器</text>
+  <text class="note" x="850" y="470" text-anchor="middle">真正存着域名的 A 记录</text>
+
+  <!-- 递归查询 -->
+  <path d="M250 295 H376" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="label" x="313" y="285" text-anchor="middle">递归查询</text>
+  <text class="note" x="313" y="325" text-anchor="middle">"example.com 的 IP 是多少？请帮我查到底"</text>
+
+  <!-- 迭代查询 1 -->
+  <path d="M590 270 L736 150" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="step" x="640" y="185">① 问根：.com 由谁管？</text>
+  <path d="M736 175 L590 285" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="672" y="222" text-anchor="middle">答：去问 .com 顶级域</text>
+
+  <!-- 迭代查询 2 -->
+  <path d="M590 295 H736" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="step" x="663" y="288">② 问顶级域</text>
+  <path d="M736 320 L590 330" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="663" y="345" text-anchor="middle">答：去问它的权威服务器</text>
+
+  <!-- 迭代查询 3 -->
+  <path d="M590 340 L736 440" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="step" x="640" y="425">③ 问权威服务器</text>
+  <path d="M736 470 L590 355" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="note" x="672" y="480" text-anchor="middle">答：A 记录 = 104.20.23.154</text>
+
+  <!-- 回程 -->
+  <path d="M380 330 L254 320" stroke="#dc2626" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="label" x="317" y="352" text-anchor="middle">返回 IP，沿途各级缓存一份</text>
+
+  <text class="note" x="500" y="560" text-anchor="middle">蓝色 = 递归查询（你只问一次，对方负责查到底）；绿色 = 迭代查询（本地 DNS 逐级问路）；</text>
+  <text class="note" x="500" y="584" text-anchor="middle">红色 = 把最终答案送回来。第 ② 步之后若各级有缓存，后面的问路可以直接跳过。</text>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <rect width="1000" height="760" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .lane{font-size:16;font-weight:bold} .msg{font-family:'Menlo','Consolas',monospace;font-size:13;font-weight:bold;fill:#172033} .state{font-size:12;fill:#475569} .sec{font-size:18;font-weight:bold} .note{font-size:14;fill:#334155} .tag{font-size:12;font-weight:bold;fill:#475569}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">HTTP 短连接与长连接</text>
+
+  <!-- 左：短连接 -->
+  <text class="sec" x="250" y="72" text-anchor="middle">短连接 Connection: close</text>
+  <text class="lane" x="110" y="100" text-anchor="middle">客户端</text>
+  <text class="lane" x="390" y="100" text-anchor="middle">服务器</text>
+  <line x1="110" y1="110" x2="110" y2="620" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="390" y1="110" x2="390" y2="620" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <rect x="160" y="118" width="180" height="28" rx="6" fill="#e2e8f0"/>
+  <text class="state" x="250" y="137" text-anchor="middle">三次握手（第 4 课）</text>
+  <path d="M110 148 H386" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#m)"/>
+
+  <text class="msg" x="250" y="178" text-anchor="middle">GET /style.css</text>
+  <path d="M110 186 H386" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="msg" x="250" y="216" text-anchor="middle">200  CSS 正文</text>
+  <path d="M390 224 H114" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+
+  <rect x="160" y="240" width="180" height="28" rx="6" fill="#e2e8f0"/>
+  <text class="state" x="250" y="259" text-anchor="middle">四次挥手，连接拆掉</text>
+  <path d="M110 270 H386" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#m)"/>
+
+  <rect x="160" y="292" width="180" height="28" rx="6" fill="#e2e8f0"/>
+  <text class="state" x="250" y="311" text-anchor="middle">再握手一次</text>
+  <path d="M110 322 H386" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#m)"/>
+
+  <text class="msg" x="250" y="352" text-anchor="middle">GET /api/tasks</text>
+  <path d="M110 360 H386" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="msg" x="250" y="390" text-anchor="middle">200  JSON 正文</text>
+  <path d="M390 398 H114" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+
+  <rect x="160" y="416" width="180" height="28" rx="6" fill="#e2e8f0"/>
+  <text class="state" x="250" y="435" text-anchor="middle">再挥手一次</text>
+  <path d="M110 446 H386" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#m)"/>
+
+  <text class="note" x="250" y="490" text-anchor="middle">两次业务请求，两次完整</text>
+  <text class="note" x="250" y="512" text-anchor="middle">的握手 + 挥手。HTTP/1.0</text>
+  <text class="note" x="250" y="534" text-anchor="middle">默认如此。</text>
+
+  <!-- 右：长连接 -->
+  <text class="sec" x="750" y="72" text-anchor="middle">长连接 Connection: keep-alive</text>
+  <text class="lane" x="610" y="100" text-anchor="middle">客户端</text>
+  <text class="lane" x="890" y="100" text-anchor="middle">服务器</text>
+  <line x1="610" y1="110" x2="610" y2="620" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="890" y1="110" x2="890" y2="620" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <rect x="660" y="118" width="180" height="28" rx="6" fill="#bbf7d0"/>
+  <text class="state" x="750" y="137" text-anchor="middle">三次握手，只做一次</text>
+  <path d="M610 148 H886" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#m)"/>
+
+  <text class="msg" x="750" y="178" text-anchor="middle">GET /style.css</text>
+  <path d="M610 186 H886" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="msg" x="750" y="216" text-anchor="middle">200  CSS 正文</text>
+  <path d="M890 224 H614" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+
+  <text class="tag" x="750" y="258" text-anchor="middle">连接不关，直接发下一个请求</text>
+
+  <text class="msg" x="750" y="292" text-anchor="middle">GET /api/tasks</text>
+  <path d="M610 300 H886" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="msg" x="750" y="330" text-anchor="middle">200  JSON 正文</text>
+  <path d="M890 338 H614" stroke="#2563eb" stroke-width="3" fill="none" marker-end="url(#m)"/>
+
+  <text class="tag" x="750" y="372" text-anchor="middle">还可以继续复用……</text>
+
+  <rect x="660" y="392" width="180" height="28" rx="6" fill="#bbf7d0"/>
+  <text class="state" x="750" y="411" text-anchor="middle">全部结束才挥手</text>
+  <path d="M610 422 H886" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#m)"/>
+
+  <text class="note" x="750" y="470" text-anchor="middle">两次业务请求，只付一次</text>
+  <text class="note" x="750" y="492" text-anchor="middle">握手 + 挥手的代价。</text>
+  <text class="note" x="750" y="514" text-anchor="middle">HTTP/1.1 默认如此。</text>
+
+  <text class="note" x="500" y="580" text-anchor="middle">长连接省掉的是第 4 课的握手和挥手，不是第 4 课的 TCP keepalive——那是探测死连接的传输层机制。</text>
+  <text class="note" x="500" y="608" text-anchor="middle">长连接能复用，是因为每条响应都能靠 Content-Length（或分块编码）自己划清边界，不必靠关闭连接来表示"正文结束"。</text>
+  <text class="note" x="500" y="636" text-anchor="middle">HTTP/1.1 长连接仍有队头阻塞：同一条连接上请求必须排队。多路复用是 HTTP/2 的事，第 10 课展开。</text>
+  <text class="note" x="500" y="672" text-anchor="middle">Connection: close 只是头部里的一句话。真正让对端 recv 读到空字节的，是 close() / shutdown() 发出的 FIN。</text>
+  <text class="note" x="500" y="700" text-anchor="middle">课程示例故意走短连接：发完响应立刻关掉写端，客户端才能用"读到 b'' 为止"收齐报文。</text>
+</svg>

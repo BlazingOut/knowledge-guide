@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430">
+  <rect width="1000" height="430" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .name{font-size:16;font-weight:bold} .desc{font-size:15;fill:#334155} .label{font-size:14;fill:#475569}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="bold">一条监督学习记录：特征已知，标签用来对照</text>
+  <rect class="box" x="40" y="80" width="250" height="150" rx="10"/>
+  <text class="name" x="165" y="112" text-anchor="middle">特征 x</text>
+  <text class="desc" x="165" y="148" text-anchor="middle">预测时已经知道</text>
+  <text class="desc" x="165" y="176" text-anchor="middle">面积、房龄、楼层</text>
+  <text class="desc" x="165" y="204" text-anchor="middle">输入给模型</text>
+  <path class="arrow" d="M290 155 H370"/>
+  <text class="label" x="330" y="145" text-anchor="middle">送入</text>
+  <rect class="box" x="370" y="80" width="260" height="150" rx="10"/>
+  <text class="name" x="500" y="112" text-anchor="middle">模型 f(x; w)</text>
+  <text class="desc" x="500" y="148" text-anchor="middle">w 是可调整的参数</text>
+  <text class="desc" x="500" y="176" text-anchor="middle">同一套 w 用于所有房子</text>
+  <text class="desc" x="500" y="204" text-anchor="middle">输出预测 ŷ</text>
+  <path class="arrow" d="M630 155 H710"/>
+  <text class="label" x="670" y="145" text-anchor="middle">对照</text>
+  <rect class="box" x="710" y="80" width="250" height="150" rx="10"/>
+  <text class="name" x="835" y="112" text-anchor="middle">标签 y</text>
+  <text class="desc" x="835" y="148" text-anchor="middle">训练时已知</text>
+  <text class="desc" x="835" y="176" text-anchor="middle">预测时要估计</text>
+  <text class="desc" x="835" y="204" text-anchor="middle">本例：成交价</text>
+  <rect class="box" x="180" y="290" width="640" height="100" rx="10"/>
+  <text class="desc" x="500" y="330" text-anchor="middle">学习：用很多 (x, y) 调整 w，使 ŷ 更接近 y</text>
+  <text class="desc" x="500" y="362" text-anchor="middle">预测：新房子只有 x，用已经定下来的 w 给出 ŷ</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="300" viewBox="0 0 1000 300">
+  <rect width="1000" height="300" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <rect class="box" x="35" y="85" width="205" height="110" rx="14"/><text x="137" y="125" text-anchor="middle" font-size="22">工作区</text><text x="137" y="157" text-anchor="middle" font-size="16">你正在编辑的文件</text>
+  <rect class="box" x="285" y="85" width="205" height="110" rx="14"/><text x="387" y="125" text-anchor="middle" font-size="22">暂存区</text><text x="387" y="157" text-anchor="middle" font-size="16">下一次提交的候选</text>
+  <rect class="box" x="535" y="85" width="205" height="110" rx="14"/><text x="637" y="125" text-anchor="middle" font-size="22">本地提交</text><text x="637" y="157" text-anchor="middle" font-size="16">Git 历史中的快照</text>
+  <rect class="box" x="785" y="85" width="180" height="110" rx="14"/><text x="875" y="125" text-anchor="middle" font-size="22">远程仓库</text><text x="875" y="157" text-anchor="middle" font-size="16">共享的服务器历史</text>
+  <path class="arrow" d="M240 140 H280"/><text x="260" y="125" text-anchor="middle" font-size="14">git add</text><path class="arrow" d="M490 140 H530"/><text x="510" y="125" text-anchor="middle" font-size="14">commit</text><path class="arrow" d="M740 140 H780"/><text x="760" y="125" text-anchor="middle" font-size="14">push</text>
+  <text x="500" y="45" text-anchor="middle" font-size="26" font-weight="bold">Git 中一次修改的流动</text>
+</svg>

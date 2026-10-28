@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360">
+  <rect width="900" height="360" fill="#FFFFFF"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6B5F6B} .title{font-size:20;font-weight:bold} .step{fill:#FFDFD3;stroke:#B3A5B3;stroke-width:1.5} .cstep{fill:#FFDFD3;stroke:#C77B6B;stroke-width:2;stroke-dasharray:6 4} .ck{fill:#D4F0F0;stroke:#B3A5B3;stroke-width:1.5} .crash{fill:#FFFACD;stroke:#C77B6B;stroke-width:1.5} .rerun{fill:#E2DFFF;stroke:#B3A5B3;stroke-width:1.5} .head{font-size:15;font-weight:bold} .desc{font-size:12;fill:#8A7F8A} .cktext{font-size:12;font-weight:bold} .label{font-size:12;fill:#8A7F8A} .arrow{stroke:#B3A5B3;stroke-width:2.5;fill:none;marker-end:url(#m)}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#B3A5B3"/></marker></defs>
+  <text class="title" x="450" y="34" text-anchor="middle">checkpoint：每个 super-step 后落盘，崩溃后从最近一处恢复</text>
+
+  <rect class="step" x="60" y="90" width="150" height="64" rx="10"/>
+  <text class="head" x="135" y="114" text-anchor="middle">super-step 1</text>
+  <text class="desc" x="135" y="134" text-anchor="middle">model 调模型</text>
+  <path class="arrow" d="M212 122 H288"/>
+  <rect class="step" x="290" y="90" width="150" height="64" rx="10"/>
+  <text class="head" x="365" y="114" text-anchor="middle">super-step 2</text>
+  <text class="desc" x="365" y="134" text-anchor="middle">tools 执行工具</text>
+  <path class="arrow" d="M442 122 H518"/>
+  <rect class="cstep" x="520" y="90" width="150" height="64" rx="10"/>
+  <text class="head" x="595" y="114" text-anchor="middle">super-step 3</text>
+  <text class="desc" x="595" y="134" text-anchor="middle">model（崩溃 ✗）</text>
+
+  <path class="arrow" d="M135 156 V183"/>
+  <path class="arrow" d="M365 156 V183"/>
+  <rect class="ck" x="60" y="185" width="150" height="40" rx="8"/>
+  <text class="cktext" x="135" y="210" text-anchor="middle">checkpoint 1 ✓ 已落盘</text>
+  <rect class="ck" x="290" y="185" width="150" height="40" rx="8"/>
+  <text class="cktext" x="365" y="210" text-anchor="middle">checkpoint 2 ✓ 已落盘</text>
+  <rect class="crash" x="520" y="185" width="150" height="40" rx="8"/>
+  <text class="cktext" x="595" y="210" text-anchor="middle" fill="#C77B6B">崩溃：本步未落盘</text>
+
+  <path class="arrow" d="M365 227 V302 H516"/>
+  <text class="label" x="432" y="292">恢复：从最近的 checkpoint 继续</text>
+  <rect class="rerun" x="520" y="270" width="150" height="64" rx="10"/>
+  <text class="head" x="595" y="294" text-anchor="middle">super-step 3</text>
+  <text class="desc" x="595" y="314" text-anchor="middle">重跑（这次成功）</text>
+  <text class="label" x="755" y="302">→ 继续后续步骤</text>
+
+  <text class="desc" x="450" y="344" text-anchor="middle">checkpoint 存的是图状态（messages 等），不是外部副作用——已发请求、数据库写入不会随恢复而回滚</text>
+</svg>

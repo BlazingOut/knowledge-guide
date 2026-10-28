@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#ffffff"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6b5f6b} .box{font-size:15;font-weight:bold} .line{font-size:13;fill:#8a7f8a} .fault{font-size:13;font-weight:bold;fill:#c77b6b}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3a5b3"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">沙箱：执行边界 + 资源池调度</text>
+
+  <!-- 请求队列 -->
+  <rect x="40" y="150" width="200" height="110" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="140" y="176" text-anchor="middle">请求队列</text>
+  <text class="line" x="140" y="200" text-anchor="middle">r1(high) / r2(high)</text>
+  <text class="line" x="140" y="220" text-anchor="middle">r3(normal) / r4(high)</text>
+  <text class="fault" x="140" y="244" text-anchor="middle">超限：拒绝或降级</text>
+
+  <!-- 调度器 -->
+  <rect x="40" y="300" width="200" height="90" rx="8" fill="#e2dfff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="140" y="326" text-anchor="middle">调度器</text>
+  <text class="line" x="140" y="348" text-anchor="middle">命中预热 / 新建 / 排队</text>
+  <text class="line" x="140" y="368" text-anchor="middle">空闲超 TTL → 销毁</text>
+
+  <!-- 沙箱资源池 -->
+  <rect x="280" y="70" width="680" height="180" rx="8" fill="#ffffff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="620" y="96" text-anchor="middle">沙箱资源池（预热池 + 复用回收）</text>
+  <rect x="310" y="110" width="200" height="70" rx="6" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="410" y="136" text-anchor="middle">预热槽 #0</text>
+  <text class="line" x="410" y="158" text-anchor="middle">已分配 r1，启动延迟≈0</text>
+  <rect x="530" y="110" width="200" height="70" rx="6" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="630" y="136" text-anchor="middle">预热槽 #1</text>
+  <text class="line" x="630" y="158" text-anchor="middle">已分配 r2</text>
+  <rect x="750" y="110" width="190" height="70" rx="6" fill="#e2dfff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="845" y="136" text-anchor="middle">新建槽 #2</text>
+  <text class="line" x="845" y="158" text-anchor="middle">冷启动，有延迟</text>
+  <text class="fault" x="620" y="222" text-anchor="middle">空闲超过 TTL → 销毁回收（池子收缩）</text>
+
+  <!-- 沙盒执行边界 -->
+  <rect x="280" y="290" width="680" height="220" rx="8" fill="#ffffff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="620" y="316" text-anchor="middle">沙盒执行（隔离边界内）</text>
+  <rect x="310" y="330" width="300" height="130" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="460" y="356" text-anchor="middle">资源限制</text>
+  <text class="line" x="460" y="380" text-anchor="middle">CPU / 内存配额</text>
+  <text class="line" x="460" y="400" text-anchor="middle">网络：禁外网或白名单</text>
+  <text class="fault" x="460" y="424" text-anchor="middle">超时 → 进程级强杀</text>
+  <text class="line" x="460" y="446" text-anchor="middle">文件系统只读 + 临时目录</text>
+
+  <rect x="640" y="330" width="300" height="130" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="790" y="356" text-anchor="middle">输出防逃逸</text>
+  <text class="line" x="790" y="380" text-anchor="middle">输出边界：超长截断</text>
+  <text class="line" x="790" y="400" text-anchor="middle">序列化边界：只收结构化结果</text>
+  <text class="fault" x="790" y="424" text-anchor="middle">异常只提炼一行，堆栈不外传</text>
+
+  <!-- 连接箭头 -->
+  <line x1="140" y1="260" x2="140" y2="298" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 240 345 L 260 170 L 278 170" fill="none" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="620" y1="250" x2="620" y2="288" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="500" y="590" text-anchor="middle" font-size="14" fill="#8a7f8a">超时强杀必须发生在进程级：第三课的线程只能"不再等待"，这里进程真的被杀死；已发生的副作用靠第 3 课幂等兜底。</text>
+</svg>

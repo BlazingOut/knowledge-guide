@@ -1,0 +1,213 @@
+# 第四课：模块、包与项目结构
+
+前一课把数据和行为组织进类。本课继续解决更大的组织问题：当代码从几十行增长到多个功能时，如何拆成多个文件，并让这些文件能够稳定地互相导入。
+
+本课会先把模块理解为一个可导入的 Python 文件，再学习包目录、入口文件、相对导入和 `python -m`。重点是理解导入发生了什么，而不是背诵目录模板。
+
+## 学习目标
+
+完成本课后，你应当能够：
+
+- 解释模块、包、导入和名称空间；
+- 使用 `import` 和 `from ... import ...`；
+- 解释模块代码什么时候执行，以及 `__name__` 的值；
+- 区分直接运行文件和使用 `python -m` 运行模块；
+- 把单文件脚本拆成模型、服务和入口；
+- 识别循环导入和错误工作目录造成的导入问题。
+
+## 1. 模块是什么
+
+### 1.1 一个 `.py` 文件就是一个模块
+
+假设有文件 `math_tools.py`：
+
+```python
+PI = 3.14159
+
+
+def double(value: int) -> int:
+    return value * 2
+```
+
+这个文件可以作为模块被其他 Python 文件导入。模块通常用于放置一组相关的常量、函数、类和异常。
+
+模块有自己的名称空间。`PI` 和 `double` 不会自动成为所有文件中的全局变量，调用者需要通过模块名访问：
+
+```python
+import math_tools
+
+print(math_tools.PI)
+print(math_tools.double(3))
+```
+
+`import math_tools` 会在当前名称空间中绑定一个模块对象。模块对象的属性就是模块文件中定义的名称。
+
+### 1.2 `from ... import ...`
+
+也可以只导入指定名称：
+
+```python
+from math_tools import double
+
+print(double(3))
+```
+
+| 写法 | 当前文件得到的名称 | 调用方式 |
+| --- | --- | --- |
+| `import math_tools` | `math_tools` | `math_tools.double(3)` |
+| `from math_tools import double` | `double` | `double(3)` |
+
+学习阶段优先使用 `import module`，因为调用处保留了来源，看到 `math_tools.double` 就知道函数来自哪里。
+
+### 1.3 导入时模块代码会执行
+
+当 Python 第一次导入模块时，会执行模块顶层代码：
+
+```python
+# counter.py
+print("counter 模块正在加载")
+value = 1
+```
+
+```python
+import counter
+print(counter.value)
+```
+
+因此模块顶层应该主要放定义，不要在顶层执行发送请求、修改数据库或启动服务等副作用操作。同一个进程中再次导入通常会使用已经加载的模块。
+
+## 2. `__name__` 和程序入口
+
+每个模块都有特殊变量 `__name__`：
+
+- 文件被导入时，通常是模块名；
+- 文件被直接运行时，是字符串 `"__main__"`。
+
+```python
+def main() -> None:
+    print("程序开始")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+直接运行文件时执行 `main()`；被其他模块导入时只定义 `main`，不会自动启动程序。这样一个文件可以同时提供可复用代码和命令行入口。
+
+## 3. 直接运行文件与 `python -m`
+
+### 3.1 直接运行文件
+
+```bash
+python code/python/lesson_04_modules_packages.py
+```
+
+脚本的 `__name__` 是 `"__main__"`。含有相对导入的文件直接运行时，经常会因为缺少包上下文而失败。
+
+### 3.2 使用 `-m` 运行模块
+
+```bash
+python -m package.module
+```
+
+`-m` 让 Python 按模块名查找并运行它。假设目录是：
+
+```text
+project/
+└── reminders/
+    ├── __init__.py
+    ├── models.py
+    └── cli.py
+```
+
+在 `project` 目录执行 `python -m reminders.cli`。此时 `reminders` 是包名，`cli` 是包中的模块。工作目录不同，模块搜索路径可能不同；遇到 `ModuleNotFoundError` 时先检查工作目录、模块名和 Python 解释器。
+
+## 4. 包和导入
+
+包是用于组织多个模块的目录。传统 Python 包通常包含 `__init__.py`：
+
+```text
+reminders/
+├── __init__.py
+├── models.py
+├── service.py
+└── cli.py
+```
+
+`__init__.py` 可以为空。包内可以使用绝对导入：
+
+```python
+from reminders.models import Reminder
+```
+
+也可以使用相对导入：
+
+```python
+from .models import Reminder
+```
+
+`.` 表示当前包，`..` 表示父包。相对导入只能在包上下文中工作，通常需要从项目根目录使用 `python -m` 运行。
+
+## 5. 按职责拆分项目
+
+提醒程序可以按职责拆成：
+
+```text
+reminders/
+├── __init__.py
+├── models.py    # Reminder 数据模型
+├── service.py   # 添加、查找等业务逻辑
+└── cli.py       # 命令行输入输出和 main()
+```
+
+模型模块定义数据，服务模块处理业务，入口模块负责交互。服务依赖模型，但模型不应反过来导入服务模块，这样可以避免循环导入。
+
+## 6. 常见导入错误
+
+### `ModuleNotFoundError`
+
+通常表示 Python 找不到指定模块。检查模块名、当前工作目录、包目录和解释器环境。
+
+### `ImportError`
+
+模块找到了，但无法导入指定名称，例如函数名拼写错误，或导入方式与包结构不匹配。
+
+### 循环导入
+
+```text
+models.py -> service.py -> models.py
+```
+
+两个模块互相在顶层导入，可能得到“部分初始化的模块”错误。通常应重新划分职责，让依赖方向单一。
+
+## 7. 运行课程代码
+
+```bash
+python code/python/lesson_04_modules_packages.py
+```
+
+上半部分会运行完整的提醒示例，下半部分作业包含 TODO，但默认不会调用 `homework()`。
+
+## 8. 课后作业：提醒清单
+
+作业代码在同一个 Python 文件的下半部分，场景使用提醒清单，不要求重复编写上面的导入示例。
+
+完成以下内容：
+
+1. 完成 `Reminder` 数据类，清理标题并拒绝空标题；
+2. 完成 `ReminderList.add()`，添加提醒并拒绝相同标题；
+3. 完成 `ReminderList.find()`，找不到时返回 `None`；
+4. 完成 `format_reminders()`，返回每条提醒一行的字符串；
+5. 在 `homework()` 中创建两个独立的提醒清单，证明列表字段没有被不同实例共享；
+6. 使用 `__name__ == "__main__"` 控制作业入口。
+
+## 9. 验收问题
+
+1. 模块和包分别是什么？
+2. `import module` 和 `from module import name` 在当前名称空间中有什么区别？
+3. 为什么模块顶层不应该执行大量有副作用的代码？
+4. 直接运行文件和 `python -m package.module` 有什么区别？
+5. 相对导入中的 `.` 和 `..` 分别表示什么？
+6. `ModuleNotFoundError` 和 `ImportError` 分别说明什么问题？
+7. 为什么模型模块不应该反过来导入服务模块？
+

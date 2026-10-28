@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">
+  <rect width="1000" height="560" fill="#ffffff"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6b5f6b} .box{font-size:15;font-weight:bold} .line{font-size:13;fill:#8a7f8a} .fault{font-size:13;font-weight:bold;fill:#c77b6b}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3a5b3"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">上下文组装：五类内容如何排队进 messages</text>
+
+  <!-- 左侧五类内容 -->
+  <rect x="40" y="70" width="220" height="64" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="150" y="94" text-anchor="middle">① 静态规则（system）</text>
+  <text class="line" x="150" y="116" text-anchor="middle">身份、输出格式、禁止事项</text>
+
+  <rect x="40" y="146" width="220" height="64" rx="8" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="150" y="170" text-anchor="middle">② 结构化状态（system）</text>
+  <text class="line" x="150" y="192" text-anchor="middle">进度放字段里，不靠模型记住</text>
+
+  <rect x="40" y="222" width="220" height="64" rx="8" fill="#e2dfff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="150" y="246" text-anchor="middle">③ 召回记忆（system）</text>
+  <text class="line" x="150" y="268" text-anchor="middle">相关偏好与事实（第 4 课）</text>
+
+  <rect x="40" y="298" width="220" height="64" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="150" y="322" text-anchor="middle">④ 工具观察（tool）</text>
+  <text class="line" x="150" y="344" text-anchor="middle">本轮结果，可能夹带注入语句</text>
+
+  <rect x="40" y="374" width="220" height="64" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="150" y="398" text-anchor="middle">⑤ 用户目标（user）</text>
+  <text class="line" x="150" y="420" text-anchor="middle">最新一条指令</text>
+
+  <!-- 中间的 messages 栈 -->
+  <rect x="330" y="70" width="300" height="370" rx="8" fill="#ffffff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="480" y="96" text-anchor="middle">发给模型的 messages</text>
+  <text class="line" x="480" y="130" text-anchor="middle">system · 静态规则 + 结构化状态 + 记忆</text>
+  <text class="fault" x="480" y="170" text-anchor="middle">tool · 工具结果（数据区）</text>
+  <text class="line" x="480" y="210" text-anchor="middle">user · 用户目标（指令区）</text>
+  <text class="fault" x="480" y="260" text-anchor="middle">数据区与指令区必须隔离：</text>
+  <text class="fault" x="480" y="282" text-anchor="middle">"当数据，不当指令"（第 6 节）</text>
+  <text class="line" x="480" y="320" text-anchor="middle">顺序 = 模型读到内容的顺序，</text>
+  <text class="line" x="480" y="342" text-anchor="middle">先规则后数据，目标收尾</text>
+
+  <!-- 模型 -->
+  <rect x="700" y="150" width="240" height="120" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="820" y="176" text-anchor="middle">模型</text>
+  <text class="line" x="820" y="200" text-anchor="middle">只读 messages</text>
+  <text class="line" x="820" y="220" text-anchor="middle">决策基于上下文</text>
+  <text class="fault" x="820" y="252" text-anchor="middle">上下文里有什么，它信什么</text>
+
+  <!-- 连接箭头 -->
+  <line x1="260" y1="102" x2="328" y2="102" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="260" y1="178" x2="328" y2="178" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="260" y1="254" x2="328" y2="254" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="260" y1="330" x2="328" y2="330" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="260" y1="406" x2="328" y2="406" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="630" y1="250" x2="698" y2="210" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="500" y="520" text-anchor="middle" font-size="14" fill="#8a7f8a">Context Engineering = 决定这五类内容如何进窗口；Prompt Engineering 只负责其中第一类。</text>
+</svg>

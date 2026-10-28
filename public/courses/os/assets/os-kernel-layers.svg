@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640">
+  <rect width="1000" height="640" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .name{font-size:16;font-weight:bold;fill:#334155} .desc{font-size:14;fill:#334155} .label{font-size:14;fill:#475569} .chip{font-size:13} .zone-title{font-size:15;font-weight:bold;fill:#334155} .chip-proc{fill:#93c5fd} .chip-mem{fill:#fdba74} .chip-fs{fill:#6ee7b7} .chip-io{fill:#c4b5fd}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="bold">操作系统的位置：用户态、系统调用与内核</text>
+
+  <!-- 用户态区域 -->
+  <rect x="60" y="70" width="880" height="150" rx="12" fill="#eef2ff" stroke="#6366f1" stroke-width="2" stroke-dasharray="8 6"/>
+  <text class="zone-title" x="80" y="96">用户态（应用程序能自由活动的世界）</text>
+
+  <rect class="box" x="100" y="112" width="200" height="80" rx="10"/>
+  <text class="name" x="200" y="145" text-anchor="middle">浏览器</text>
+  <text class="desc" x="200" y="172" text-anchor="middle">渲染网页、发网络请求</text>
+
+  <rect class="box" x="400" y="112" width="200" height="80" rx="10"/>
+  <text class="name" x="500" y="145" text-anchor="middle">Python 程序</text>
+  <text class="desc" x="500" y="172" text-anchor="middle">print、open、线程</text>
+
+  <rect class="box" x="700" y="112" width="200" height="80" rx="10"/>
+  <text class="name" x="800" y="145" text-anchor="middle">数据库服务</text>
+  <text class="desc" x="800" y="172" text-anchor="middle">读写数据文件</text>
+
+  <text class="label" x="80" y="212">库函数与运行时（libc、Python 解释器）在用户态替你包装系统调用</text>
+
+  <!-- 系统调用接口 -->
+  <path class="arrow" d="M200 192 V240"/>
+  <path class="arrow" d="M500 192 V240"/>
+  <path class="arrow" d="M800 192 V240"/>
+  <text class="label" x="520" y="228">read()、write()、open()、fork()……唯一合法的入口</text>
+
+  <rect x="60" y="244" width="880" height="52" rx="10" fill="#fff" stroke="#dc2626" stroke-width="3"/>
+  <text class="name" x="500" y="277" text-anchor="middle">系统调用接口（进入内核态的边界）</text>
+
+  <!-- 内核区域 -->
+  <rect x="60" y="312" width="880" height="180" rx="12" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" stroke-dasharray="8 6"/>
+  <text class="zone-title" x="80" y="338">内核态（操作系统的特权世界，机器代码全部运行在这里）</text>
+
+  <rect class="box" x="100" y="356" width="190" height="100" rx="10"/>
+  <text class="name" x="195" y="388" text-anchor="middle">进程管理</text>
+  <rect class="chip chip-proc" x="115" y="404" width="160" height="26" rx="6"/><text class="chip" x="195" y="422" text-anchor="middle">调度、进程、线程</text>
+
+  <rect class="box" x="310" y="356" width="190" height="100" rx="10"/>
+  <text class="name" x="405" y="388" text-anchor="middle">内存管理</text>
+  <rect class="chip chip-mem" x="325" y="404" width="160" height="26" rx="6"/><text class="chip" x="405" y="422" text-anchor="middle">虚拟内存、分页</text>
+
+  <rect class="box" x="520" y="356" width="190" height="100" rx="10"/>
+  <text class="name" x="615" y="388" text-anchor="middle">文件系统</text>
+  <rect class="chip chip-fs" x="535" y="404" width="160" height="26" rx="6"/><text class="chip" x="615" y="422" text-anchor="middle">文件、目录、inode</text>
+
+  <rect class="box" x="730" y="356" width="190" height="100" rx="10"/>
+  <text class="name" x="825" y="388" text-anchor="middle">IO 管理</text>
+  <rect class="chip chip-io" x="745" y="404" width="160" height="26" rx="6"/><text class="chip" x="825" y="422" text-anchor="middle">设备驱动、缓冲</text>
+
+  <!-- 硬件 -->
+  <path class="arrow" d="M195 456 V496"/>
+  <path class="arrow" d="M405 456 V496"/>
+  <path class="arrow" d="M615 456 V496"/>
+  <path class="arrow" d="M825 456 V496"/>
+  <text class="label" x="500" y="484" text-anchor="middle">驱动程序操作硬件</text>
+
+  <rect x="60" y="500" width="880" height="110" rx="12" fill="#fefce8" stroke="#ca8a04" stroke-width="2" stroke-dasharray="8 6"/>
+  <text class="zone-title" x="80" y="526">硬件</text>
+
+  <rect class="box" x="100" y="540" width="190" height="52" rx="10"/>
+  <text class="name" x="195" y="573" text-anchor="middle">CPU（中央处理器）</text>
+
+  <rect class="box" x="310" y="540" width="190" height="52" rx="10"/>
+  <text class="name" x="405" y="573" text-anchor="middle">内存</text>
+
+  <rect class="box" x="520" y="540" width="190" height="52" rx="10"/>
+  <text class="name" x="615" y="573" text-anchor="middle">磁盘</text>
+
+  <rect class="box" x="730" y="540" width="190" height="52" rx="10"/>
+  <text class="name" x="825" y="573" text-anchor="middle">网卡</text>
+</svg>

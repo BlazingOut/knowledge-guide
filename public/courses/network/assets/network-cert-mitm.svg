@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640">
+  <rect width="1000" height="640" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .sec{font-size:18;font-weight:bold} .title{font-size:15;font-weight:bold} .note{font-size:14;fill:#334155} .small{font-size:13;fill:#475569} .box{fill:#fff;stroke:#2563eb;stroke-width:3}</style>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">证书如何挡住中间人：你信任的是 CA，不是网上传来的公钥</text>
+
+  <!-- 证书链 -->
+  <text class="sec" x="500" y="72" text-anchor="middle">一张服务器证书要过的四道检查</text>
+
+  <rect x="40" y="92" width="220" height="100" rx="10" fill="#fff" stroke="#2563eb" stroke-width="3"/>
+  <text class="title" x="150" y="128" text-anchor="middle">1. 签名</text>
+  <text class="small" x="150" y="154" text-anchor="middle">用 CA 公钥解开</text>
+  <text class="small" x="150" y="176" text-anchor="middle">对得上才是真证书</text>
+
+  <rect x="273" y="92" width="220" height="100" rx="10" fill="#fff" stroke="#2563eb" stroke-width="3"/>
+  <text class="title" x="383" y="128" text-anchor="middle">2. 域名</text>
+  <text class="small" x="383" y="154" text-anchor="middle">CN / SAN 必须匹配</text>
+  <text class="small" x="383" y="176" text-anchor="middle">你正在访问的主机名</text>
+
+  <rect x="506" y="92" width="220" height="100" rx="10" fill="#fff" stroke="#2563eb" stroke-width="3"/>
+  <text class="title" x="616" y="128" text-anchor="middle">3. 有效期</text>
+  <text class="small" x="616" y="154" text-anchor="middle">当前时间落在</text>
+  <text class="small" x="616" y="176" text-anchor="middle">notBefore ~ notAfter</text>
+
+  <rect x="740" y="92" width="220" height="100" rx="10" fill="#fff" stroke="#2563eb" stroke-width="3"/>
+  <text class="title" x="850" y="128" text-anchor="middle">4. 信任锚</text>
+  <text class="small" x="850" y="154" text-anchor="middle">签发者必须能追到</text>
+  <text class="small" x="850" y="176" text-anchor="middle">系统里预装的根 CA</text>
+
+  <!-- MITM 对比 -->
+  <text class="sec" x="250" y="230" text-anchor="middle">没有证书：中间人直接成功</text>
+  <rect x="40" y="248" width="420" height="250" rx="12" fill="#fff" stroke="#dc2626" stroke-width="3"/>
+  <text class="title" x="250" y="280" text-anchor="middle">你  ←  中间人  ←  真服务器</text>
+  <text class="note" x="250" y="314" text-anchor="middle">中间人把自己的公钥给你</text>
+  <text class="note" x="250" y="340" text-anchor="middle">你用它加密，他解开再转发给服务器</text>
+  <text class="small" x="250" y="374" text-anchor="middle">明文 HTTP 就是这种处境：</text>
+  <text class="small" x="250" y="396" text-anchor="middle">路上每一跳都能读、能改</text>
+  <text class="small" x="250" y="428" text-anchor="middle">你以为在和 api.example.com 说话</text>
+  <text class="small" x="250" y="450" text-anchor="middle">其实密钥握在中间人手里</text>
+
+  <text class="sec" x="750" y="230" text-anchor="middle">有 CA 证书：掉包的公钥验签失败</text>
+  <rect x="540" y="248" width="420" height="250" rx="12" fill="#fff" stroke="#059669" stroke-width="3"/>
+  <text class="title" x="750" y="280" text-anchor="middle">你  ←×  中间人  ←  真服务器</text>
+  <text class="note" x="750" y="314" text-anchor="middle">中间人也可以做一张"证书"</text>
+  <text class="note" x="750" y="340" text-anchor="middle">但签不出 CA 的那一笔</text>
+  <text class="small" x="750" y="374" text-anchor="middle">浏览器用预装的根 CA 公钥验签</text>
+  <text class="small" x="750" y="396" text-anchor="middle">对不上 → 立刻中止握手</text>
+  <text class="small" x="750" y="428" text-anchor="middle">HTTP 请求根本还没发出去</text>
+  <text class="small" x="750" y="450" text-anchor="middle">这就是"锁头图标"在保护的事</text>
+
+  <text class="note" x="500" y="532" text-anchor="middle">证书链通常是：网站证书 ← 中间 CA 签发 ← 根 CA 签发。根 CA 的公钥预装在操作系统 / 浏览器里，不走网络。</text>
+  <text class="note" x="500" y="560" text-anchor="middle">中间人攻击在用户点了"继续访问"、公司安装了自定义根证书做 HTTPS 解密代理、或设备中了恶意根证书时仍然可能成功。</text>
+  <text class="note" x="500" y="588" text-anchor="middle">自签证书开发常用：openssl 自己签自己。curl / 浏览器默认拒绝，必须显式跳过校验——生产环境不要这么做。</text>
+  <text class="note" x="500" y="616" text-anchor="middle">证书证明的是"这把公钥属于这个域名"，不是"这个网站是好人"。钓鱼站也可以买到合法证书。</text>
+</svg>

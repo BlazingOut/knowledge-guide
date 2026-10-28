@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="480" viewBox="0 0 1000 480">
+  <rect width="1000" height="480" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .name{font-size:15;fill:#334155} .desc{font-size:15;fill:#334155} .label{font-size:14;fill:#475569}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="40" text-anchor="middle" font-size="22" font-weight="bold">SQLite 文件与 MySQL 服务器的部署差别</text>
+
+  <text x="230" y="78" text-anchor="middle" font-size="16" font-weight="bold">SQLite：进程内文件数据库</text>
+  <rect class="box" x="90" y="100" width="280" height="70" rx="10"/>
+  <text class="name" x="102" y="124">应用进程</text>
+  <text class="desc" x="102" y="148">自带数据库引擎，进程内执行 SQL</text>
+  <path class="arrow" d="M230 170 V210"/>
+  <text class="label" x="242" y="194">打开并读写文件</text>
+  <rect class="box" x="90" y="214" width="280" height="70" rx="10"/>
+  <text class="name" x="102" y="238">app.db 数据库文件</text>
+  <text class="desc" x="102" y="262">单机、嵌入式、测试场景</text>
+
+  <text x="740" y="78" text-anchor="middle" font-size="16" font-weight="bold">MySQL：独立数据库服务器</text>
+  <rect class="box" x="560" y="100" width="140" height="55" rx="10"/>
+  <text class="name" x="572" y="133">Web 应用 A</text>
+  <rect class="box" x="720" y="100" width="160" height="55" rx="10"/>
+  <text class="name" x="732" y="133">Web 应用 B</text>
+  <path class="arrow" d="M630 155 V250"/>
+  <path class="arrow" d="M800 155 V250"/>
+  <text class="label" x="700" y="195" text-anchor="middle">网络连接（TCP，默认端口 3306）</text>
+  <rect class="box" x="540" y="250" width="400" height="70" rx="10"/>
+  <text class="name" x="552" y="272">MySQL Server</text>
+  <text class="desc" x="552" y="296">连接与会话 / SQL 解析 / 权限校验</text>
+  <path class="arrow" d="M740 320 V365"/>
+  <text class="label" x="752" y="348">执行 SQL，交给存储引擎</text>
+  <rect class="box" x="540" y="370" width="400" height="70" rx="10"/>
+  <text class="name" x="552" y="392">存储引擎层</text>
+  <text class="desc" x="552" y="416">InnoDB / MyISAM / MEMORY ...</text>
+</svg>

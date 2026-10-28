@@ -1,0 +1,651 @@
+# 第十一课：网络观察与排错命令工具箱
+
+## 本课范围
+
+前面的课程已经学习了网络分层、IP、端口、TCP、DNS、HTTP、HTTPS、代理和网关。本课把之前零散出现过的命令整理成一套排错方法：
+
+```text
+本机配置
+  -> 路由
+  -> 进程和端口
+  -> 网络连通性
+  -> 路径
+  -> DNS
+  -> HTTP 请求
+```
+
+本课只观察本机、`127.0.0.1` 和学习者自己启动的课程服务，不扫描局域网其他设备，也不提供攻击性扫描步骤。
+
+不同操作系统的命令名称和输出格式可能不同。本文以 Linux/macOS 命令为主，并给出 Windows PowerShell 的常用替代命令。
+
+## 学习目标
+
+完成本课后，你应当能够：
+
+- 查看本机 IP、路由和监听端口；
+- 区分“服务没有启动”“端口没有监听”和“请求路径错误”；
+- 使用 `ping`、`traceroute` 或 `tracert` 判断基础连通性；
+- 使用 `dig`、`nslookup` 查看 DNS 解析；
+- 使用 `curl` 观察 HTTP 状态码、请求头和响应头；
+- 按层次排查“接口连不上”和“接口超时”；
+- 说明为什么 `ping` 通不代表 HTTP 接口一定可用。
+
+## 1. 排错的基本顺序
+
+遇到“接口访问失败”，不要一开始就修改应用代码。可以先按下面的顺序缩小范围：
+
+```text
+1. 服务进程是否启动？
+2. 目标端口是否监听？
+3. 路由是否指向正确地址？
+4. DNS 是否解析到预期地址？
+5. TCP 连接是否建立？
+6. TLS 是否成功？
+7. HTTP 请求是否到达？
+8. 服务端路由、依赖或上游是否报错？
+```
+
+对应的观察对象：
+
+| 层次 | 主要问题 | 常用工具 |
+| --- | --- | --- |
+| 进程 | 服务是否运行 | `ps`、任务管理器 |
+| 地址 | 本机有哪些 IP | `ip addr`、`ipconfig` |
+| 路由 | 数据从哪里出去 | `ip route`、`route print` |
+| 端口 | 是否有程序监听 | `ss`、`lsof`、`netstat` |
+| 连通性 | 是否能到达目标 | `ping`、`traceroute` |
+| DNS | 域名解析到哪里 | `dig`、`nslookup` |
+| HTTP | 请求和响应是什么 | `curl -v` |
+
+## 2. 查看本机网络配置
+
+### 2.1 `ip addr`
+
+Linux 查看网卡地址：
+
+```bash
+ip addr
+```
+
+简写：
+
+```bash
+ip a
+```
+
+重点关注：
+
+- 网卡名称；
+- `inet` 后面的 IPv4 地址；
+- 子网前缀，例如 `/24`；
+- `127.0.0.1` 回环地址；
+- 网卡是否处于 `UP` 状态。
+
+只查看指定网卡：
+
+```bash
+ip addr show eth0
+```
+
+macOS 常见写法：
+
+```bash
+ifconfig
+```
+
+Windows PowerShell：
+
+```powershell
+ipconfig
+```
+
+更详细的 Windows 信息：
+
+```powershell
+Get-NetIPConfiguration
+```
+
+### 2.2 地址的排错意义
+
+访问本机服务时，下面几个地址含义不同：
+
+| 地址 | 含义 |
+| --- | --- |
+| `127.0.0.1` | 当前机器的回环地址 |
+| `localhost` | 通常解析到本机回环地址 |
+| `0.0.0.0` | 监听所有 IPv4 网卡，不是客户端访问地址 |
+| 局域网地址 | 本机在某个网络中的地址 |
+
+如果服务只监听 `127.0.0.1`，通常只能由本机访问；如果服务监听 `0.0.0.0`，表示它接受所有本机 IPv4 网卡上的连接，但不等于防火墙一定允许外部访问。
+
+## 3. 查看路由
+
+### 3.1 Linux
+
+```bash
+ip route
+```
+
+可能看到：
+
+```text
+default via 192.168.1.1 dev eth0
+192.168.1.0/24 dev eth0 proto kernel scope link
+```
+
+- `default`：没有更具体路由时使用的默认路由；
+- `via`：下一跳网关；
+- `dev`：使用的网卡；
+- `192.168.1.0/24`：本地网段。
+
+### 3.2 macOS
+
+```bash
+route -n get default
+netstat -rn
+```
+
+### 3.3 Windows
+
+```powershell
+route print
+```
+
+或：
+
+```powershell
+Get-NetRoute
+```
+
+### 3.4 路由排错
+
+如果本机服务访问正常，但访问外部服务失败，可以观察：
+
+- 是否存在默认路由；
+- 默认网关是否正确；
+- 是否使用了意外的 VPN 或代理；
+- 目标地址是否匹配某条特殊路由。
+
+路由存在不代表目标服务一定可达，它只说明操作系统知道下一步把数据交给谁。
+
+## 4. 查看端口和连接
+
+### 4.1 `ss`
+
+Linux 查看监听中的 TCP 和 UDP 端口：
+
+```bash
+ss -lntup
+```
+
+常见选项：
+
+| 选项 | 含义 |
+| --- | --- |
+| `-l` | 只看监听 |
+| `-n` | 不解析服务名和域名，直接显示数字 |
+| `-t` | TCP |
+| `-u` | UDP |
+| `-p` | 显示进程信息 |
+
+只看 TCP 监听：
+
+```bash
+ss -lnt
+```
+
+查看某个端口：
+
+```bash
+ss -lntp | grep ':8000'
+```
+
+上面的管道命令只适用于 Linux/macOS。Windows 可以使用：
+
+```powershell
+Get-NetTCPConnection -LocalPort 8000
+```
+
+### 4.2 `lsof`
+
+查看哪个进程使用 TCP 8000 端口：
+
+```bash
+lsof -iTCP:8000 -sTCP:LISTEN
+```
+
+查看某个进程打开的网络连接：
+
+```bash
+lsof -p <PID> -a -i
+```
+
+`lsof` 关注“哪个进程打开了什么文件或网络对象”，`ss` 更关注 socket 状态和连接列表。
+
+### 4.3 `netstat`
+
+一些系统仍然提供：
+
+```bash
+netstat -lntp
+```
+
+Windows：
+
+```powershell
+netstat -ano
+```
+
+最后一列通常是 PID，可以继续查询进程：
+
+```powershell
+Get-Process -Id <PID>
+```
+
+### 4.4 端口排错
+
+常见现象：
+
+```text
+Connection refused
+```
+
+通常表示目标地址可到达，但目标端口没有程序监听，或者服务主动拒绝连接。
+
+```text
+Connection timed out
+```
+
+可能表示路由、防火墙、代理或服务处理链路没有及时返回，不能只归因于应用没有启动。
+
+如果端口已经被其他进程占用，启动新服务可能出现：
+
+```text
+Address already in use
+```
+
+此时先找出占用端口的 PID，再判断是否是自己的旧服务，避免直接结束不确定的进程。
+
+## 5. `ping`：观察基础连通性
+
+```bash
+ping 127.0.0.1
+```
+
+Windows：
+
+```powershell
+ping 127.0.0.1
+```
+
+`ping` 通常使用 ICMP Echo Request 和 Echo Reply，观察：
+
+- 是否收到回复；
+- 往返时间；
+- 丢包率；
+- TTL。
+
+### 5.1 `ping` 不通说明什么
+
+可能原因包括：
+
+- 地址错误；
+- 路由不存在；
+- 主机不可达；
+- 防火墙丢弃 ICMP；
+- 对方主动禁用 ICMP。
+
+所以 `ping` 不通不一定代表 TCP 或 HTTP 一定不可用。
+
+### 5.2 `ping` 通说明什么
+
+`ping` 通只能说明 ICMP 路径有回复，不能证明：
+
+- 目标 TCP 端口在监听；
+- DNS 解析正确；
+- TLS 证书验证成功；
+- HTTP 路由存在；
+- 应用依赖和上游服务正常。
+
+排查 HTTP 接口时，最终仍然要使用 TCP/HTTP 工具验证。
+
+## 6. `traceroute` 和 `tracert`
+
+Linux/macOS：
+
+```bash
+traceroute example.test
+```
+
+Windows：
+
+```powershell
+tracert example.test
+```
+
+它通过逐步增加 TTL，观察中间路由器返回的超时或错误消息，从而估计经过哪些跳。
+
+输出中的 `* * *` 不一定表示链路故障，可能只是某一跳不响应探测报文，但仍然转发正常流量。
+
+路径追踪适合回答：
+
+- 数据大致经过哪些网络节点；
+- 从哪一跳开始出现明显延迟；
+- 是否经过了意外的网关。
+
+它不能直接证明最终 TCP 端口或 HTTP 服务一定正常。
+
+## 7. DNS 查询
+
+### 7.1 `dig`
+
+查询 A 记录：
+
+```bash
+dig example.test A
+```
+
+查询 AAAA 记录：
+
+```bash
+dig example.test AAAA
+```
+
+只显示答案：
+
+```bash
+dig +short example.test
+```
+
+查看 CNAME：
+
+```bash
+dig example.test CNAME
+```
+
+查看完整解析过程的概要：
+
+```bash
+dig example.test
+```
+
+重点观察：
+
+- `QUESTION SECTION`：查询的问题；
+- `ANSWER SECTION`：返回的记录；
+- `AUTHORITY SECTION`：权威信息；
+- `TTL`：缓存有效时间；
+- `SERVER`：本次使用的 DNS 服务器。
+
+### 7.2 `nslookup`
+
+Linux、macOS 和 Windows 通常都可以使用：
+
+```bash
+nslookup example.test
+```
+
+指定记录类型：
+
+```bash
+nslookup -type=AAAA example.test
+```
+
+### 7.3 DNS 排错
+
+如果域名访问失败，先区分：
+
+```text
+域名无法解析
+  -> DNS 问题
+
+域名能解析，但 TCP 连接失败
+  -> 路由、防火墙、端口或服务问题
+
+TCP 能连接，但 HTTPS 失败
+  -> TLS、证书或代理问题
+```
+
+不要在 DNS 还没有解析成功时直接排查应用路由。
+
+## 8. `curl`：观察 HTTP 请求
+
+### 8.1 基本请求
+
+```bash
+curl http://127.0.0.1:8000/health
+```
+
+只查看响应头：
+
+```bash
+curl -I http://127.0.0.1:8000/health
+```
+
+显示请求和响应的详细过程：
+
+```bash
+curl -v http://127.0.0.1:8000/health
+```
+
+重点观察：
+
+```text
+* Connected to ...
+> GET /health HTTP/1.1
+> Host: ...
+< HTTP/1.1 200 OK
+< Content-Type: ...
+```
+
+`>` 表示客户端发送的内容，`<` 表示服务端返回的内容，`*` 表示 curl 的连接和 TLS 过程信息。
+
+### 8.2 发送 JSON
+
+```bash
+curl -X POST http://127.0.0.1:8000/items ^
+  -H "Content-Type: application/json" ^
+  -d "{\"content\":\"测试\"}"
+```
+
+在 Linux/macOS 中，换行续行符通常是反斜杠：
+
+```bash
+curl -X POST http://127.0.0.1:8000/items \
+  -H 'Content-Type: application/json' \
+  -d '{"content":"测试"}'
+```
+
+Windows PowerShell 也可以使用 `Invoke-RestMethod`：
+
+```powershell
+Invoke-RestMethod `
+  -Method Post `
+  -Uri "http://127.0.0.1:8000/items" `
+  -ContentType "application/json" `
+  -Body '{"content":"测试"}'
+```
+
+### 8.3 超时
+
+连接超时：
+
+```bash
+curl --connect-timeout 3 http://127.0.0.1:8000/health
+```
+
+总请求时间限制：
+
+```bash
+curl --max-time 5 http://127.0.0.1:8000/health
+```
+
+连接超时和总超时不是同一个概念：
+
+- `--connect-timeout`：建立连接最多等待多久；
+- `--max-time`：整个请求最多持续多久。
+
+### 8.4 流式响应
+
+```bash
+curl -N http://127.0.0.1:8000/chat/stream
+```
+
+`-N` 关闭 curl 的输出缓冲，便于观察服务端逐段发送的内容。
+
+如果服务端确实产生了片段，但客户端最后才一次显示，可能是客户端或中间代理在缓冲。
+
+## 9. 从现象到结论
+
+### 场景一：浏览器显示无法连接
+
+建议顺序：
+
+```text
+1. 服务进程是否启动？
+2. 端口是否监听？
+3. URL 的主机和端口是否正确？
+4. 用 curl 访问同一个 URL
+5. 查看服务端启动日志
+```
+
+如果端口没有监听，不要先检查 HTTP 路由代码。
+
+### 场景二：`ping` 通，但 API 访问失败
+
+继续检查：
+
+```text
+ping 成功
+  -> DNS 是否正确
+  -> TCP 目标端口是否监听
+  -> TLS 是否成功
+  -> HTTP 路径和方法是否正确
+```
+
+ICMP 和 HTTP 是不同协议，`ping` 不能替代 `curl`。
+
+### 场景三：连接建立，但请求超时
+
+可能位置：
+
+- 服务端代码执行时间过长；
+- 数据库或上游 HTTP 调用阻塞；
+- 代理读取超时；
+- 服务端只产生数据但没有及时刷新；
+- 网络中间设备丢弃或缓冲长连接。
+
+使用 `curl -v` 先判断连接是否建立，再结合服务端日志判断请求卡在哪一步。
+
+### 场景四：返回 `502` 或 `504`
+
+这些状态码常由网关或反向代理返回：
+
+- `502`：网关从上游得到无效响应或连接失败；
+- `504`：网关等待上游超时。
+
+排查时要同时看：
+
+```text
+客户端 -> 网关
+网关 -> 后端
+后端 -> 上游服务
+```
+
+## 10. 本机综合练习
+
+启动一个自己有权限的本地 HTTP 服务，例如：
+
+```bash
+python -m http.server 8000
+```
+
+然后依次执行：
+
+```bash
+curl -v http://127.0.0.1:8000/
+```
+
+查看端口：
+
+```bash
+ss -lnt
+```
+
+Windows：
+
+```powershell
+Get-NetTCPConnection -LocalPort 8000
+```
+
+观察访问不存在路径的结果：
+
+```bash
+curl -v http://127.0.0.1:8000/not-found
+```
+
+停止服务后再次访问，比较：
+
+- 服务运行时的 HTTP 响应；
+- 服务停止后的连接错误；
+- 端口监听状态；
+- curl 输出中的差异。
+
+## 11. 验收问题
+
+1. `ip addr` 或 `ipconfig` 主要查看什么？
+2. `0.0.0.0` 能不能作为客户端访问地址？
+3. 如何查看默认网关？
+4. `ss` 和 `lsof` 分别更擅长观察什么？
+5. `Connection refused` 和 `Connection timed out` 有什么区别？
+6. `ping` 使用什么协议？
+7. 为什么 `ping` 通不代表 HTTP 接口可用？
+8. `traceroute` 输出中的 `*` 一定代表故障吗？
+9. `dig` 中的 TTL 表示什么？
+10. `curl -v` 中 `>` 和 `<` 分别表示什么？
+11. `--connect-timeout` 和 `--max-time` 有什么区别？
+12. 接口返回 `504` 时应该检查哪几段链路？
+
+## 12. 面试高频考点
+
+### 12.1 如何排查接口连不上？
+
+从下到上逐层确认：
+
+```text
+进程
+  -> 监听端口
+  -> 路由和网关
+  -> DNS
+  -> TCP
+  -> TLS
+  -> HTTP 方法、路径和状态码
+```
+
+每一步都用对应工具验证，不要把所有现象都归因于应用代码。
+
+### 12.2 `ping` 通但端口连不上说明什么？
+
+说明 ICMP 层面有回复，但不代表目标 TCP 端口在监听。可能是端口没有服务、防火墙拦截、服务只监听回环地址，或者 TCP 访问路径与 ICMP 路径不同。
+
+### 12.3 `lsof` 和 `ss` 有什么区别？
+
+`lsof` 可以从进程角度查看哪个程序打开了哪些网络对象；`ss` 更适合观察 socket、监听端口、连接状态和 TCP 统计。排查端口占用时两者可以互相补充。
+
+### 12.4 如何区分 502 和 504？
+
+`502` 更偏向网关与上游建立连接失败或收到无效响应；`504` 更偏向网关等待上游超过超时时间。具体原因仍要结合网关和后端日志确认。
+
+### 12.5 为什么排障命令不能只会背参数？
+
+工具的价值在于它观察的是不同层次：
+
+```text
+ip     -> 地址和路由
+ss     -> 端口和连接
+ping   -> ICMP 连通性
+dig    -> DNS
+curl   -> HTTP
+```
+
+只有先明确问题属于哪一层，命令输出才有意义。

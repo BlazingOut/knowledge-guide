@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+  <rect width="1000" height="520" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033}.box{fill:#fff;stroke:#2563eb;stroke-width:3}.center{fill:#eff6ff;stroke:#1d4ed8;stroke-width:3}.arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}.title{font-size:24;font-weight:bold}.name{font-size:16;font-weight:bold}.desc{font-size:14;fill:#334155}.label{font-size:13;fill:#475569}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text class="title" x="500" y="40" text-anchor="middle">Agent = LLM + Planning + Memory + Tools</text>
+  <text class="label" x="500" y="66" text-anchor="middle">LLM 只做决策和生成；工具改世界；记忆提供状态；规划决定下一步</text>
+
+  <rect class="box" x="40" y="100" width="280" height="110" rx="10"/>
+  <text class="name" x="180" y="132" text-anchor="middle">Planning</text>
+  <text class="desc" x="180" y="160" text-anchor="middle">根据目标拆步骤</text>
+  <text class="desc" x="180" y="184" text-anchor="middle">选择下一个动作</text>
+
+  <rect class="box" x="680" y="100" width="280" height="110" rx="10"/>
+  <text class="name" x="820" y="132" text-anchor="middle">Memory</text>
+  <text class="desc" x="820" y="160" text-anchor="middle">短期：当前 messages</text>
+  <text class="desc" x="820" y="184" text-anchor="middle">长期：外部存储再召回</text>
+
+  <rect class="center" x="360" y="200" width="280" height="120" rx="12"/>
+  <text class="name" x="500" y="248" text-anchor="middle">LLM</text>
+  <text class="desc" x="500" y="276" text-anchor="middle">输入 messages，输出文本</text>
+  <text class="desc" x="500" y="300" text-anchor="middle">或工具调用意图</text>
+
+  <rect class="box" x="40" y="330" width="280" height="110" rx="10"/>
+  <text class="name" x="180" y="362" text-anchor="middle">Tools</text>
+  <text class="desc" x="180" y="390" text-anchor="middle">查库、写计划、调 API</text>
+  <text class="desc" x="180" y="414" text-anchor="middle">结果写成 Observation</text>
+
+  <rect class="box" x="680" y="330" width="280" height="110" rx="10"/>
+  <text class="name" x="820" y="362" text-anchor="middle">Runtime</text>
+  <text class="desc" x="820" y="390" text-anchor="middle">解析输出、校验、执行</text>
+  <text class="desc" x="820" y="414" text-anchor="middle">模型不能直接跑函数</text>
+
+  <path class="arrow" d="M320 155 H360"/>
+  <path class="arrow" d="M680 155 H640"/>
+  <path class="arrow" d="M320 385 H400 385 V320"/>
+  <path class="arrow" d="M680 385 H600 385 V320"/>
+</svg>

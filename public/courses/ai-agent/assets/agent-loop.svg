@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">
+  <rect width="1000" height="560" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033}.box{fill:#fff;stroke:#2563eb;stroke-width:3}.llm{fill:#eff6ff;stroke:#1d4ed8;stroke-width:3}.tool{fill:#fff;stroke:#059669;stroke-width:3}.stop{fill:#fff;stroke:#b45309;stroke-width:3}.arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}.title{font-size:24;font-weight:bold}.name{font-size:16;font-weight:bold}.desc{font-size:13;fill:#334155}.label{font-size:13;fill:#475569}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text class="title" x="500" y="40" text-anchor="middle">Agent Loop</text>
+  <text class="label" x="500" y="66" text-anchor="middle">运行时维护 messages；模型只输出决策；工具结果必须追加后再进入下一轮</text>
+
+  <rect class="box" x="360" y="90" width="280" height="70" rx="10"/>
+  <text class="name" x="500" y="120" text-anchor="middle">1. 组装上下文</text>
+  <text class="desc" x="500" y="144" text-anchor="middle">system + 用户目标 + 历史观察</text>
+
+  <path class="arrow" d="M500 160 V188"/>
+
+  <rect class="llm" x="360" y="192" width="280" height="70" rx="10"/>
+  <text class="name" x="500" y="222" text-anchor="middle">2. 模型决策</text>
+  <text class="desc" x="500" y="246" text-anchor="middle">最终回复，或工具名 + 参数</text>
+
+  <path class="arrow" d="M500 262 V290"/>
+
+  <rect class="stop" x="360" y="294" width="280" height="70" rx="10"/>
+  <text class="name" x="500" y="324" text-anchor="middle">3. 运行时解析</text>
+  <text class="desc" x="500" y="348" text-anchor="middle">是最终答案？还是调用工具？</text>
+
+  <path class="arrow" d="M640 329 H760"/>
+  <text class="label" x="700" y="318" text-anchor="middle">最终答案 / 步数用尽</text>
+  <rect class="stop" x="760" y="294" width="200" height="70" rx="10"/>
+  <text class="name" x="860" y="324" text-anchor="middle">停止</text>
+  <text class="desc" x="860" y="348" text-anchor="middle">把回复交给用户</text>
+
+  <path class="arrow" d="M500 364 V392"/>
+  <text class="label" x="512" y="384">工具调用</text>
+
+  <rect class="tool" x="360" y="396" width="280" height="70" rx="10"/>
+  <text class="name" x="500" y="426" text-anchor="middle">4. 执行工具</text>
+  <text class="desc" x="500" y="450" text-anchor="middle">业务函数在本进程运行</text>
+
+  <path class="arrow" d="M360 431 H160"/>
+  <rect class="box" x="40" y="396" width="120" height="70" rx="10"/>
+  <text class="name" x="100" y="426" text-anchor="middle">5. 追加</text>
+  <text class="desc" x="100" y="450" text-anchor="middle">Observation</text>
+
+  <path class="arrow" d="M100 396 V125 H360"/>
+  <text class="label" x="180" y="250">回到步骤 1，messages 更长</text>
+</svg>

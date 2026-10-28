@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430">
+  <rect width="1000" height="430" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .name{font-size:16;font-weight:bold;fill:#334155} .label{font-size:13;fill:#475569} .note{font-size:14;fill:#334155}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="40" text-anchor="middle" font-size="22" font-weight="bold">进程五状态模型</text>
+
+  <rect class="box" x="80" y="90" width="140" height="64" rx="10"/>
+  <text class="name" x="150" y="122" text-anchor="middle">新建</text>
+  <text class="label" x="150" y="142" text-anchor="middle">正在创建中</text>
+
+  <rect class="box" x="320" y="90" width="140" height="64" rx="10"/>
+  <text class="name" x="390" y="122" text-anchor="middle">就绪</text>
+  <text class="label" x="390" y="142" text-anchor="middle">万事俱备，等 CPU</text>
+
+  <rect class="box" x="560" y="90" width="140" height="64" rx="10"/>
+  <text class="name" x="630" y="122" text-anchor="middle">运行</text>
+  <text class="label" x="630" y="142" text-anchor="middle">正在占用 CPU</text>
+
+  <rect class="box" x="820" y="90" width="140" height="64" rx="10"/>
+  <text class="name" x="890" y="122" text-anchor="middle">终止</text>
+  <text class="label" x="890" y="142" text-anchor="middle">等待父进程回收</text>
+
+  <!-- 新建 -> 就绪 -->
+  <path d="M220 122 H316" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="label" x="268" y="112" text-anchor="middle">资源就绪</text>
+
+  <!-- 就绪 <-> 运行 -->
+  <path d="M462 108 H556" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="label" x="509" y="98" text-anchor="middle">被调度选中</text>
+  <path d="M556 138 H464" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="label" x="509" y="156" text-anchor="middle">时间片用完 / 被抢占</text>
+
+  <!-- 运行 -> 终止 -->
+  <path d="M700 122 H816" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="label" x="758" y="112" text-anchor="middle">执行完毕 / 出错</text>
+
+  <!-- 运行 -> 阻塞 -> 就绪 -->
+  <rect class="box" x="560" y="240" width="140" height="64" rx="10"/>
+  <text class="name" x="630" y="272" text-anchor="middle">阻塞</text>
+  <text class="label" x="630" y="292" text-anchor="middle">等事件，不占 CPU</text>
+
+  <path d="M630 154 V236" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="label" x="642" y="196">等 IO、等锁、sleep</text>
+
+  <path d="M556 272 H390 V158" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="label" x="468" y="264" text-anchor="middle">事件到达：只能回就绪队列重新排队</text>
+
+  <text class="note" x="500" y="360" text-anchor="middle">阻塞的进程不占 CPU（区别于就绪的"等 CPU"：就绪进程随时能上机，阻塞进程再等也没用）；</text>
+  <text class="note" x="500" y="386" text-anchor="middle">阻塞进程被唤醒后不能直接跳回运行，必须经过就绪队列——CPU 的裁决权始终在调度器手里。</text>
+</svg>

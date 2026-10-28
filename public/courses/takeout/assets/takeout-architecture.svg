@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700">
+  <rect width="1000" height="700" fill="#ffffff"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6b5f6b} .box{font-size:16;font-weight:bold} .sub{font-size:13;fill:#8a7f8a} .note{font-size:14;fill:#8a7f8a}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3a5b3"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">外卖系统的完整架构：七个组成层</text>
+
+  <!-- 用户浏览器 -->
+  <rect x="350" y="66" width="300" height="56" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="91" text-anchor="middle">用户浏览器（点餐页面）</text>
+  <text class="sub" x="500" y="110" text-anchor="middle">登录、浏览菜品、下单</text>
+
+  <!-- DNS -->
+  <rect x="350" y="156" width="300" height="50" rx="8" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="179" text-anchor="middle">DNS：域名 → IP</text>
+  <text class="sub" x="500" y="196" text-anchor="middle">找到服务器地址</text>
+
+  <!-- Nginx 网关 -->
+  <rect x="350" y="240" width="300" height="50" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="263" text-anchor="middle">Nginx 网关</text>
+  <text class="sub" x="500" y="280" text-anchor="middle">转发请求、超时限制、静态资源</text>
+
+  <!-- FastAPI 应用 -->
+  <rect x="350" y="324" width="300" height="50" rx="8" fill="#e2dfff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="347" text-anchor="middle">FastAPI 应用</text>
+  <text class="sub" x="500" y="364" text-anchor="middle">鉴权、路由、业务逻辑</text>
+
+  <!-- Redis 与 MySQL -->
+  <rect x="120" y="420" width="330" height="66" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="285" y="446" text-anchor="middle">Redis</text>
+  <text class="sub" x="285" y="468" text-anchor="middle">缓存、会话、限流、队列</text>
+
+  <rect x="550" y="420" width="330" height="66" rx="8" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="715" y="446" text-anchor="middle">MySQL</text>
+  <text class="sub" x="715" y="468" text-anchor="middle">用户、商家、菜品、订单、库存</text>
+
+  <!-- 异步 Worker -->
+  <rect x="300" y="536" width="400" height="58" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="560" text-anchor="middle">异步 Worker</text>
+  <text class="sub" x="500" y="580" text-anchor="middle">支付回调、订单超时取消、通知</text>
+
+  <!-- 箭头 -->
+  <line x1="500" y1="122" x2="500" y2="154" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="500" y1="206" x2="500" y2="238" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="500" y1="290" x2="500" y2="322" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="500" y1="374" x2="285" y2="418" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="500" y1="374" x2="715" y2="418" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="285" y1="486" x2="450" y2="534" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="715" y1="486" x2="550" y2="534" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text class="note" x="500" y="630" text-anchor="middle">分工：MySQL 保存事实（订单、库存、用户），Redis 负责加速（缓存、会话、限流、队列），Worker 处理异步动作。</text>
+  <text class="note" x="500" y="656" text-anchor="middle">第 2 课起逐课搭建这七个层；本课只要求记住这张图。</text>
+</svg>

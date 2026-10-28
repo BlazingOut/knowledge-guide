@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="550" viewBox="0 0 1000 550">
+  <rect width="1000" height="550" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)} .name{font-size:15;fill:#334155} .desc{font-size:15;fill:#334155} .chip{font-size:13} .label{font-size:14;fill:#475569} .chip-eth{fill:#c4b5fd} .chip-ip{fill:#fdba74} .chip-tcp{fill:#6ee7b7} .chip-http{fill:#93c5fd}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="bold">封装与解封装：发送端逐层加头，接收端逐层剥头</text>
+  <text x="260" y="76" text-anchor="middle" font-size="18" font-weight="bold">发送端（封装）</text>
+  <text x="740" y="76" text-anchor="middle" font-size="18" font-weight="bold">接收端（解封装）</text>
+
+  <rect class="box" x="60" y="95" width="400" height="70" rx="10"/>
+  <text class="name" x="72" y="117">应用层</text>
+  <rect class="chip-http" x="72" y="133" width="110" height="26" rx="6"/><text class="chip" x="127" y="151" text-anchor="middle">HTTP 数据</text>
+
+  <path class="arrow" d="M260 165 V201"/><text class="label" x="272" y="187">加 TCP 头</text>
+
+  <rect class="box" x="60" y="205" width="400" height="70" rx="10"/>
+  <text class="name" x="72" y="227">传输层</text>
+  <rect class="chip-tcp" x="72" y="243" width="78" height="26" rx="6"/><text class="chip" x="111" y="261" text-anchor="middle">TCP 头</text>
+  <rect class="chip-http" x="158" y="243" width="110" height="26" rx="6"/><text class="chip" x="213" y="261" text-anchor="middle">HTTP 数据</text>
+
+  <path class="arrow" d="M260 275 V311"/><text class="label" x="272" y="297">加 IP 头</text>
+
+  <rect class="box" x="60" y="315" width="400" height="70" rx="10"/>
+  <text class="name" x="72" y="337">网络层</text>
+  <rect class="chip-ip" x="72" y="353" width="70" height="26" rx="6"/><text class="chip" x="107" y="371" text-anchor="middle">IP 头</text>
+  <rect class="chip-tcp" x="150" y="353" width="78" height="26" rx="6"/><text class="chip" x="189" y="371" text-anchor="middle">TCP 头</text>
+  <rect class="chip-http" x="236" y="353" width="110" height="26" rx="6"/><text class="chip" x="291" y="371" text-anchor="middle">HTTP 数据</text>
+
+  <path class="arrow" d="M260 385 V421"/><text class="label" x="272" y="407">加 ETH 头</text>
+
+  <rect class="box" x="60" y="425" width="400" height="70" rx="10"/>
+  <text class="name" x="72" y="447">链路层</text>
+  <rect class="chip-eth" x="72" y="463" width="78" height="26" rx="6"/><text class="chip" x="111" y="481" text-anchor="middle">ETH 头</text>
+  <rect class="chip-ip" x="158" y="463" width="70" height="26" rx="6"/><text class="chip" x="193" y="481" text-anchor="middle">IP 头</text>
+  <rect class="chip-tcp" x="236" y="463" width="78" height="26" rx="6"/><text class="chip" x="275" y="481" text-anchor="middle">TCP 头</text>
+  <rect class="chip-http" x="322" y="463" width="110" height="26" rx="6"/><text class="chip" x="377" y="481" text-anchor="middle">HTTP 数据</text>
+
+  <path class="arrow" d="M462 460 H536" stroke-dasharray="8 6"/>
+  <text class="label" x="499" y="522" text-anchor="middle">物理介质传输</text>
+
+  <rect class="box" x="540" y="425" width="400" height="70" rx="10"/>
+  <text class="name" x="552" y="447">链路层</text>
+  <text class="desc" x="552" y="470">收到帧，检查 MAC 地址，剥掉 ETH 头</text>
+
+  <path class="arrow" d="M740 421 V385"/><text class="label" x="752" y="407">剥掉 ETH 头，交给网络层</text>
+
+  <rect class="box" x="540" y="315" width="400" height="70" rx="10"/>
+  <text class="name" x="552" y="337">网络层</text>
+  <text class="desc" x="552" y="360">检查目的 IP，剥掉 IP 头</text>
+
+  <path class="arrow" d="M740 311 V275"/><text class="label" x="752" y="297">剥掉 IP 头，交给传输层</text>
+
+  <rect class="box" x="540" y="205" width="400" height="70" rx="10"/>
+  <text class="name" x="552" y="227">传输层</text>
+  <text class="desc" x="552" y="250">按目的端口找到进程，剥掉 TCP 头</text>
+
+  <path class="arrow" d="M740 201 V165"/><text class="label" x="752" y="187">剥掉 TCP 头，交给应用</text>
+
+  <rect class="box" x="540" y="95" width="400" height="70" rx="10"/>
+  <text class="name" x="552" y="117">应用层</text>
+  <text class="desc" x="552" y="140">得到完整的 HTTP 数据</text>
+</svg>

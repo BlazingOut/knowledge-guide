@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="580" viewBox="0 0 1000 580">
+  <rect width="1000" height="580" fill="#ffffff"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6b5f6b} .box{font-size:15;font-weight:bold} .line{font-size:13;fill:#8a7f8a} .fault{font-size:13;font-weight:bold;fill:#c77b6b}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3a5b3"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">记忆系统：短期窗口、长期库与召回注入</text>
+
+  <!-- 当前会话（短期记忆） -->
+  <rect x="40" y="70" width="250" height="160" rx="8" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="165" y="96" text-anchor="middle">当前会话 · 短期记忆</text>
+  <text class="line" x="165" y="120" text-anchor="middle">窗口内 messages（上限 8 条）</text>
+  <text class="line" x="165" y="140" text-anchor="middle">超出上限 → 折叠成摘要</text>
+  <text class="line" x="165" y="160" text-anchor="middle">每次决策把"摘要 + 窗口"装进上下文</text>
+  <text class="fault" x="165" y="196" text-anchor="middle">全部塞进 → 上下文爆炸（路径 C）</text>
+
+  <!-- 上下文组装 -->
+  <rect x="330" y="70" width="280" height="160" rx="8" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="470" y="96" text-anchor="middle">上下文组装 · 召回注入</text>
+  <text class="line" x="470" y="120" text-anchor="middle">system + 摘要 + 召回的记忆</text>
+  <text class="line" x="470" y="140" text-anchor="middle">+ 工具描述</text>
+  <text class="line" x="470" y="160" text-anchor="middle">发送给模型</text>
+  <text class="fault" x="470" y="196" text-anchor="middle">召回什么 = 决定模型信什么</text>
+
+  <!-- 长期记忆库 -->
+  <rect x="660" y="70" width="300" height="300" rx="8" fill="#e2dfff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="810" y="96" text-anchor="middle">长期记忆库 · 跨会话</text>
+  <text class="line" x="810" y="122" text-anchor="middle">pref:sport  用户偏爱运动  [user · 1.0 · 已审核]</text>
+  <text class="fault" x="810" y="146" text-anchor="middle">habit:study  模型推断 0.5 → 待审核（被阈值拦下）</text>
+  <text class="line" x="810" y="170" text-anchor="middle">weak:recite  工具观察 0.8  [已审核]</text>
+  <text class="fault" x="810" y="196" text-anchor="middle">污染条目：过期推断 + 已审核 → 照样带偏决策</text>
+  <text class="line" x="810" y="220" text-anchor="middle">回滚：删除污染条目，写入更正事实</text>
+  <text class="line" x="810" y="244" text-anchor="middle">写入门槛：user 来源，或高置信度 + 已审核</text>
+  <text class="line" x="810" y="268" text-anchor="middle">同 key 新事实不同 → 冲突，进待审核队列</text>
+
+  <!-- 模型决策 -->
+  <rect x="330" y="280" width="280" height="120" rx="8" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="470" y="306" text-anchor="middle">模型决策</text>
+  <text class="line" x="470" y="330" text-anchor="middle">依据：上下文里的记忆 + 工具描述</text>
+  <text class="fault" x="470" y="366" text-anchor="middle">错误记忆先进上下文 → 决策被带偏</text>
+
+  <!-- 候选记忆与审核 -->
+  <rect x="330" y="430" width="280" height="80" rx="8" fill="#ffffff" stroke="#c77b6b" stroke-width="2"/>
+  <text class="box" x="470" y="456" text-anchor="middle">候选记忆 → 审核（人工）</text>
+  <text class="line" x="470" y="478" text-anchor="middle">阈值 + 去重 + 用户确认</text>
+  <text class="fault" x="470" y="498" text-anchor="middle">低置信度 / 冲突 → 待审核队列</text>
+
+  <!-- 连接箭头 -->
+  <line x1="290" y1="150" x2="328" y2="150" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="660" y1="150" x2="612" y2="150" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="470" y1="230" x2="470" y2="278" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="470" y1="400" x2="470" y2="428" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="612" y1="470" x2="658" y2="470" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 810 296 L 810 320" fill="none" stroke="#c77b6b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+
+  <text x="500" y="548" text-anchor="middle" font-size="14" fill="#8a7f8a">记忆先于决策进入上下文：召回 → 注入 → 决策 → 观察 → 候选 → 审核 → 写入，闭环中任何一环出错都会污染后面所有决策。</text>
+</svg>

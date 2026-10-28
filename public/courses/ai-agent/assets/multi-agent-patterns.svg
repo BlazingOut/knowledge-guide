@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#ffffff"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6b5f6b} .box{font-size:15;font-weight:bold} .line{font-size:13;fill:#8a7f8a} .fault{font-size:13;font-weight:bold;fill:#c77b6b}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3a5b3"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">三种形态与它们的协作问题</text>
+
+  <!-- 列 1：单 Agent -->
+  <rect x="30" y="70" width="300" height="430" rx="8" fill="#ffffff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="180" y="96" text-anchor="middle">单 Agent</text>
+  <rect x="80" y="110" width="200" height="50" rx="6" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="line" x="180" y="134" text-anchor="middle">用户（一个目标）</text>
+  <rect x="80" y="200" width="200" height="100" rx="6" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="180" y="226" text-anchor="middle">单个 Agent</text>
+  <text class="line" x="180" y="250" text-anchor="middle">一份上下文 + 工具</text>
+  <text class="line" x="180" y="270" text-anchor="middle">一个循环</text>
+  <rect x="80" y="340" width="200" height="50" rx="6" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="line" x="180" y="364" text-anchor="middle">结果</text>
+  <line x1="180" y1="160" x2="180" y2="198" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="180" y1="300" x2="180" y2="338" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <text class="fault" x="180" y="420" text-anchor="middle">1 份上下文 · 失败自己修正</text>
+  <text class="fault" x="180" y="442" text-anchor="middle">问题少，但装不了角色隔离</text>
+
+  <!-- 列 2：Orchestrator-Worker -->
+  <rect x="350" y="70" width="300" height="430" rx="8" fill="#ffffff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="96" text-anchor="middle">Orchestrator-Worker</text>
+  <rect x="400" y="110" width="200" height="50" rx="6" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="line" x="500" y="134" text-anchor="middle">用户</text>
+  <rect x="400" y="200" width="200" height="70" rx="6" fill="#e2dfff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="500" y="226" text-anchor="middle">Orchestrator</text>
+  <text class="line" x="500" y="248" text-anchor="middle">规划、分发、汇总</text>
+  <rect x="380" y="300" width="120" height="60" rx="6" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="440" y="322" text-anchor="middle">Worker A</text>
+  <text class="line" x="440" y="344" text-anchor="middle">查运动</text>
+  <rect x="520" y="300" width="120" height="60" rx="6" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="580" y="322" text-anchor="middle">Worker B</text>
+  <text class="line" x="580" y="344" text-anchor="middle">查偏好</text>
+  <rect x="400" y="390" width="200" height="50" rx="6" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="line" x="500" y="414" text-anchor="middle">汇总后返回用户</text>
+  <line x1="500" y1="160" x2="500" y2="198" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="450" y1="270" x2="440" y2="298" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="550" y1="270" x2="560" y2="298" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="440" y1="360" x2="470" y2="388" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="560" y1="360" x2="530" y2="388" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <text class="fault" x="500" y="420" text-anchor="middle">上下文各自独立 · 结果要汇总</text>
+  <text class="fault" x="500" y="442" text-anchor="middle">级联失败：Worker 挂了谁换人？</text>
+  <text class="fault" x="500" y="464" text-anchor="middle">错误被汇总时当成事实</text>
+
+  <!-- 列 3：Pipeline -->
+  <rect x="670" y="70" width="300" height="430" rx="8" fill="#ffffff" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="820" y="96" text-anchor="middle">Pipeline</text>
+  <rect x="720" y="110" width="200" height="50" rx="6" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="line" x="820" y="134" text-anchor="middle">用户</text>
+  <rect x="720" y="200" width="200" height="60" rx="6" fill="#ffdfd3" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="820" y="226" text-anchor="middle">阶段 1 · 列提纲</text>
+  <rect x="720" y="300" width="200" height="60" rx="6" fill="#fffacd" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="820" y="326" text-anchor="middle">阶段 2 · 审查</text>
+  <rect x="720" y="400" width="200" height="60" rx="6" fill="#d4f0f0" stroke="#b3a5b3" stroke-width="2"/>
+  <text class="box" x="820" y="426" text-anchor="middle">阶段 3 · 保存</text>
+  <line x1="820" y1="160" x2="820" y2="198" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="820" y1="260" x2="820" y2="298" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="820" y1="360" x2="820" y2="398" stroke="#b3a5b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <text class="fault" x="820" y="420" text-anchor="middle">错误被下一步当事实，</text>
+  <text class="fault" x="820" y="442" text-anchor="middle">且下游没有核实渠道</text>
+  <text class="fault" x="820" y="464" text-anchor="middle">一步失败，全线级联</text>
+
+  <text x="500" y="590" text-anchor="middle" font-size="14" fill="#8a7f8a">生产默认：单 Agent 或 Agentic Workflow（主路径固定、局部交给模型）；多 Agent 只在需要角色隔离、并行调研、互相审查时上。</text>
+</svg>

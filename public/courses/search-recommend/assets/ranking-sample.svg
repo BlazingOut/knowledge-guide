@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360">
+  <rect width="1000" height="360" fill="#f8fafc"/>
+  <style>
+    text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033}
+    .box{fill:#fff;stroke:#2563eb;stroke-width:3}
+    .arrow{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#m)}
+    .title{font-size:16px;font-weight:bold;fill:#1e3a8a}
+    .desc{font-size:14px;fill:#334155}
+  </style>
+  <defs>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <text x="500" y="42" text-anchor="middle" font-size="22" font-weight="bold">推理只使用特征；0 和 1 是事后补上的训练标签</text>
+
+  <rect class="box" x="40" y="110" width="250" height="140" rx="12"/>
+  <text class="title" x="165" y="155" text-anchor="middle">特征 x</text>
+  <text class="desc" x="165" y="190" text-anchor="middle">用户、文档、交叉、上下文</text>
+  <text class="desc" x="165" y="218" text-anchor="middle">只能用当时已经知道的</text>
+
+  <path class="arrow" d="M300 180 H360"/>
+
+  <rect class="box" x="368" y="110" width="230" height="140" rx="12"/>
+  <text class="title" x="483" y="155" text-anchor="middle">模型</text>
+  <text class="desc" x="483" y="190" text-anchor="middle">输出分数 s(x)</text>
+  <text class="desc" x="483" y="218" text-anchor="middle">分数只用于比较</text>
+
+  <path class="arrow" d="M608 180 H668"/>
+
+  <rect class="box" x="676" y="90" width="280" height="180" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+  <text class="title" x="816" y="135" text-anchor="middle">标签 y</text>
+  <text class="desc" x="816" y="175" text-anchor="middle">展示之后才发生</text>
+  <text class="desc" x="816" y="205" text-anchor="middle">点击、成交或履约</text>
+  <text class="desc" x="816" y="235" text-anchor="middle">不能写回当时的特征</text>
+
+  <text x="500" y="320" text-anchor="middle" font-size="15" fill="#334155">线上把各文档的分数从高到低排列。标签不参与这一次打分。</text>
+</svg>

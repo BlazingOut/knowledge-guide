@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430">
+  <rect width="1000" height="430" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .box{fill:#fff;stroke:#2563eb;stroke-width:3} .device{font-size:17;font-weight:bold} .addr{font-size:14;fill:#475569} .flow{font-size:14;fill:#334155} .label{font-size:15;font-weight:bold;fill:#334155} .rewrite{font-size:13;fill:#475569}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <text x="500" y="38" text-anchor="middle" font-size="22" font-weight="bold">NAT：私有地址如何访问公网</text>
+
+  <rect class="box" x="50" y="120" width="190" height="100" rx="12"/>
+  <text class="device" x="145" y="158" text-anchor="middle">你的电脑</text>
+  <text class="addr" x="145" y="185" text-anchor="middle">192.168.1.8</text>
+  <text class="addr" x="145" y="205" text-anchor="middle">私有地址</text>
+
+  <rect class="box" x="330" y="105" width="230" height="130" rx="12"/>
+  <text class="device" x="445" y="140" text-anchor="middle">家用路由器（NAT）</text>
+  <text class="addr" x="445" y="168" text-anchor="middle">内口 192.168.1.1</text>
+  <text class="addr" x="445" y="190" text-anchor="middle">外口 203.0.113.5</text>
+  <text class="addr" x="445" y="216" text-anchor="middle">两个地址，转换发生在这里</text>
+
+  <rect class="box" x="650" y="120" width="140" height="100" rx="12"/>
+  <text class="device" x="720" y="165" text-anchor="middle">互联网</text>
+  <text class="addr" x="720" y="190" text-anchor="middle">由路由器逐跳转发</text>
+
+  <rect class="box" x="840" y="120" width="140" height="100" rx="12"/>
+  <text class="device" x="910" y="158" text-anchor="middle">API 服务器</text>
+  <text class="addr" x="910" y="185" text-anchor="middle">203.0.113.20</text>
+  <text class="addr" x="910" y="205" text-anchor="middle">公网地址</text>
+
+  <path class="arrow" d="M240 170 H326"/><path class="arrow" d="M560 170 H646"/><path class="arrow" d="M790 170 H836"/>
+
+  <text class="label" x="50" y="282">请求（从电脑发出）</text>
+  <text class="flow" x="50" y="306">src = 192.168.1.8:53218   dst = 203.0.113.20:443</text>
+  <path d="M420 300 H470" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="rewrite" x="445" y="292" text-anchor="middle">路由器改写</text>
+  <text class="flow" x="610" y="306">src = 203.0.113.5:40001   dst = 203.0.113.20:443</text>
+  <text class="rewrite" x="610" y="330">源地址换成外口地址，端口也换成一个空闲端口并记录映射</text>
+
+  <text class="label" x="50" y="365">响应（从服务器返回）</text>
+  <text class="flow" x="50" y="389">dst = 203.0.113.5:40001   src = 203.0.113.20:443</text>
+  <path d="M420 383 H470" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#m)"/>
+  <text class="rewrite" x="445" y="375" text-anchor="middle">查表还原</text>
+  <text class="flow" x="610" y="389">dst = 192.168.1.8:53218   src = 203.0.113.20:443</text>
+  <text class="rewrite" x="610" y="413">根据端口映射表，把目的地还原成局域网内的电脑</text>
+</svg>

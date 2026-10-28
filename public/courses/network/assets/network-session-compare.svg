@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700">
+  <rect width="1000" height="700" fill="#f8fafc"/>
+  <style>text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#172033} .sec{font-size:17;font-weight:bold} .title{font-size:15;font-weight:bold} .note{font-size:13;fill:#334155} .small{font-size:12;fill:#475569} .box{fill:#fff;stroke:#2563eb;stroke-width:3}</style>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold">三种会话方式：Cookie / Session / Token</text>
+  <text class="note" x="500" y="62" text-anchor="middle">HTTP 本身无状态。登录一次之后，后续请求必须自己带上"我是谁"。</text>
+
+  <!-- Cookie 列 -->
+  <rect class="box" x="40" y="88" width="290" height="470" rx="12"/>
+  <rect x="58" y="104" width="254" height="36" rx="8" fill="#93c5fd"/>
+  <text class="sec" x="185" y="128" text-anchor="middle">Cookie 本身</text>
+  <text class="note" x="185" y="168" text-anchor="middle">服务器用 Set-Cookie 下发</text>
+  <text class="note" x="185" y="192" text-anchor="middle">浏览器之后自动带上 Cookie 头</text>
+  <text class="title" x="185" y="228" text-anchor="middle">存在哪</text>
+  <text class="small" x="185" y="250" text-anchor="middle">客户端（浏览器存储）</text>
+  <text class="title" x="185" y="284" text-anchor="middle">携带方式</text>
+  <text class="small" x="185" y="306" text-anchor="middle">每个请求自动附带，改不了</text>
+  <text class="title" x="185" y="340" text-anchor="middle">关键属性</text>
+  <text class="small" x="185" y="362" text-anchor="middle">HttpOnly：JS 读不到，防 XSS 偷</text>
+  <text class="small" x="185" y="384" text-anchor="middle">Secure：只走 HTTPS</text>
+  <text class="small" x="185" y="406" text-anchor="middle">SameSite：限制跨站发送，防 CSRF</text>
+  <text class="title" x="185" y="440" text-anchor="middle">典型用途</text>
+  <text class="small" x="185" y="462" text-anchor="middle">浏览器网站登录</text>
+  <text class="small" x="185" y="484" text-anchor="middle">它是载体，里面可以是</text>
+  <text class="small" x="185" y="506" text-anchor="middle">Session ID，也可以是 Token</text>
+  <text class="small" x="185" y="536" text-anchor="middle">注意：Cookie 不是和 Session</text>
+  <text class="small" x="185" y="556" text-anchor="middle">并列的第三种登录方案</text>
+
+  <!-- Session 列 -->
+  <rect class="box" x="355" y="88" width="290" height="470" rx="12"/>
+  <rect x="373" y="104" width="254" height="36" rx="8" fill="#6ee7b7"/>
+  <text class="sec" x="500" y="128" text-anchor="middle">Session</text>
+  <text class="note" x="500" y="168" text-anchor="middle">登录态存在服务器内存 / Redis</text>
+  <text class="note" x="500" y="192" text-anchor="middle">客户端只拿一个随机 session_id</text>
+  <text class="title" x="500" y="228" text-anchor="middle">存在哪</text>
+  <text class="small" x="500" y="250" text-anchor="middle">服务器；客户端只有不透明 ID</text>
+  <text class="title" x="500" y="284" text-anchor="middle">携带方式</text>
+  <text class="small" x="500" y="306" text-anchor="middle">几乎总是放在 Cookie 里带回</text>
+  <text class="title" x="500" y="340" text-anchor="middle">优点 / 代价</text>
+  <text class="small" x="500" y="362" text-anchor="middle">注销立刻生效（删掉服务端记录）</text>
+  <text class="small" x="500" y="384" text-anchor="middle">服务端可随时改权限</text>
+  <text class="small" x="500" y="406" text-anchor="middle">要为每个登录用户占存储</text>
+  <text class="small" x="500" y="428" text-anchor="middle">多机部署必须共享 Session 存储</text>
+  <text class="title" x="500" y="462" text-anchor="middle">典型用途</text>
+  <text class="small" x="500" y="484" text-anchor="middle">传统 Web 后台、需要即时踢人</text>
+  <text class="small" x="500" y="506" text-anchor="middle">的管理系统</text>
+
+  <!-- Token 列 -->
+  <rect class="box" x="670" y="88" width="290" height="470" rx="12"/>
+  <rect x="688" y="104" width="254" height="36" rx="8" fill="#fdba74"/>
+  <text class="sec" x="815" y="128" text-anchor="middle">Token（JWT）</text>
+  <text class="note" x="815" y="168" text-anchor="middle">登录态编码进令牌本身</text>
+  <text class="note" x="815" y="192" text-anchor="middle">服务器只验签名，不查库</text>
+  <text class="title" x="815" y="228" text-anchor="middle">存在哪</text>
+  <text class="small" x="815" y="250" text-anchor="middle">客户端（内存 / 本地存储 / Cookie）</text>
+  <text class="title" x="815" y="284" text-anchor="middle">携带方式</text>
+  <text class="small" x="815" y="306" text-anchor="middle">Authorization: Bearer &lt;jwt&gt;</text>
+  <text class="title" x="815" y="340" text-anchor="middle">优点 / 代价</text>
+  <text class="small" x="815" y="362" text-anchor="middle">无状态，水平扩展容易</text>
+  <text class="small" x="815" y="384" text-anchor="middle">适合开放 API、移动端、微服务</text>
+  <text class="small" x="815" y="406" text-anchor="middle">注销难：签发后直到过期都有效</text>
+  <text class="small" x="815" y="428" text-anchor="middle">payload 只是 Base64，不是加密</text>
+  <text class="title" x="815" y="462" text-anchor="middle">典型用途</text>
+  <text class="small" x="815" y="484" text-anchor="middle">调用大模型 API 的密钥</text>
+  <text class="small" x="815" y="506" text-anchor="middle">前后端分离、移动 App</text>
+
+  <text class="note" x="500" y="590" text-anchor="middle">对比口诀：Cookie 是卡车（怎么运），Session 是仓库里的档案（状态在服务端），JWT 是自带公章的介绍信（状态在令牌里）。</text>
+  <text class="note" x="500" y="618" text-anchor="middle">JWT 三段：header.payload.signature。中间那段谁都能解码，里面不要放密码；防篡改靠第三段签名，防窃听靠 HTTPS。</text>
+  <text class="note" x="500" y="646" text-anchor="middle">调用外部 HTTPS API 时常见的是 Token；浏览器访问自己网站时常见的是 Session + Cookie。两者可以组合，不是三选一。</text>
+  <text class="note" x="500" y="674" text-anchor="middle">没有 HTTPS，Cookie 和 Token 都会在路上被读走——会话方案建立在第 2～4 节的加密之上，不能单独成立。</text>
+</svg>
