@@ -1,0 +1,83 @@
+/* 主题 Token（夜航/暖阳自定义属性） — Phase 0 拆分自 src/styles.css（原 4 行）
+   Phase 1（2026-10-28）：暖阳换新色板（方案 4.1 表）；夜航仅补 token 定义、渲染值不变。
+   新增语义 token：--green-bg(选中底) / --hover-ring(悬停描边圈) / --shadow-hover(悬停阴影) /
+   --focus-ring(键盘焦点) / --badge-*(金色徽章)。 */
+
+.shell {
+  /* 夜航主题（Phase 1 保持原值） */
+  --bg-page:#071316;
+  --bg-sidebar:#050d11;
+  --surface:rgba(18,43,37,.92);
+  --raised:#1b3d31;
+  --border:#2b5848;
+  --text:#f3f1d9;
+  --muted:#b9c7ae;
+  --subtle:#829a89;
+  --green:#82b879;
+  --green-soft:#b3d895;
+  --yellow:#f7d56b;
+  --yellow-deep:#e2ae43;
+  --rose:#d78378;
+  /* 状态与组件语义 */
+  --green-bg:#82b87929;
+  --hover-ring:#f7d56b33;
+  --shadow-hover:0 14px 30px #00000038;
+  --focus-ring:#f7d56bb3;
+  --badge-bg:#f7d56b29;
+  --badge-border:#f7d56b55;
+  --badge-text:var(--yellow);
+  /* 共享装饰色（Phase 0 收编；夜航值） */
+  --planet-light:#d8efb9;
+  --planet-shade:#315f4d;
+  --planet-shade-veil:#315f4d55;
+  --planet-inset:#39765f59;
+  --planet-glow:#82b87955;
+  --planet-glow-soft:#82b87952;
+  --track:#2b584899;
+  --veil-green:#82b8791f;
+  --veil-green-strong:#82b87929;
+  --heat-1:#82b8794d;
+  --heat-2:#82b87985;
+  --heat-3:#82b879bb;
+  --shadow-ambient:#00000024;
+  --on-green:#102018;
+}
+.shell[data-theme=warm] {
+  /* 暖阳主题 — Phase 1 新色板：纸张白打底、星球绿结构、星光金点睛（75/20/5） */
+  --bg-page:#FAF8F1;
+  --bg-sidebar:#F1EDE0;
+  --surface:#FFFDF8;
+  --raised:#F4EFE3;
+  --border:#DCDDD2;
+  --text:#293B3A;
+  --muted:#5C6B5E;
+  --subtle:#9A9884;
+  --green:#78966B;
+  --green-soft:#A9C39B;
+  --yellow:#E9B95F;
+  --yellow-deep:#B08136;
+  --rose:#C97B6C;
+  /* 状态与组件语义（暖阳） */
+  --green-bg:#E7EFDD;
+  --hover-ring:transparent;
+  --shadow-hover:0 8px 20px rgba(41,59,58,.10);
+  --focus-ring:var(--green);
+  --badge-bg:var(--green-bg);
+  --badge-border:color-mix(in srgb,var(--green) 30%,transparent);
+  --badge-text:var(--green);
+  /* 共享装饰色（暖阳取星球绿系派生值） */
+  --planet-light:#D9E8C5;
+  --planet-shade:#4A6351;
+  --planet-shade-veil:#4A635155;
+  --planet-inset:#4A635159;
+  --planet-glow:#78966B55;
+  --planet-glow-soft:#78966B52;
+  --track:rgba(41,59,58,.12);
+  --veil-green:rgba(120,150,107,.12);
+  --veil-green-strong:rgba(120,150,107,.16);
+  --heat-1:rgba(120,150,107,.30);
+  --heat-2:rgba(120,150,107,.52);
+  --heat-3:rgba(120,150,107,.73);
+  --shadow-ambient:rgba(41,59,58,.14);
+  --on-green:#102018;
+}

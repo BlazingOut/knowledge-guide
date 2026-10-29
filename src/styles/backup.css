@@ -1,0 +1,10 @@
+/* 数据备份按钮 — Phase 0 拆分自 src/styles.css（原 313-318 行）*/
+/* 数据备份：侧边栏导出/导入按钮（复用 theme-switch 布局） */
+.theme-switch.backup-switch {margin-top:0;padding-top:14px
+}
+.backup-switch .import-btn {border:1px solid var(--border);background:transparent;color:var(--subtle);border-radius:9px;padding:7px 8px;font-size:10px;cursor:pointer;display:inline-block
+}
+.backup-switch .import-btn:hover {color:var(--green-soft);border-color:var(--green)
+}
+.backup-switch input[type=file] {display:none
+}

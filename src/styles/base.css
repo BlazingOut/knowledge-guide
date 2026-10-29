@@ -1,0 +1,9 @@
+/* 全局基础（reset / 根字体 / 表单继承） — Phase 0 拆分自 src/styles.css（原 3-3 行）*/
+:root {font-family:Manrope,'PingFang SC','Noto Sans SC',system-ui,sans-serif
+}
+* {box-sizing:border-box
+}
+body {margin:0
+}
+button,input {font:inherit
+}

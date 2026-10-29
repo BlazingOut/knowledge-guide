@@ -1,0 +1,28 @@
+/* 全局搜索 — Phase 0 拆分自 src/styles.css（原 319-330 行）*/
+/* 自研课程接入：全局搜索 */
+.global-search {margin:0 0 22px
+}
+.global-search input {width:100%;border:1px solid var(--border);border-radius:14px;padding:12px 16px;font-size:13px;outline:none;background:var(--surface);color:var(--text);transition:border-color .2s
+}
+.global-search input:focus {border-color:var(--green)
+}
+.global-search input::placeholder {color:var(--subtle)
+}
+.search-results {display:flex;flex-direction:column;flex:1;min-height:0
+}
+.search-results .list {flex:1;min-height:0;max-height:none;overflow-y:auto;padding:2px 6px 18px 2px
+}
+.search-hit {display:block;width:100%;text-align:left;border:1px solid var(--border);background:var(--surface);border-radius:14px;padding:14px 18px;cursor:pointer;margin-bottom:10px;transition:.2s
+}
+.search-hit:hover {border-color:var(--green);box-shadow:0 0 0 1px var(--hover-ring)
+}
+.search-results-head small {display:block;margin-bottom:6px
+}
+.search-results-head h2 {font-size:20px;margin:0 0 14px
+}
+.search-hit em {display:block;font-style:normal;font-size:11px;color:var(--subtle);margin-bottom:5px
+}
+.search-hit h3 {font-size:14px;margin:0;display:inline
+}
+.search-hit .st {font-size:10px;border-radius:5px;padding:3px 6px;margin-left:7px;background:var(--veil-green-strong);color:var(--green-soft)
+}

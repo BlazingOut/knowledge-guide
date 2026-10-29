@@ -1,0 +1,93 @@
+/* 星球图标组件样式（Phase 2 · GPT 方案移植）
+   结构：轨道(后段) + 球体 + 轨道(前段 clip 下半) + 双星光；
+   四类星球差异 = 色相（green/blue/gold/rose），组件级 CSS 变量，两主题通用。
+   尺寸由组件内联 --planet-size 控制，内部比例用 em（font-size = 直径）缩放保持。
+   旧版纯色球规则（含伪元素隐藏补丁）已于 Phase 2 移除。 */
+
+/* —— 容器 —— */
+.planet-icon {
+  --planet-size: 44px;
+  --planet-light: #b9d49a;
+  --planet-mid: #8eaf76;
+  --planet-dark: #557e5c;
+  --ring-color: #a6b79b;
+  position: relative;
+  display: inline-block;
+  width: var(--planet-size);
+  height: var(--planet-size);
+  font-size: var(--planet-size);
+  isolation: isolate;
+  filter: drop-shadow(0 .105em .118em #52674b20);
+}
+
+/* —— 球体 —— */
+.planet-icon-sphere {
+  position: absolute;
+  inset: 8%;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 50%;
+  background: radial-gradient(circle at 29% 23%, var(--planet-light) 0%, var(--planet-mid) 48%, var(--planet-dark) 100%);
+  box-shadow: inset -.066em -.092em .158em #233d3825, inset .026em .026em .066em #ffffff30;
+}
+.planet-icon-sphere:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse at 28% 68%, #ffffff12 0 12%, transparent 35%),
+    radial-gradient(ellipse at 75% 38%, #304d3b12 0 10%, transparent 32%);
+}
+.planet-icon-sphere:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #ffffff12 0%, transparent 44%, #1d392a18 100%);
+}
+
+/* —— 倾斜轨道（后段 + 前段弧） —— */
+.planet-icon-ring {
+  position: absolute;
+  z-index: 3;
+  width: 138%;
+  height: 38%;
+  left: -19%;
+  top: 34%;
+  border: .02em solid var(--ring-color);
+  border-radius: 50%;
+  transform: rotate(-28deg);
+  opacity: .8;
+  pointer-events: none;
+}
+.planet-icon-ring-back { z-index: 1; opacity: .42; }
+.planet-icon-ring-front { clip-path: inset(50% 0 0 0); }
+
+/* —— 双星光 —— */
+.planet-icon-star {
+  position: absolute;
+  width: .105em;
+  height: .105em;
+  background: var(--yellow, #e9b95f);
+  clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+  filter: drop-shadow(0 0 .053em color-mix(in srgb, var(--yellow, #e9b95f) 33%, transparent));
+}
+.planet-icon-star-one { top: 0; right: -.105em; }
+.planet-icon-star-two { bottom: .09em; left: -.158em; width: .066em; height: .066em; opacity: .65; }
+
+/* —— 四类色相（network/ringed/node/comet → 绿/蓝/金/玫瑰） —— */
+.planet-icon-hue-0 { --planet-light: #c0d9a0; --planet-mid: #91b477; --planet-dark: #507d5c; --ring-color: #94ab88; }
+.planet-icon-hue-1 { --planet-light: #c4d8d6; --planet-mid: #8eafad; --planet-dark: #577f80; --ring-color: #9ebdb9; }
+.planet-icon-hue-2 { --planet-light: #f3d99a; --planet-mid: #dcb96f; --planet-dark: #a87b48; --ring-color: #d5b56e; }
+.planet-icon-hue-3 { --planet-light: #efc5a6; --planet-mid: #d99b7a; --planet-dark: #a96f5c; --ring-color: #d9ad91; }
+
+/* —— 卡片内布局（替代原 .ico 的占位与间距） —— */
+.cards .card > .planet-icon { display: block; margin: 0 0 13px; }
+
+/* —— 卡片悬停：星球轻微旋转放大（绘本感小动效） —— */
+.cards .card .planet-icon { transition: transform .35s ease; }
+.cards .card:hover .planet-icon { transform: rotate(-5deg) scale(1.05); }
+
+/* —— 侧边栏品牌（无徽章底框，用组件自带投影） —— */
+.brand .planet-icon { display: block; flex: none; }
