@@ -1,6 +1,6 @@
-## 第二课：条件查询和排序
+# 第二课：条件查询和排序
 
-### 1. 使用 `WHERE` 筛选记录
+## 1. 使用 `WHERE` 筛选记录
 
 ```sql
 SELECT title, author
@@ -28,7 +28,7 @@ connection.execute(
 
 结尾的逗号不可省略。`("刘慈欣")` 只是一个加了括号的字符串，不是元组。`execute` 会按照位置，把参数序列中的第一个值绑定到第一个 `?`。
 
-### 2. 使用 `ORDER BY` 排序
+## 2. 使用 `ORDER BY` 排序
 
 ```sql
 SELECT id, title, author
@@ -64,7 +64,7 @@ ORDER BY price ASC       -- 按小数排序
 
 `WHERE` 决定“哪些记录被保留”，`ORDER BY` 决定“保留的记录如何排列”。它们可以一起使用。
 
-### 3. Python 中的查询结果
+## 3. Python 中的查询结果
 
 ```python
 connection.row_factory = sqlite3.Row
@@ -79,7 +79,7 @@ row["author"]
 
 这样比只使用 `row[0]`、`row[1]` 更容易理解。
 
-### 4. 当前练习
+## 4. 当前练习
 
 练习文件：`code/database-sqlite/database_lesson02.py`
 

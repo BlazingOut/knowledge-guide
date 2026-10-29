@@ -137,59 +137,37 @@
           {
             "id": "course-python-1",
             "title": "异常与错误处理",
-            "url": "courses/python/lesson-01-exceptions.md",
-            "codeFiles": [
-              "courses/code/python/lesson_01_exceptions.py"
-            ]
+            "url": "courses/python/lesson-01-exceptions.md"
           },
           {
             "id": "course-python-2",
             "title": "文件、路径和数据转换",
-            "url": "courses/python/lesson-02-files-and-data.md",
-            "codeFiles": [
-              "courses/code/python/lesson_02_files_and_data.py"
-            ]
+            "url": "courses/python/lesson-02-files-and-data.md"
           },
           {
             "id": "course-python-3",
             "title": "类、数据建模和类型标注",
-            "url": "courses/python/lesson-03-classes-data-modeling.md",
-            "codeFiles": [
-              "courses/code/python/lesson_03_classes_data_modeling.py"
-            ]
+            "url": "courses/python/lesson-03-classes-data-modeling.md"
           },
           {
             "id": "course-python-4",
             "title": "模块、包与项目结构",
-            "url": "courses/python/lesson-04-modules-packages.md",
-            "codeFiles": [
-              "courses/code/python/lesson_04_modules_packages.py"
-            ]
+            "url": "courses/python/lesson-04-modules-packages.md"
           },
           {
             "id": "course-python-5",
             "title": "迭代器、生成器、上下文管理器",
-            "url": "courses/python/lesson-05-language-tools.md",
-            "codeFiles": [
-              "courses/code/python/lesson_05_language_tools.py"
-            ]
+            "url": "courses/python/lesson-05-language-tools.md"
           },
           {
             "id": "course-python-6",
             "title": "装饰器",
-            "url": "courses/python/lesson-06-decorators.md",
-            "codeFiles": [
-              "courses/code/python/lesson_06_decorators.py"
-            ]
+            "url": "courses/python/lesson-06-decorators.md"
           },
           {
             "id": "course-python-7",
             "title": "工程 Python——日志、配置、命令行和测试",
-            "url": "courses/python/lesson-07-engineering-python.md",
-            "codeFiles": [
-              "courses/code/python/lesson_07_engineering_python.py",
-              "courses/code/python/test_lesson_07_engineering_python.py"
-            ]
+            "url": "courses/python/lesson-07-engineering-python.md"
           },
           {
             "id": "course-python-8",
@@ -221,8 +199,7 @@
             "title": "网络分层模型与协议栈",
             "url": "courses/network/lesson-01-layering.md",
             "codeFiles": [
-              "courses/code/network/network_lesson01.py",
-              "courses/code/network/network_lesson12.py"
+              "courses/code/network/network_lesson01.py"
             ]
           },
           {
@@ -398,7 +375,6 @@
             "title": "JOIN：多表关联查询",
             "url": "courses/database/05-JOIN.md",
             "codeFiles": [
-              "courses/code/database/05-aggregation-subquery-cte.sql",
               "courses/code/database/05-join.sql"
             ]
           },
@@ -407,8 +383,7 @@
             "title": "聚合、JOIN、子查询与 CTE",
             "url": "courses/database/05-聚合、子查询与CTE.md",
             "codeFiles": [
-              "courses/code/database/05-aggregation-subquery-cte.sql",
-              "courses/code/database/05-join.sql"
+              "courses/code/database/05-aggregation-subquery-cte.sql"
             ]
           },
           {
@@ -505,7 +480,7 @@
         "topics": [
           {
             "id": "course-database-sqlite-1",
-            "title": "数据库、表和记录",
+            "title": "数据库表与记录",
             "url": "courses/database-sqlite/lesson-01-tables-and-records.md",
             "codeFiles": [
               "courses/code/database-sqlite/database_lesson01.py"
@@ -513,7 +488,7 @@
           },
           {
             "id": "course-database-sqlite-2",
-            "title": "正确：值使用占位符",
+            "title": "条件查询和排序",
             "url": "courses/database-sqlite/lesson-02-filtering-and-sorting.md",
             "codeFiles": [
               "courses/code/database-sqlite/database_lesson02.py"
@@ -603,11 +578,10 @@
         "topics": [
           {
             "id": "course-fastapi-1",
-            "title": "网络请求与 FastAPI 基础",
+            "title": "FastAPI 从零入门",
             "url": "courses/fastapi/lesson-01-basics.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson01_basic_api.py",
-              "courses/code/fastapi/lesson10_streaming.py"
+              "courses/code/fastapi/lesson01_basic_api.py"
             ]
           },
           {
@@ -692,11 +666,7 @@
             "title": "Redis 基础与连接",
             "url": "courses/redis/01-Redis基础与连接.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson01.py",
-              "courses/code/redis/redis_lesson10.py",
-              "courses/code/redis/redis_lesson11.py",
-              "courses/code/redis/redis_lesson12.py",
-              "courses/code/redis/redis_lesson13.py"
+              "courses/code/redis/redis_lesson01.py"
             ]
           },
           {
@@ -886,10 +856,7 @@
             "title": "StateGraph：节点、边与状态构成一张可执行图",
             "url": "courses/langgraph/lesson-01-stategraph.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson01.py",
-              "courses/code/langgraph/langgraph_lesson10.py",
-              "courses/code/langgraph/langgraph_lesson11.py",
-              "courses/code/langgraph/langgraph_lesson12.py"
+              "courses/code/langgraph/langgraph_lesson01.py"
             ]
           },
           {
@@ -946,8 +913,7 @@
             "title": "工具调用的可靠性与防护",
             "url": "courses/langgraph/lesson-08-tool-reliability.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson08.py",
-              "courses/code/langgraph/_verify_lesson08.py"
+              "courses/code/langgraph/langgraph_lesson08.py"
             ]
           },
           {
@@ -1105,6 +1071,46 @@
             "url": "courses/machine-learning/lesson-04-logistic-regression.md",
             "codeFiles": [
               "courses/code/machine-learning/ml_lesson04.py"
+            ]
+          },
+          {
+            "id": "course-machine-learning-5",
+            "title": "泛化、正则与模型选择",
+            "url": "courses/machine-learning/lesson-05-generalization-regularization.md",
+            "codeFiles": [
+              "courses/code/machine-learning/ml_lesson05.py"
+            ]
+          },
+          {
+            "id": "course-machine-learning-6",
+            "title": "指标",
+            "url": "courses/machine-learning/lesson-06-metrics.md",
+            "codeFiles": [
+              "courses/code/machine-learning/ml_lesson06.py"
+            ]
+          },
+          {
+            "id": "course-machine-learning-7",
+            "title": "朴素贝叶斯",
+            "url": "courses/machine-learning/lesson-07-naive-bayes.md",
+            "codeFiles": [
+              "courses/code/machine-learning/ml_lesson07.py"
+            ]
+          },
+          {
+            "id": "course-machine-learning-8",
+            "title": "决策树",
+            "url": "courses/machine-learning/lesson-08-decision-tree.md",
+            "codeFiles": [
+              "courses/code/machine-learning/ml_lesson08.py"
+            ]
+          },
+          {
+            "id": "course-machine-learning-9",
+            "title": "集成与提升树",
+            "url": "courses/machine-learning/lesson-09-ensemble-boosting-trees.md",
+            "codeFiles": [
+              "courses/code/machine-learning/ml_lesson09.py"
             ]
           }
         ]

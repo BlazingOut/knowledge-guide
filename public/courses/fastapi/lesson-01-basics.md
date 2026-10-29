@@ -1,4 +1,4 @@
-# 第一课：网络请求与 FastAPI 基础
+# 第1课：FastAPI 从零入门
 
 这是 Life Manager 项目的配套学习笔记。课程会从网络和 Web 基础开始，再逐步进入 FastAPI、数据库和 Agent 接口。
 

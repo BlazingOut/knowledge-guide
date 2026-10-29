@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="460" viewBox="0 0 800 460">
+  <rect width="800" height="460" fill="#FFFFFF"/>
+  <style>
+    text{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;fill:#6B5F6B}
+    .axis{stroke:#B3A5B3;stroke-width:2}
+    .grid{stroke:#E2DFFF;stroke-width:1;stroke-dasharray:4 4}
+    .bias{stroke:#FFDFD3;stroke-width:4;fill:none}
+    .variance{stroke:#D4F0F0;stroke-width:4;fill:none}
+    .total{stroke:#C77B6B;stroke-width:4;fill:none}
+    .label{font-size:15;fill:#8A7F8A}
+    .title{font-size:22;font-weight:bold;fill:#6B5F6B}
+    .axislabel{font-size:16;fill:#6B5F6B}
+  </style>
+  <text x="400" y="42" text-anchor="middle" class="title">偏差-方差权衡：测试误差先降后升</text>
+
+  <!-- 坐标轴 -->
+  <line x1="90" y1="60" x2="90" y2="380" class="axis"/>
+  <line x1="90" y1="380" x2="720" y2="380" class="axis"/>
+  <text x="70" y="225" transform="rotate(-90 70 225)" class="axislabel" text-anchor="middle">误差</text>
+  <text x="405" y="430" text-anchor="middle" class="axislabel">模型复杂度</text>
+
+  <!-- 三条曲线 -->
+  <!-- 偏差：从左高右低下降 -->
+  <path class="bias" d="M 120 90 C 300 150, 480 250, 700 360"/>
+  <!-- 方差：从左低右高上升 -->
+  <path class="variance" d="M 120 360 C 300 250, 480 150, 700 90"/>
+  <!-- 总误差：先降后升，最低点在中部 -->
+  <path class="total" d="M 120 120 C 250 110, 380 105, 430 108 C 480 115, 600 200, 700 320"/>
+
+  <!-- 最低点标记 -->
+  <circle cx="430" cy="108" r="6" fill="#C77B6B"/>
+  <line x1="430" y1="108" x2="430" y2="380" class="grid"/>
+  <text x="430" y="400" text-anchor="middle" class="label">最合适复杂度</text>
+
+  <!-- 图例 -->
+  <line x1="120" y1="60" x2="190" y2="60" class="bias"/>
+  <text x="200" y="65" class="label">偏差（欠拟合主导）</text>
+  <line x1="390" y1="60" x2="460" y2="60" class="variance"/>
+  <text x="470" y="65" class="label">方差（过拟合主导）</text>
+  <line x1="610" y1="60" x2="680" y2="60" class="total"/>
+  <text x="690" y="65" class="label">测试误差</text>
+</svg>

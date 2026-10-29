@@ -39,14 +39,17 @@ function topicNo(fileName) {
   return m ? m[1] : null
 }
 
-// 课文 ↔ 配套代码配对（可能命中多个，全部收录）
+// 辅助文件命名（非课程正文代码），自动配对时排除
+const AUX_PATTERNS = [/^_verify/, /^test_/, /^_test/, /^homework_/, /^draft_/, /^_bak/, /\.bak$/, /\.tmp$/, /_old$/]
+
+// 课文 ↔ 配套代码自动配对：只认「lessonNN」（后一位非数字）与「NN-」前缀，避免 lesson1 误配 lesson10~13
 function matchCodeFiles(codeFiles, no) {
   const two = String(no).padStart(2, '0')
-  const one = String(parseInt(no, 10))
-  return codeFiles.filter((f) =>
-    f.includes(`lesson${two}`) || f.includes(`lesson_${two}`) ||
-    f.includes(`lesson${one}`) || f.includes(`lesson_${one}`) ||
-    f.startsWith(`${two}-`) || f.startsWith(`${one}-`))
+  const lessonRe = new RegExp(`(^|[_-])lesson${two}(?![0-9])`)
+  return codeFiles.filter((f) => {
+    if (AUX_PATTERNS.some((re) => re.test(f))) return false
+    return lessonRe.test(f) || f.startsWith(`${two}-`)
+  })
 }
 
 // 课文标题提取（《标题规范》：H1 优先；无 H1 回退「第X课」格式的 H2；其余返回 null 交给文件名）
@@ -85,7 +88,7 @@ function main() {
   const manifestPath = existsSync(join(coursesRepo, 'courses-manifest.json'))
     ? join(coursesRepo, 'courses-manifest.json')
     : join(coursesRepo, 'courses', 'courses-manifest.json')
-  let manifest = { courseTitles: {}, lessonTitles: {} }
+  let manifest = { courseTitles: {}, lessonTitles: {}, lessonCodes: {} }
   if (existsSync(manifestPath)) {
     try {
       manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
@@ -95,8 +98,10 @@ function main() {
     }
   }
   const titleOf = (courseId, fileName) => manifest.lessonTitles?.[`${courseId}/${fileName}`]
+  const codeOf = (courseId, fileName) => manifest.lessonCodes?.[`${courseId}/${fileName}`]
   let manifestCourseHits = 0
   let manifestLessonHits = 0
+  let manifestCodeHits = 0
 
   const domains = []
   const missingHeading = []
@@ -132,7 +137,9 @@ function main() {
         const mapped = titleOf(courseId, f)
         if (mapped) manifestLessonHits++
         const no = topicNo(f)
-        const matched = no ? matchCodeFiles(codeFiles, no) : []
+        const mappedCodes = codeOf(courseId, f)
+        if (mappedCodes !== undefined) manifestCodeHits++
+        const matched = mappedCodes !== undefined ? mappedCodes : (no ? matchCodeFiles(codeFiles, no) : [])
         return {
           id: `course-${courseId}-${i + 1}`,
           title: mapped || (heading ? stripLessonNo(heading) : f.replace(/\.md$/, '')),
@@ -183,9 +190,18 @@ function main() {
     ? readdirSync(join(outPublic, 'code'), { withFileTypes: true }).filter((e) => e.isDirectory()).length
     : 0
   console.log(`✅ 完成：${domains.length} 个领域 / ${catCount} 门课程 / ${topicCount} 篇课文 / ${codeCount} 个代码目录`)
-  console.log(`   映射生效：${manifestCourseHits} 门课程名 / ${manifestLessonHits} 篇课文名`)
+  console.log(`   映射生效：${manifestCourseHits} 门课程名 / ${manifestLessonHits} 篇课文名 / ${manifestCodeHits} 篇代码配对`)
   console.log(`   数据 → ${relative(repoRoot, outData)}`)
   console.log(`   资源 → ${relative(repoRoot, outPublic)}/`)
+
+  // 重复挂载诊断：同一代码文件被多篇课文引用，通常是自动配对误配
+  const fileOwners = {}
+  for (const d of domains) for (const c of d.children) for (const t of c.topics) for (const cf of t.codeFiles || []) (fileOwners[cf] ||= []).push(t.title)
+  const dup = Object.entries(fileOwners).filter(([, owners]) => owners.length > 1)
+  if (dup.length) {
+    console.warn(`⚠️  同一代码文件被多篇课文引用（${dup.length} 处，建议用 lessonCodes 精确指定）：`)
+    for (const [cf, owners] of dup) console.warn(`   ${cf}\n      ${owners.join('\n      ')}`)
+  }
   if (missingHeading.length) {
     console.warn(`⚠️  ${missingHeading.length} 篇课文无课标题（H1/「第X课」H2），已回退为文件名——建议按《标题规范》补齐：`)
     missingHeading.forEach((f) => console.warn('   ' + f))
