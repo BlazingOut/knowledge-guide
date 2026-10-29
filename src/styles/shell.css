@@ -1,7 +1,5 @@
 /* 应用外壳布局 — Phase 0 拆分自 src/styles.css（原 4-4 行）*/
-.shell {display:flex;min-height:100vh;position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(circle at 78% 8%,rgba(105,155,92,.23),transparent 30%),radial-gradient(circle at 52% 40%,rgba(43,103,76,.11),transparent 40%),linear-gradient(135deg,#071316,#0b2420 55%,#061014);color:var(--text);transition:background .3s,color .22s
-}
-.shell[data-theme=warm] {background:radial-gradient(circle at 86% 8%,color-mix(in srgb,var(--yellow) 35%,transparent),transparent 27%),linear-gradient(135deg,var(--bg-page),var(--surface) 52%,var(--bg-sidebar))
+.shell {display:flex;min-height:100vh;position:relative;isolation:isolate;overflow:hidden;background:var(--bg-grad);color:var(--text);transition:background .3s,color .22s
 }
 
 .side {width:235px;flex:none;position:relative;z-index:2;background:var(--bg-sidebar);border-right:1px solid var(--border);padding:24px 16px;display:flex;flex-direction:column;box-shadow:8px 0 28px #0002
@@ -26,6 +24,8 @@
 }
 .theme-switch div {display:flex;gap:5px
 }
+.theme-switch .theme-grid {display:grid;grid-template-columns:1fr 1fr;gap:5px
+}
 .theme-switch button,.mobile-theme-switch button {border:1px solid var(--border);background:transparent;color:var(--subtle);border-radius:9px;padding:6px 8px;font-size:9px;cursor:pointer
 }
 .theme-switch button.selected,.mobile-theme-switch button.selected {background:var(--green-bg);border-color:var(--green);color:var(--text)
@@ -33,6 +33,9 @@
 .mobile-theme-switch {display:none
 }
 main {flex:1;max-width:1240px;min-width:0;padding:40px 48px;position:relative;z-index:0;display:flex;flex-direction:column
+}
+/* 靛蓝主题：卡片微渐变（水彩纸受光，消解纯色块面板感） */
+.shell[data-theme=indigo] .card,.shell[data-theme=indigo] .topic,.shell[data-theme=indigo] .study-card,.shell[data-theme=indigo] .checkin-card,.shell[data-theme=indigo] .library-overview,.shell[data-theme=indigo] .checkin-head,.shell[data-theme=indigo] .log-stat,.shell[data-theme=indigo] .log-panel,.shell[data-theme=indigo] .heatmap {background:linear-gradient(145deg,rgba(133,150,210,.10),transparent 52%),var(--surface)
 }
 main:before,main:after {position:absolute;pointer-events:none;color:var(--yellow);text-shadow:0 0 8px var(--yellow);opacity:.8
 }

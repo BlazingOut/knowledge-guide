@@ -2,9 +2,9 @@
 /* 动态添加知识点：加号按钮、弹窗表单、删除按钮 */
 .toolbar-actions {display:flex;gap:8px;align-items:center
 }
-.add-topic-btn {border:1px solid var(--border);border-radius:12px;background:transparent;color:var(--green-soft);padding:10px 14px;font-size:14px;line-height:1;cursor:pointer
+.add-topic-btn {border:1px solid var(--border);border-radius:12px;background:transparent;color:var(--muted);padding:10px 14px;font-size:14px;line-height:1;cursor:pointer
 }
-.add-topic-btn:hover {border-color:var(--green);background:var(--veil-green)
+.add-topic-btn:hover {border-color:var(--green);background:var(--veil-green);color:var(--green-soft)
 }
 .modal-overlay {position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(4,12,10,.55);backdrop-filter:blur(4px)
 }

@@ -11,14 +11,17 @@ type Props = {
   kind: 'network' | 'ringed' | 'node' | 'comet'
   /** 容器直径（px），内部比例按 em 缩放保持不变 */
   size?: number
+  /** 星光三态：idle 未学（暗淡）/ learning 学习中（亮金）/ done 已完成（暖光+绿晕）；不传保持现状 */
+  glow?: 'idle' | 'learning' | 'done'
 }
 
-export default function PlanetIcon({ kind, size = 44 }: Props) {
+export default function PlanetIcon({ kind, size = 44, glow }: Props) {
   const hue = HUES[kind] ?? 0
   return (
     <span
       className={`planet-icon planet-icon-hue-${hue}`}
       style={{ '--planet-size': size + 'px' } as CSSProperties}
+      data-glow={glow}
       aria-hidden="true"
     >
       <span className="planet-icon-ring planet-icon-ring-back" />

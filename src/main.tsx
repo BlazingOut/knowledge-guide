@@ -9,7 +9,7 @@ import aiRaw from './data/AI应用开发知识.json'
 import selfRaw from './data/self-courses.json'
 import './styles.css'
 
-import type { Category, CompletionLog, Domain, Page, SourceId, Topic, UserState } from './types/knowledge'
+import type { Category, CompletionLog, Domain, Page, SourceId, Theme, Topic, UserState } from './types/knowledge'
 import { emptyState } from './types/knowledge'
 import {
   THEME_KEY, SOUND_KEY,
@@ -43,12 +43,15 @@ const sources = [
   { id: 'javaguide', title: 'JavaGuide', domains: javaguideDomains },
 ] as const satisfies ReadonlyArray<{ id: SourceId; title: string; domains: Domain[] }>
 
+const THEMES: Theme[] = ['night', 'sand', 'indigo', 'warm']
+
 function App() {
-  const [theme, setTheme] = useState<'night' | 'warm'>(() => {
-    const saved = localStorage.getItem(THEME_KEY)
-    if (saved === 'night' || saved === 'warm') return saved
+  const [theme, setThemeState] = useState<Theme>(() => {
+    const saved = localStorage.getItem(THEME_KEY) as Theme | null
+    if (saved && THEMES.includes(saved)) return saved
     return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'night' : 'warm'
   })
+  const setTheme = (next: Theme) => { setThemeState(next); localStorage.setItem(THEME_KEY, next) }
   const [sourceId, setSourceId] = useState<SourceId>('self')
   const [page, setPage] = useState<Page>('log')
   const [domainId, setDomainId] = useState(sources[0].domains[0].id)
@@ -72,7 +75,6 @@ function App() {
 
   const get = (id: string) => states[id] || emptyState
 
-  const changeTheme = (next: 'night' | 'warm') => { setTheme(next); localStorage.setItem(THEME_KEY, next) }
   const setSound = (on: boolean) => { setSoundOn(on); localStorage.setItem(SOUND_KEY, on ? 'on' : 'off') }
 
   const addTopic = (categoryId: string, title: string, url: string) => setCustomTopics((old) => {
@@ -162,7 +164,7 @@ function App() {
   })
 
   return (
-    <Shell page={page} setPage={setPage} theme={theme} setTheme={changeTheme} soundOn={soundOn} setSound={setSound} sourceId={sourceId} setSource={switchSource}>
+    <Shell page={page} setPage={setPage} theme={theme} setTheme={setTheme} soundOn={soundOn} setSound={setSound} sourceId={sourceId} setSource={switchSource}>
       {page === 'read' && reading
         ? <ReadPage reading={reading} get={get} update={update} hasNext={hasNext} onNext={goNext} onBack={() => { setReading(null); setPage('checkin') }} />
         : page === 'log'

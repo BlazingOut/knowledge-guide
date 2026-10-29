@@ -17,6 +17,9 @@ export type Page = 'log' | 'home' | 'checkin' | 'library' | 'read'
 export type SourceId = 'self' | 'javaguide'
 export type Source = { id: SourceId; title: string; domains: Domain[] }
 
+// 主题：夜航（绿）/ 沙金 / 靛蓝 / 暖阳——共享组件，token 切换
+export type Theme = 'night' | 'sand' | 'indigo' | 'warm'
+
 // 课文阅读目标：携带所在分类/领域上下文（用于「下一篇」与来源标注）
 export type ReadingTarget = { topic: Topic; category: Category; domain: Domain }
 

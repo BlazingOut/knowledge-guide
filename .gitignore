@@ -10,3 +10,6 @@ assets/
 # Tauri / Rust
 src-tauri/target/
 src-tauri/gen/schemas/
+
+# 文档只在本地，不提交/推送
+docs/

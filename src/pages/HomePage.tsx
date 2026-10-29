@@ -92,9 +92,11 @@ export default function HomePage({ domain, domains, get, open, switchDomain, onO
             <section className="cards">
               {domain.data.children.map((category, index) => {
                 const started = startedCount(category.topics, get)
+                const completed = doneCount(category.topics, get)
+                const glow = completed === category.topics.length ? 'done' : started > 0 ? 'learning' : 'idle'
                 return (
                   <article className="card" key={category.id} onClick={() => open(category.id, 'checkin')}>
-                    <PlanetIcon kind={planetTypes[index % planetTypes.length]} />
+                    <PlanetIcon kind={planetTypes[index % planetTypes.length]} glow={glow} />
                     <label>{String(index + 1).padStart(2, '0')}
                       <button className="library-entry" onClick={(event) => { event.stopPropagation(); open(category.id, 'library') }}>知识星库</button>
                     </label>

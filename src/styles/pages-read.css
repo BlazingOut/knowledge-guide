@@ -17,16 +17,11 @@
 }
 .read-actions {display:flex;gap:10px;flex-wrap:wrap
 }
-.read-actions button,.read-foot .read-next {border:1px solid var(--green);border-radius:10px;background:transparent;color:var(--green-soft);padding:9px 16px;font-size:12px;cursor:pointer
+.read-actions button,.read-foot .read-next {border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--muted);padding:9px 16px;font-size:12px;cursor:pointer
 }
-
-.read-actions button,.read-foot .read-next {border:1px solid var(--green);border-radius:10px;background:transparent;color:var(--green-soft);padding:9px 16px;font-size:11px;cursor:pointer
+.read-actions button:hover,.read-foot .read-next:hover {border-color:var(--green);background:var(--veil-green);color:var(--green-soft)
 }
-
-.read-actions button.done-button {background:var(--green);color:var(--on-green)
-}
-
-.read-actions button:hover,.read-foot .read-next:hover {background:var(--veil-green)
+.read-actions button.done-button {background:var(--green);border-color:var(--green);color:var(--on-green)
 }
 
 .read-error {color:var(--rose);margin-bottom:16px
@@ -112,8 +107,8 @@
 .read-download-list {display:flex;flex-wrap:wrap;gap:10px
 }
 
-.read-download-btn {border:1px solid var(--green);border-radius:10px;background:transparent;color:var(--green-soft);padding:9px 14px;font-size:12px;cursor:pointer;font-family:'DM Mono',monospace
+.read-download-btn {border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--muted);padding:9px 14px;font-size:12px;cursor:pointer;font-family:'DM Mono',monospace
 }
 
-.read-download-btn:hover {background:var(--veil-green);box-shadow:0 0 0 1px var(--hover-ring)
+.read-download-btn:hover {border-color:var(--green);background:var(--veil-green);color:var(--green-soft);box-shadow:0 0 0 1px var(--hover-ring)
 }

@@ -51,7 +51,7 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .cards {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px
 }
-.card,.topic,.study-card,.checkin-card,.library-overview,.checkin-head {background:var(--surface);border:1px solid var(--border);box-shadow:0 10px 28px var(--shadow-ambient)
+.card,.topic,.study-card,.checkin-card,.library-overview,.checkin-head {background:var(--surface);border:1px solid var(--border)
 }
 .card {position:relative;text-align:left;border-radius:16px;padding:16px;min-height:180px;cursor:pointer;transition:.2s
 }
@@ -93,7 +93,9 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .catHead h1 {font-size:32px
 }
-.catHead>a,.source-link {color:var(--green-soft);border:1px solid var(--green);border-radius:12px;padding:10px 13px;text-decoration:none;font-size:12px;background:transparent
+.catHead>a,.source-link {color:var(--muted);border:1px solid var(--border);border-radius:12px;padding:10px 13px;text-decoration:none;font-size:12px;background:transparent
+}
+.catHead>a:hover,.source-link:hover {border-color:var(--green);background:var(--veil-green);color:var(--green-soft)
 }
 .library-overview {display:flex;align-items:center;gap:34px;padding:22px 26px;margin:0 0 28px;border-radius:20px
 }
@@ -185,9 +187,9 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .card-foot>span {font-size:10px;color:var(--subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
-.card-foot button,.checkin-actions button {border:1px solid var(--green);border-radius:9px;background:transparent;color:var(--green-soft);padding:7px 12px;font-size:11px;cursor:pointer;white-space:nowrap
+.card-foot button,.checkin-actions button {border:1px solid var(--border);border-radius:9px;background:transparent;color:var(--muted);padding:7px 12px;font-size:11px;cursor:pointer;white-space:nowrap
 }
-.checkin-list .card-foot button {background:var(--green);color:var(--on-green)
+.card-foot button:hover,.checkin-actions button:hover {border-color:var(--green);background:var(--veil-green);color:var(--green-soft)
 }
 .learning-progress {display:flex;align-items:center;gap:7px;margin-top:-3px;color:var(--green-soft);font-size:10px
 }
@@ -195,7 +197,9 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .learning-progress b {display:block;width:60%;height:100%;background:var(--green)
 }
-.library-entry {float:right;border:1px solid var(--green);border-radius:9px;background:transparent;color:var(--green-soft);padding:7px 12px;font-size:11px;cursor:pointer
+.library-entry {float:right;border:1px solid var(--border);border-radius:9px;background:transparent;color:var(--muted);padding:7px 12px;font-size:11px;cursor:pointer
+}
+.library-entry:hover {border-color:var(--green);background:var(--veil-green);color:var(--green-soft)
 }
 .cards .library-entry {padding:5px 8px;font-size:9px
 }

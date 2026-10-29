@@ -76,6 +76,15 @@
 .planet-icon-star-one { top: 0; right: -.105em; }
 .planet-icon-star-two { bottom: .09em; left: -.158em; width: .066em; height: .066em; opacity: .65; }
 
+/* —— 星光三态（学习状态语言，随进度点亮；未传 data-glow 时保持现状，如品牌星球） ——
+   idle 未学：星点暗淡；learning 学习中：主星光亮金微光；done 已完成：双星暖光 + 星球绿晕 */
+.planet-icon[data-glow=idle] .planet-icon-star-one { opacity: .3; }
+.planet-icon[data-glow=idle] .planet-icon-star-two { opacity: .22; }
+.planet-icon[data-glow=learning] .planet-icon-star-one { opacity: 1; filter: drop-shadow(0 0 .07em var(--yellow)); }
+.planet-icon[data-glow=done] .planet-icon-star-one,
+.planet-icon[data-glow=done] .planet-icon-star-two { opacity: 1; filter: drop-shadow(0 0 .08em var(--yellow)); }
+.planet-icon[data-glow=done] { filter: drop-shadow(0 0 .12em var(--green)) drop-shadow(0 .105em .118em #52674b20); }
+
 /* —— 四类色相（network/ringed/node/comet → 绿/蓝/金/玫瑰） —— */
 .planet-icon-hue-0 { --planet-light: #c0d9a0; --planet-mid: #91b477; --planet-dark: #507d5c; --ring-color: #94ab88; }
 .planet-icon-hue-1 { --planet-light: #c4d8d6; --planet-mid: #8eafad; --planet-dark: #577f80; --ring-color: #9ebdb9; }
