@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import type { Page, SourceId } from '../types/knowledge'
 import { exportBackup, importBackup } from '../lib/storage'
+import PlanetIcon from './PlanetIcon'
 
 type Props = {
   page: Page
@@ -35,7 +36,7 @@ export default function Shell({ page, setPage, theme, setTheme, soundOn, setSoun
       </div>
 
       <aside className="side">
-        <div className="brand"><b className="brand-planet" aria-hidden="true"><i></i></b><span><strong>AI 应用开发</strong><small>秋招知识星图</small></span></div>
+        <div className="brand"><PlanetIcon kind="network" size={30} /><span><strong>AI 应用开发</strong><small>秋招知识星图</small></span></div>
 
         <nav>
           {NAV.map((item) => (
