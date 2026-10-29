@@ -1,0 +1,17 @@
+[
+  { "file": "tokens.css", "lines": [4, 4], "extractTokens": true, "part": "tokens", "title": "主题 Token（夜航/暖阳自定义属性）" },
+  { "file": "base.css", "lines": [3, 3], "title": "全局基础（reset / 根字体 / 表单继承）" },
+  { "file": "shell.css", "lines": [4, 4], "extractTokens": true, "part": "rest", "title": "应用外壳布局" },
+  { "file": "shell.css", "append": true, "lines": [5, 6], "title": "侧边栏与背景装饰（追加段）" },
+  { "file": "components.css", "lines": [7, 12], "title": "通用组件与页面骨架（首版）" },
+  { "file": "cards-layers.css", "lines": [13, 55], "title": "卡片/列表存量覆盖层 A（flex→grid 演进层，Phase 3/4 待合并）" },
+  { "file": "planets.css", "lines": [56, 195], "title": "星球图标（原五层补丁，待手工收敛）" },
+  { "file": "viewport-fixes.css", "lines": [196, 222], "title": "视口高度存量覆盖层 B（Phase 4 待替换为 flex 自适应）" },
+  { "file": "pages-log.css", "lines": [223, 277], "title": "星航日志页" },
+  { "file": "modals.css", "lines": [278, 294], "title": "弹窗与添加知识点" },
+  { "file": "animations.css", "lines": [295, 312], "title": "打卡动效" },
+  { "file": "backup.css", "lines": [313, 318], "title": "数据备份按钮" },
+  { "file": "search.css", "lines": [319, 330], "title": "全局搜索" },
+  { "file": "pages-read.css", "lines": [331, 367], "title": "课文阅读页" },
+  { "file": "mobile.css", "lines": [368, 381], "title": "linklike 按钮与移动端底部导航" }
+]
