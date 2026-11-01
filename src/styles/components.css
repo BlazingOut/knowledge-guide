@@ -87,7 +87,7 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .tip p {font-size:11px
 }
-.catHead {align-items:end
+.catHead {align-items:end;margin-bottom:22px
 }
 .catHead h1 {font-size:32px
 }
@@ -95,7 +95,7 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .catHead>a:hover,.source-link:hover {border-color:var(--green);background:var(--veil-green);color:var(--green-soft)
 }
-.library-overview {display:flex;align-items:center;gap:34px;padding:22px 26px;margin:0 0 28px;border-radius:20px
+.library-overview {display:flex;align-items:center;gap:24px;padding:12px 20px;margin:0 0 14px;border-radius:20px
 }
 .library-progress-copy {display:flex;align-items:baseline;gap:10px;min-width:240px
 }
@@ -105,7 +105,7 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .library-progress-copy span {font-size:11px;color:var(--green-soft)
 }
-.library-overview>.bar {flex:1;margin:0
+.library-overview>.bar {flex:1;margin:0;max-width:520px
 }
 .toolbar {display:flex;justify-content:space-between;align-items:end;margin-bottom:18px
 }
