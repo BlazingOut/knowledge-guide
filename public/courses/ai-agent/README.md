@@ -1,4 +1,4 @@
-# AI Agent 课程大纲
+# AI Agent 实战
 
 目标：面向 AI 应用开发岗秋招，建立"一次 Agent 请求如何思考、调用工具、循环执行，并在生产中安全、可靠、可观测地落地"的完整知识体系。本课对应 `learning-plan-interview.md` 中的课程一，并吸收原"课程四：AI 应用系统设计"中 Agent 专属的部分。本课与 LangGraph 课互补：LangGraph 课教"如何用图表达和实现 Agent"，本课教"概念、机制与生产级系统设计"；框架 API 一律不写，需要对照时指向 LangGraph 对应课。
 

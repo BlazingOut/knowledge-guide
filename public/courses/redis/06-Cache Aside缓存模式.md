@@ -1,4 +1,4 @@
-# Cache Aside 缓存模式
+# 第6课:Cache Aside 缓存模式
 
 > 这一课开始把 Redis 和数据库放到同一个请求流程中。
 >
@@ -241,14 +241,14 @@ update_article
 代码放在：
 
 ```text
-code/redis/redis_lesson06.py
+code/redis/06-cache-aside.py
 ```
 
 运行前确认 Redis 已启动：
 
 ```bash
 python -m pip install redis
-python code/redis/redis_lesson06.py
+python code/redis/06-cache-aside.py
 ```
 
 代码中的数据库只是为了观察 Cache Aside 流程，真实项目中应替换为数据库 Store。
@@ -343,7 +343,7 @@ article:list:latest
 能区分删除缓存和删除数据库记录
 能说明数据库和 Redis 的职责边界
 能处理 Redis 缓存不可用时的基本降级
-能运行 code/redis/redis_lesson06.py
+能运行 code/redis/06-cache-aside.py
 ```
 
 下一课将学习缓存问题与防护，重点回答：

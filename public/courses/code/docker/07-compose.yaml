@@ -1,0 +1,55 @@
+# 第 7 课：外卖系统多容器编排
+# 从仓库根目录启动：
+#   docker compose -f code/docker/07-compose.yaml up -d --build
+# 清理（保留数据卷）：
+#   docker compose -f code/docker/07-compose.yaml down
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: 07-app.Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: example
+      MYSQL_DATABASE: takeout
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: takeout
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./04-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pexample"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  redis-data:
+  mysql-data:

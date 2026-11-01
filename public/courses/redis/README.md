@@ -1,4 +1,4 @@
-# Redis、缓存与并发控制课程大纲
+# Redis 与缓存
 
 目标：理解 Redis 在 Web 服务和 AI 应用中的常见职责，能够实现缓存、计数、限流、幂等和基础异步任务，为后续单独学习分布式后端打好基础。
 
@@ -113,7 +113,7 @@
 
 实践：实现一个带 `request_id` 的创建任务接口，同一个请求号只能创建一次，并能查询已处理请求的结果。
 
-代码计划：`code/redis/redis_lesson10.py`。
+代码计划：`code/redis/10-idempotency.py`。
 
 ### 第 11 课：分布式锁的基本模型
 
@@ -123,7 +123,7 @@
 
 实践：为一个只能由单个 Worker 执行的任务增加基础锁，模拟锁获取失败和锁超时。
 
-代码计划：`code/redis/redis_lesson11.py`。
+代码计划：`code/redis/11-distributed-lock.py`。
 
 ### 第 12 课：List、Stream 与异步任务
 
@@ -133,7 +133,7 @@
 
 实践：实现一个简单任务消费者，接收任务、更新状态，并在失败后进行有限次数重试。
 
-代码计划：`code/redis/redis_lesson12.py`。
+代码计划：`code/redis/12-list-stream-tasks.py`。
 
 ### 第 13 课：消息可靠性与综合练习
 

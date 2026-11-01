@@ -1,4 +1,4 @@
-# 第 1 课：MySQL 基础与数据库对象
+# 第1课:MySQL 基础与数据库对象
 
 MySQL 课程从"数据库"开始。后端开发中第一个和 MySQL 打交道的场景往往不是写 SQL，而是：应用如何连上 MySQL？`CREATE DATABASE`、`USE`、`DROP DATABASE` 这些语句在做什么？为什么生产环境不直接用 SQLite 文件？
 

@@ -1,4 +1,4 @@
-# Redis 常见数据结构
+# 第2课:Redis 常见数据结构
 
 > 这一课只学习 Redis 最常用的五种数据结构。
 >
@@ -295,7 +295,7 @@ ZADD tasks:scheduled 1792300800 "task:9001"   # 用到期时间戳作为分数
 本课代码放在：
 
 ```text
-code/redis/redis_lesson02.py
+code/redis/02-data-structures.py
 ```
 
 示例会使用一个统一的 Key 前缀，运行结束后删除练习数据：
@@ -350,7 +350,7 @@ if __name__ == "__main__":
 
 ```bash
 python -m pip install redis
-python code/redis/redis_lesson02.py
+python code/redis/02-data-structures.py
 ```
 
 代码只演示数据结构的基本读写，不包含缓存失效、任务确认和并发控制。
@@ -424,7 +424,7 @@ Sorted Set 只有一个用于排序的 score。若一个排行榜还需要昵称
 能使用 Sorted Set 保存分数并查询排名
 知道 List 不自动提供可靠消息处理
 知道 Set 不保证顺序
-能运行 code/redis/redis_lesson02.py 并清理练习数据
+能运行 code/redis/02-data-structures.py 并清理练习数据
 ```
 
 下一课将学习 Redis 的原理，重点回答：

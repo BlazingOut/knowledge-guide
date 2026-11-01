@@ -1,4 +1,4 @@
-# Redis List、Stream 与异步任务
+# 第12课:Redis List、Stream 与异步任务
 
 > 这一课学习如何把耗时工作从 HTTP 请求中取出来，交给后台 Worker 执行。
 >
@@ -271,7 +271,7 @@ Worker 可能在业务操作成功后、确认消息前崩溃：
 代码放在：
 
 ```text
-code/redis/redis_lesson12.py
+code/redis/12-list-stream-tasks.py
 ```
 
 示例使用 List 实现一个最小任务流程：
@@ -287,7 +287,7 @@ code/redis/redis_lesson12.py
 
 ```bash
 python -m pip install redis
-python code/redis/redis_lesson12.py
+python code/redis/12-list-stream-tasks.py
 ```
 
 本课代码为了便于一次运行观察结果，不会启动常驻 Worker；真实项目中生产者和消费者通常是两个独立进程。
@@ -346,7 +346,7 @@ Stream 的确认机制可以帮助管理消息，但业务处理可能在确认�
 能为任务设计 pending、running、succeeded 和 failed 状态
 能设置最大重试次数
 能解释重复消费为什么必须保证业务幂等
-能运行 code/redis/redis_lesson12.py
+能运行 code/redis/12-list-stream-tasks.py
 ```
 
 下一课将学习消息可靠性与综合练习，重点回答：

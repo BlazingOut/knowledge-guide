@@ -1,4 +1,4 @@
-# LangGraph 课程大纲
+# LangGraph 应用开发
 
 目标：面向 AI Agent 开发岗秋招，在阶段 9 手写 Agent 执行循环的基础上，系统掌握 LangGraph 的图执行模型与核心机制，学完后能用"节点、边、状态"解释和设计任何 Agent 应用，并能回答 LangGraph 相关的全部高频面试题。示例优先使用通用场景（多工具助手、带审批的写邮件 Agent、检索问答等），第 4、5、6、11 课和综合项目与 Life Manager 的 `runtime/tool_loop.py`、`agents`、`tools` 对照阅读。
 

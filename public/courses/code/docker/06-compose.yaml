@@ -1,0 +1,58 @@
+# 第 6 课：外卖系统多容器编排
+# name 给这一组容器起一个项目名，所有容器/网络/卷都会带这个前缀。
+# 从仓库根目录启动：
+#   docker compose -f code/docker/06-compose.yaml up -d --build
+
+name: takeout
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: 03-app.Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: compose
+      REDIS_HOST: redis
+      MYSQL_HOST: mysql
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health').read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: takeout
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./04-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pexample"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  redis-data:
+  mysql-data:

@@ -1,4 +1,4 @@
-# SQLite 专题课程大纲
+# SQLite 专题
 
 这条课程线建立在 MySQL 正式课程之上，不再重复讲一遍通用 SQL。MySQL 课程已经覆盖数据库对象、数据类型、约束、增删改查、聚合、JOIN、子查询、窗口函数、索引、执行计划、事务、MVCC、锁、日志和线上排查。
 
@@ -24,17 +24,17 @@ MySQL：独立服务器、InnoDB、行锁、MVCC、redo/binlog
 
 原有第 1 至第 5 课笔记仍然保留在本目录，作为早期的 SQLite/SQL 入门资料继续可用：
 
-- [第 1 课：数据库、表和记录](./lesson-01-tables-and-records.md)
-- [第 2 课：条件查询和排序](./lesson-02-filtering-and-sorting.md)
-- [第 3 课：修改和删除记录](./lesson-03-update-and-delete.md)
-- [第 4 课：表结构、数据类型和表结构修改](./lesson-04-schema.md)
-- [第 5 课：约束和数据完整性](./lesson-05-integrity.md)
+- [第 1 课：数据库、表和记录](./01-tables-and-records.md)
+- [第 2 课：条件查询和排序](./02-filtering-sorting.md)
+- [第 3 课：修改和删除记录](./03-update-delete.md)
+- [第 4 课：表结构、数据类型和表结构修改](./04-schema.md)
+- [第 5 课：约束和数据完整性](./05-constraints.md)
 
 对应代码在 `code/database-sqlite/`。它们属于早期入门资料，不再作为完成 MySQL 后的正式学习顺序。后续新增或修改的专题课统一放在本目录，不要再复制到 `courses/后端基础/database/`。
 
 ## 前置知识
 
-默认已经完成 MySQL 正式课程前 6 课，能够读写基础 SQL，理解表、约束、事务、JOIN、聚合和子查询。
+默认已经完成 MySQL 正式课程前 8 课，能够读写基础 SQL，理解表、约束、事务、JOIN、聚合和子查询。
 
 还需要：
 

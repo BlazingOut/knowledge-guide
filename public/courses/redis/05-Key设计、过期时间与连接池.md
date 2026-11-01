@@ -1,4 +1,4 @@
-# Redis Key 设计、过期时间与连接池
+# 第5课:Redis Key 设计、过期时间与连接池
 
 > 这一课学习 Redis 数据的生命周期和访问入口。
 >
@@ -336,7 +336,7 @@ socket_timeout：一次 Redis 操作最多等待多久
 本课代码放在：
 
 ```text
-code/redis/redis_lesson05.py
+code/redis/05-key-expiry-pool.py
 ```
 
 示例会演示 Key 前缀、TTL 和连接池：
@@ -389,7 +389,7 @@ if __name__ == "__main__":
 
 ```bash
 python -m pip install redis
-python code/redis/redis_lesson05.py
+python code/redis/05-key-expiry-pool.py
 ```
 
 代码中的永久 Key 只是为了观察 `TTL=-1` 的情况，实际业务中不要给临时数据省略过期时间。
@@ -480,7 +480,7 @@ def read_value(key: str):
 能说出 redis.Redis、redis.Redis.from_url 和 ConnectionPool 各自的作用
 能说明连接池大小与应用实例数量的关系
 能设置基础的连接和操作超时
-能运行 code/redis/redis_lesson05.py
+能运行 code/redis/05-key-expiry-pool.py
 ```
 
 下一课将学习 Cache Aside，重点回答：

@@ -1,4 +1,4 @@
-# Redis 基础与连接
+# 第1课:Redis 基础与连接
 
 > 这一课是 Redis 正式课程的起点。
 >
@@ -941,7 +941,7 @@ DEL 后 GET 返回什么？
 
 ### 3. 使用 Python 重复一次
 
-创建 `redis_lesson01.py`：
+创建 `01-connect-basics.py`：
 
 ```python
 import redis
@@ -977,7 +977,7 @@ if __name__ == "__main__":
 运行：
 
 ```bash
-python redis_lesson01.py
+python 01-connect-basics.py
 ```
 
 这个练习至少验证了：

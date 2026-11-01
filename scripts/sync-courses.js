@@ -8,7 +8,7 @@
 //
 // 用法：node scripts/sync-courses.js [课程仓库路径] [--init-titles]
 
-import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, copyFileSync, cpSync, existsSync } from 'fs'
+import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, copyFileSync, cpSync, existsSync, rmSync } from 'fs'
 import { resolve, join, dirname, relative } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -37,6 +37,21 @@ function copyDir(src, dest) {
   mkdirSync(dest, { recursive: true })
   cpSync(src, dest, { recursive: true, force: true })
   return true
+}
+
+// 镜像清理：删除目标目录里源目录已不存在的条目（递归），避免课程改名后旧文件残留
+function mirrorClean(srcDir, destDir) {
+  if (!existsSync(destDir)) return
+  const srcNames = new Set(readdirSync(srcDir))
+  for (const name of readdirSync(destDir)) {
+    const s = join(srcDir, name)
+    const t = join(destDir, name)
+    if (!srcNames.has(name)) {
+      rmSync(t, { recursive: true, force: true })
+    } else if (statSync(s).isDirectory() && statSync(t).isDirectory()) {
+      mirrorClean(s, t)
+    }
+  }
 }
 
 // 辅助文件命名（开发自用、非课文交付物），漏配诊断时排除
@@ -147,14 +162,20 @@ function main() {
       })
       topicCount += topics.length
 
-      // 拷贝课文 / README / 配图 / 代码
+      // 拷贝课文 / README / 配图 / 代码（先镜像清理改名残留，再拷贝当前内容）
       const outCourse = join(outPublic, courseId)
       mkdirSync(outCourse, { recursive: true })
+      mirrorClean(coursePath, outCourse)
       for (const f of lessonFiles) copyFileSync(join(coursePath, f), join(outCourse, f))
       const readmePath = join(coursePath, 'README.md')
       if (existsSync(readmePath)) copyFileSync(readmePath, join(outCourse, 'README.md'))
       copyDir(join(coursePath, 'assets'), join(outCourse, 'assets'))
-      if (existsSync(codeDir)) copyDir(codeDir, join(outPublic, 'code', courseId))
+      if (existsSync(codeDir)) {
+        const outCode = join(outPublic, 'code', courseId)
+        mkdirSync(outCode, { recursive: true })
+        mirrorClean(codeDir, outCode)
+        copyDir(codeDir, outCode)
+      }
 
       // 课程名：映射优先，其次 README 标题（去掉「课程大纲」「课程」后缀），最后目录名
       const readmeText = existsSync(readmePath) ? readFileSync(readmePath, 'utf8') : ''
