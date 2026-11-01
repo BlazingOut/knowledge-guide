@@ -545,7 +545,7 @@
           {
             "id": "course-database-sqlite-1",
             "title": "数据库表与记录",
-            "url": "courses/database-sqlite/01-tables-and-records.md",
+            "url": "courses/database-sqlite/01-数据库表与记录.md",
             "codeFiles": [
               "courses/code/database-sqlite/01-tables-and-records.py"
             ]
@@ -553,7 +553,7 @@
           {
             "id": "course-database-sqlite-2",
             "title": "条件查询和排序",
-            "url": "courses/database-sqlite/02-filtering-sorting.md",
+            "url": "courses/database-sqlite/02-条件查询和排序.md",
             "codeFiles": [
               "courses/code/database-sqlite/02-filtering-sorting.py"
             ]
@@ -561,7 +561,7 @@
           {
             "id": "course-database-sqlite-3",
             "title": "修改和删除记录",
-            "url": "courses/database-sqlite/03-update-delete.md",
+            "url": "courses/database-sqlite/03-修改和删除记录.md",
             "codeFiles": [
               "courses/code/database-sqlite/03-update-delete.py"
             ]
@@ -569,7 +569,7 @@
           {
             "id": "course-database-sqlite-4",
             "title": "数据类型和表结构",
-            "url": "courses/database-sqlite/04-schema.md",
+            "url": "courses/database-sqlite/04-数据类型和表结构.md",
             "codeFiles": [
               "courses/code/database-sqlite/04-schema.py"
             ]
@@ -577,7 +577,7 @@
           {
             "id": "course-database-sqlite-5",
             "title": "约束",
-            "url": "courses/database-sqlite/05-constraints.md",
+            "url": "courses/database-sqlite/05-约束.md",
             "codeFiles": [
               "courses/code/database-sqlite/05-constraints.py"
             ]
@@ -585,7 +585,7 @@
           {
             "id": "course-database-sqlite-6",
             "title": "单表查询补全",
-            "url": "courses/database-sqlite/06-single-table-query.md",
+            "url": "courses/database-sqlite/06-单表查询补全.md",
             "codeFiles": [
               "courses/code/database-sqlite/06-single-table-query.py"
             ]
@@ -593,7 +593,7 @@
           {
             "id": "course-database-sqlite-7",
             "title": "SQLite 的索引与查询计划",
-            "url": "courses/database-sqlite/07-index-query-plan.md",
+            "url": "courses/database-sqlite/07-SQLite 的索引与查询计划.md",
             "codeFiles": [
               "courses/code/database-sqlite/07-index-query-plan.py"
             ]
@@ -601,7 +601,7 @@
           {
             "id": "course-database-sqlite-8",
             "title": "SQLite 特有语法与内部结构",
-            "url": "courses/database-sqlite/08-sqlite-internals.md",
+            "url": "courses/database-sqlite/08-SQLite 特有语法与内部结构.md",
             "codeFiles": [
               "courses/code/database-sqlite/08-sqlite-internals.py"
             ]
@@ -609,7 +609,7 @@
           {
             "id": "course-database-sqlite-9",
             "title": "SQLite 备份、恢复与完整性检查",
-            "url": "courses/database-sqlite/09-backup-restore.md",
+            "url": "courses/database-sqlite/09-SQLite 备份、恢复与完整性检查.md",
             "codeFiles": [
               "courses/code/database-sqlite/09-backup-restore.py"
             ]
@@ -617,7 +617,7 @@
           {
             "id": "course-database-sqlite-10",
             "title": "SQLite 的真实使用边界",
-            "url": "courses/database-sqlite/10-usage-boundaries.md"
+            "url": "courses/database-sqlite/10-SQLite 的真实使用边界.md"
           }
         ]
       },
@@ -895,7 +895,7 @@
           {
             "id": "course-ai-agent-1",
             "title": "Agent 是什么",
-            "url": "courses/ai-agent/01-what-is-agent.md",
+            "url": "courses/ai-agent/01-Agent 是什么.md",
             "codeFiles": [
               "courses/code/ai-agent/01-what-is-agent.py"
             ]
@@ -903,7 +903,7 @@
           {
             "id": "course-ai-agent-2",
             "title": "Agent Loop",
-            "url": "courses/ai-agent/02-agent-loop.md",
+            "url": "courses/ai-agent/02-Agent Loop.md",
             "codeFiles": [
               "courses/code/ai-agent/02-agent-loop.py"
             ]
@@ -911,7 +911,7 @@
           {
             "id": "course-ai-agent-3",
             "title": "工具系统：注册、描述、调用链路与可靠性",
-            "url": "courses/ai-agent/03-tool-system.md",
+            "url": "courses/ai-agent/03-工具系统：注册、描述、调用链路与可靠性.md",
             "codeFiles": [
               "courses/code/ai-agent/03-tool-system.py"
             ]
@@ -919,7 +919,7 @@
           {
             "id": "course-ai-agent-4",
             "title": "记忆系统：短期、长期与污染控制",
-            "url": "courses/ai-agent/04-memory-system.md",
+            "url": "courses/ai-agent/04-记忆系统：短期、长期与污染控制.md",
             "codeFiles": [
               "courses/code/ai-agent/04-memory-system.py"
             ]
@@ -927,7 +927,7 @@
           {
             "id": "course-ai-agent-5",
             "title": "上下文工程与安全输入",
-            "url": "courses/ai-agent/05-context-engineering.md",
+            "url": "courses/ai-agent/05-上下文工程与安全输入.md",
             "codeFiles": [
               "courses/code/ai-agent/05-context-engineering.py"
             ]
@@ -935,7 +935,7 @@
           {
             "id": "course-ai-agent-6",
             "title": "多 Agent 协作与编排",
-            "url": "courses/ai-agent/06-multi-agent.md",
+            "url": "courses/ai-agent/06-多 Agent 协作与编排.md",
             "codeFiles": [
               "courses/code/ai-agent/06-multi-agent.py"
             ]
@@ -943,7 +943,7 @@
           {
             "id": "course-ai-agent-7",
             "title": "权限、多租户与安全",
-            "url": "courses/ai-agent/07-permissions-multitenancy.md",
+            "url": "courses/ai-agent/07-权限、多租户与安全.md",
             "codeFiles": [
               "courses/code/ai-agent/07-permissions-multitenancy.py"
             ]
@@ -951,7 +951,7 @@
           {
             "id": "course-ai-agent-8",
             "title": "沙盒与执行环境",
-            "url": "courses/ai-agent/08-sandbox-execution.md",
+            "url": "courses/ai-agent/08-沙盒与执行环境.md",
             "codeFiles": [
               "courses/code/ai-agent/08-sandbox-execution.py"
             ]
@@ -1091,7 +1091,7 @@
           {
             "id": "course-algorithm-1",
             "title": "快速检查清单",
-            "url": "courses/algorithm/00-quick-check.md"
+            "url": "courses/algorithm/00-快速检查清单.md"
           },
           {
             "id": "course-algorithm-2",
@@ -1131,7 +1131,7 @@
           {
             "id": "course-algorithm-9",
             "title": "DFS 与 BFS",
-            "url": "courses/algorithm/08-DFS与BFS.md"
+            "url": "courses/algorithm/08-DFS 与 BFS.md"
           },
           {
             "id": "course-algorithm-10",
