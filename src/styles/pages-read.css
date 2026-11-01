@@ -81,7 +81,7 @@
 .read-body img {max-width:100%;border-radius:10px;margin:10px 0;border:1px solid var(--border)
 }
 
-.read-foot {display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px
+.read-foot {display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px;flex-wrap:wrap
 }
 
 .read-status {font-size:11px;color:var(--subtle)

@@ -92,7 +92,12 @@ export default function ReadPage({ reading, get, update, hasNext, onNext, onBack
       )}
 
       <div className="read-foot">
-        <span className="read-status">{labels[state.status]}</span>
+        <div className="read-actions">
+          <span className="read-status">{labels[state.status]}</span>
+          <button className={isDone ? 'done-button' : ''} onClick={() => update(topic.id, { status: nextStatus(state.status) })}>
+            {isDone ? '重新学习 ✓' : state.status === 'learning' ? '已完成 →' : '开始学习 →'}
+          </button>
+        </div>
         {hasNext
           ? <button className="read-next" onClick={onNext}>下一篇：{reading.category.topics[reading.category.topics.findIndex((t) => t.id === topic.id) + 1]?.title} →</button>
           : <button className="read-next" onClick={onBack}>已完成本章 · 返回课程目录 →</button>}
