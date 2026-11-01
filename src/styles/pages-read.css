@@ -7,9 +7,6 @@
 .read-head {display:flex;align-items:flex-start;gap:18px;margin-bottom:20px
 }
 
-.read-head .back {margin:0
-}
-
 .read-meta {flex:1;min-width:0
 }
 
@@ -88,9 +85,6 @@
 }
 
 .read-status {font-size:11px;color:var(--subtle)
-}
-
-.read-done-all {font-size:11px;color:var(--green-soft)
 }
 
 /* 自研课程接入：配套代码下载区（阅读页底部） */

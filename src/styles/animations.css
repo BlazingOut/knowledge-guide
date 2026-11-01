@@ -1,10 +1,9 @@
 /* 打卡动效 — Phase 0 拆分自 src/styles.css（原 295-312 行）*/
-/* 打卡动效：点亮爆发、呼吸星光、学习流光、庆祝彩蛋（音效开关复用 theme-switch 样式） */
+/* 打卡动效：点亮爆发、呼吸星光、学习流光（音效开关复用 theme-switch 样式） */
 @keyframes burst-pop{0%{opacity:0;transform:scale(.3) rotate(-40deg)}25%{opacity:1;transform:scale(1.5) rotate(8deg)}100%{opacity:0;transform:scale(2.1) rotate(30deg)}}
 @keyframes glow-breath{0%,100%{box-shadow:0 10px 28px var(--shadow-ambient)}50%{box-shadow:0 0 20px color-mix(in srgb,var(--green) 40%,transparent),0 10px 28px var(--shadow-ambient)}}
 @keyframes shimmer{from{background-position:-120% 0}to{background-position:220% 0}}
 @keyframes sparkle-pulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.45);opacity:1}}
-@keyframes star-rise{0%{opacity:0;transform:translateY(40px) scale(.6)}15%{opacity:1}100%{opacity:0;transform:translateY(-46vh) scale(1.15)}}
 .study-card .burst{position:absolute;left:24px;top:16px;color:var(--yellow);text-shadow:0 0 12px var(--yellow);font-size:22px;pointer-events:none;animation:burst-pop .8s ease-out forwards}
 .study-card.card-done{animation:glow-breath 3.2s ease-in-out infinite}
 .checkin-list .study-card.card-done:before{color:var(--green-soft);text-shadow:0 0 10px var(--green-soft);animation:sparkle-pulse 1.6s ease-in-out infinite}
@@ -12,8 +11,5 @@
 .learning-progress{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--muted)}
 .learning-progress i{flex:1;height:6px;border-radius:6px;background:var(--track);overflow:hidden;position:relative}
 .learning-progress i b{display:block;height:100%;width:40%;border-radius:6px;background:linear-gradient(90deg,var(--green),var(--green-soft),var(--green));background-size:200% 100%;animation:shimmer 1.6s linear infinite}
-.checkin-all-done .sparkle{animation:sparkle-pulse 1.2s ease-in-out infinite}
-.celebration{position:fixed;inset:0;z-index:55;overflow:hidden;pointer-events:none}
-.celebration span{position:absolute;bottom:8vh;color:var(--yellow);text-shadow:0 0 14px var(--yellow);font-size:22px;animation:star-rise 3.4s ease-out forwards}
 @media (prefers-reduced-motion:reduce){
-.study-card .burst,.study-card.card-done,.checkin-list .study-card.card-done:before,.learning-progress i b,.checkin-all-done .sparkle,.celebration span{animation:none}}
+.study-card .burst,.study-card.card-done,.checkin-list .study-card.card-done:before,.learning-progress i b{animation:none}}

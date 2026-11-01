@@ -26,6 +26,8 @@
 }
 .modal-actions button.primary {background:var(--green);border-color:var(--green);color:var(--on-green);font-weight:700
 }
+.modal-actions button.danger {background:var(--rose);border-color:var(--rose);color:#fff;font-weight:700
+}
 .topic section .del {color:var(--rose)
 }
 @media (max-width:620px) {

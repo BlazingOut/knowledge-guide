@@ -1,7 +1,7 @@
 // 知识星库页：当前分类知识点列表、搜索、筛选、面试标记与动态添加
 
 import { useState } from 'react'
-import type { Category, Page, Topic, UserState } from '../types/knowledge'
+import type { Category, Topic, UserState } from '../types/knowledge'
 import { labels } from '../types/knowledge'
 import { startedCount, percent } from '../lib/progress'
 import { openLink } from '../lib/storage'
@@ -16,7 +16,6 @@ type Props = {
   setQuery: (value: string) => void
   filter: string
   setFilter: (value: string) => void
-  setPage: (page: Page) => void
   addTopic: (categoryId: string, title: string, url: string) => void
   removeTopic: (categoryId: string, topicId: string) => void
   domainTitle: string
@@ -24,7 +23,7 @@ type Props = {
   onRead?: (topic: Topic) => void
 }
 
-export default function DetailPage({ active, get, update, filtered, query, setQuery, filter, setFilter, setPage, addTopic, removeTopic, domainTitle, isSelf, onRead }: Props) {
+export default function DetailPage({ active, get, update, filtered, query, setQuery, filter, setFilter, addTopic, removeTopic, domainTitle, isSelf, onRead }: Props) {
   const [showForm, setShowForm] = useState(false)
   const [name, setName] = useState('')
   const [url, setUrl] = useState('')
@@ -51,7 +50,6 @@ export default function DetailPage({ active, get, update, filtered, query, setQu
 
   return (
     <>
-      <button className="back" onClick={() => setPage('home')}>← 返回知识地图</button>
       <div className="catHead">
         <div>
           <small>知识星库 · {domainTitle}</small>
@@ -80,7 +78,7 @@ export default function DetailPage({ active, get, update, filtered, query, setQu
       </div>
       <div className="list">
         {filtered.map((topic, index) => (
-          <TopicItem key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} checkin={false} isSelf={isSelf} onRead={onRead}
+          <TopicItem key={topic.id} topic={topic} index={index} state={get(topic.id)} update={update} isSelf={isSelf} onRead={onRead}
             onDelete={topic.id.startsWith('custom-') ? () => removeTopic(active.id, topic.id) : undefined} />
         ))}
       </div>

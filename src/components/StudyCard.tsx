@@ -1,4 +1,4 @@
-// 今日航行打卡卡片：状态切换、整卡点击进入阅读（自研课程）或外开链接（JavaGuide）
+// 知识点打卡卡片：状态切换、整卡点击进入阅读（自研课程）或外开链接（JavaGuide）
 
 import type { Topic, UserState } from '../types/knowledge'
 import { nextStatus, openLink } from '../lib/storage'

@@ -17,23 +17,65 @@
         "topics": [
           {
             "id": "course-docker-1",
-            "title": "Docker 机制与原理",
-            "url": "courses/docker/01-Docker机制与原理.md"
+            "title": "Docker 机制、原理与安装",
+            "url": "courses/docker/01-Docker机制、原理与安装.md"
           },
           {
             "id": "course-docker-2",
-            "title": "Docker 安装与验证",
-            "url": "courses/docker/02-Docker安装与验证.md"
+            "title": "镜像、容器与隔离",
+            "url": "courses/docker/02-镜像、容器与隔离.md"
           },
           {
             "id": "course-docker-3",
-            "title": "环境隔离与切换",
-            "url": "courses/docker/03-环境隔离与切换.md"
+            "title": "Dockerfile 与镜像构建",
+            "url": "courses/docker/03-Dockerfile 与镜像构建.md",
+            "codeFiles": [
+              "courses/code/docker/03-minimal-app.py",
+              "courses/code/docker/03-app.Dockerfile",
+              "courses/code/docker/03-app-hardened.Dockerfile",
+              "courses/code/docker/03-requirements.txt"
+            ]
           },
           {
             "id": "course-docker-4",
-            "title": "镜像与容器的日常管理",
-            "url": "courses/docker/04-镜像与容器的日常管理.md"
+            "title": "数据卷与持久化",
+            "url": "courses/docker/04-数据卷与持久化.md",
+            "codeFiles": [
+              "courses/code/docker/04-init.sql"
+            ]
+          },
+          {
+            "id": "course-docker-5",
+            "title": "端口映射与容器网络",
+            "url": "courses/docker/05-端口映射与容器网络.md"
+          },
+          {
+            "id": "course-docker-6",
+            "title": "Docker Compose",
+            "url": "courses/docker/06-Docker Compose.md",
+            "codeFiles": [
+              "courses/code/docker/06-compose.yaml"
+            ]
+          },
+          {
+            "id": "course-docker-7",
+            "title": "综合练习：把课程项目装进 Docker",
+            "url": "courses/docker/07-综合练习：把课程项目装进 Docker.md",
+            "codeFiles": [
+              "courses/code/docker/07-main.py",
+              "courses/code/docker/07-requirements.txt",
+              "courses/code/docker/07-app.Dockerfile",
+              "courses/code/docker/07-compose.yaml"
+            ]
+          },
+          {
+            "id": "course-docker-8",
+            "title": "生产化与排障",
+            "url": "courses/docker/08-生产化与排障.md",
+            "codeFiles": [
+              "courses/code/docker/08-nginx.conf",
+              "courses/code/docker/08-prod-compose.yaml"
+            ]
           }
         ]
       },
@@ -45,43 +87,43 @@
         "topics": [
           {
             "id": "course-git-1",
-            "title": "Git 的三个位置和第一次提交",
-            "url": "courses/git/lesson-01-model.md"
+            "title": "Git 的基本原理和初始化",
+            "url": "courses/git/01-Git 的基本原理和初始化.md"
           },
           {
             "id": "course-git-2",
-            "title": "提交历史、分支与 HEAD",
-            "url": "courses/git/lesson-02-commits-branches.md"
+            "title": "提交、分支与 HEAD",
+            "url": "courses/git/02-提交、分支与 HEAD.md"
           },
           {
             "id": "course-git-3",
-            "title": "使用 `git diff` 查看文件变化",
-            "url": "courses/git/lesson-03-diff.md"
+            "title": "git diff 与变更对比",
+            "url": "courses/git/03-git diff 与变更对比.md"
           },
           {
             "id": "course-git-4",
-            "title": "撤销工作区和暂存区中的修改",
-            "url": "courses/git/lesson-04-recovery.md"
+            "title": "撤销、恢复与 stash",
+            "url": "courses/git/04-撤销、恢复与 stash.md"
           },
           {
             "id": "course-git-5",
-            "title": "合并分支与解决冲突",
-            "url": "courses/git/lesson-05-merge-conflicts.md"
+            "title": "合并与冲突解决",
+            "url": "courses/git/05-合并与冲突解决.md"
           },
           {
             "id": "course-git-6",
-            "title": "使用 Git worktree 管理多个工作目录",
-            "url": "courses/git/lesson-06-worktree.md"
+            "title": "worktree 与多工作目录",
+            "url": "courses/git/06-worktree 与多工作目录.md"
           },
           {
             "id": "course-git-7",
-            "title": "远程仓库与本地仓库协作",
-            "url": "courses/git/lesson-07-remote.md"
+            "title": "远程仓库与本地协作",
+            "url": "courses/git/07-远程仓库与本地协作.md"
           },
           {
             "id": "course-git-8",
-            "title": "综合实践：审查、隔离并合并一次功能修改",
-            "url": "courses/git/lesson-08-project.md"
+            "title": "综合实践：功能修改全流程",
+            "url": "courses/git/08-综合实践：功能修改全流程.md"
           }
         ]
       },
@@ -93,38 +135,38 @@
         "topics": [
           {
             "id": "course-linux-1",
-            "title": "Linux、终端、Shell 与命令基础",
-            "url": "courses/linux/lesson-01-command-line-and-environment.md"
+            "title": "终端与命令基础",
+            "url": "courses/linux/01-终端与命令基础.md"
           },
           {
             "id": "course-linux-2",
-            "title": "文件与目录：查找、复制与安全操作",
-            "url": "courses/linux/lesson-02-files-search-safe-ops.md"
+            "title": "文件与目录操作",
+            "url": "courses/linux/02-文件与目录操作.md"
           },
           {
             "id": "course-linux-3",
-            "title": "标准输入输出、管道与重定向",
-            "url": "courses/linux/lesson-03-stdio-pipes-redirection.md"
+            "title": "标准流、管道与重定向",
+            "url": "courses/linux/03-标准流、管道与重定向.md"
           },
           {
             "id": "course-linux-4",
-            "title": "文本处理：查看、排序与统计",
-            "url": "courses/linux/lesson-04-text-processing.md"
+            "title": "文本处理",
+            "url": "courses/linux/04-文本处理.md"
           },
           {
             "id": "course-linux-5",
             "title": "日志查看与排查",
-            "url": "courses/linux/lesson-05-log-inspection.md"
+            "url": "courses/linux/05-日志查看与排查.md"
           },
           {
             "id": "course-linux-6",
             "title": "文件权限与用户基础",
-            "url": "courses/linux/lesson-06-file-permissions.md"
+            "url": "courses/linux/06-文件权限与用户基础.md"
           },
           {
             "id": "course-linux-7",
             "title": "环境变量与 Python 运行环境",
-            "url": "courses/linux/lesson-07-environment-variables.md"
+            "url": "courses/linux/07-环境变量与 Python 运行环境.md"
           }
         ]
       },
@@ -137,42 +179,64 @@
           {
             "id": "course-python-1",
             "title": "异常与错误处理",
-            "url": "courses/python/lesson-01-exceptions.md"
+            "url": "courses/python/01-异常与错误处理.md",
+            "codeFiles": [
+              "courses/code/python/01-exceptions.py"
+            ]
           },
           {
             "id": "course-python-2",
             "title": "文件、路径和数据转换",
-            "url": "courses/python/lesson-02-files-and-data.md"
+            "url": "courses/python/02-文件、路径和数据转换.md",
+            "codeFiles": [
+              "courses/code/python/02-files-and-data.py"
+            ]
           },
           {
             "id": "course-python-3",
             "title": "类、数据建模和类型标注",
-            "url": "courses/python/lesson-03-classes-data-modeling.md"
+            "url": "courses/python/03-类、数据建模和类型标注.md",
+            "codeFiles": [
+              "courses/code/python/03-classes-data-modeling.py"
+            ]
           },
           {
             "id": "course-python-4",
             "title": "模块、包与项目结构",
-            "url": "courses/python/lesson-04-modules-packages.md"
+            "url": "courses/python/04-模块、包与项目结构.md",
+            "codeFiles": [
+              "courses/code/python/04-modules-packages.py"
+            ]
           },
           {
             "id": "course-python-5",
             "title": "迭代器、生成器、上下文管理器",
-            "url": "courses/python/lesson-05-language-tools.md"
+            "url": "courses/python/05-迭代器、生成器、上下文管理器.md",
+            "codeFiles": [
+              "courses/code/python/05-language-tools.py"
+            ]
           },
           {
             "id": "course-python-6",
             "title": "装饰器",
-            "url": "courses/python/lesson-06-decorators.md"
+            "url": "courses/python/06-装饰器.md",
+            "codeFiles": [
+              "courses/code/python/06-decorators.py"
+            ]
           },
           {
             "id": "course-python-7",
-            "title": "工程 Python——日志、配置、命令行和测试",
-            "url": "courses/python/lesson-07-engineering-python.md"
+            "title": "工程 Python",
+            "url": "courses/python/07-工程 Python.md",
+            "codeFiles": [
+              "courses/code/python/07-engineering-python.py",
+              "courses/code/python/test_07_engineering.py"
+            ]
           },
           {
             "id": "course-python-8",
-            "title": "Python 异步基础与并发 I/O",
-            "url": "courses/python/lesson-08-asyncio-concurrency.md"
+            "title": "Python 异步基础与并发 IO",
+            "url": "courses/python/08-Python 异步基础与并发 IO.md"
           }
         ]
       }
@@ -197,76 +261,76 @@
           {
             "id": "course-network-1",
             "title": "网络分层模型与协议栈",
-            "url": "courses/network/lesson-01-layering.md",
+            "url": "courses/network/01-网络分层模型与协议栈.md",
             "codeFiles": [
-              "courses/code/network/network_lesson01.py"
+              "courses/code/network/01-encapsulation.py"
             ]
           },
           {
             "id": "course-network-2",
             "title": "IP 地址、子网与路由基础",
-            "url": "courses/network/lesson-02-ip-subnet-routing.md"
+            "url": "courses/network/02-IP 地址、子网与路由基础.md"
           },
           {
             "id": "course-network-3",
             "title": "UDP、TCP 与端口",
-            "url": "courses/network/lesson-03-tcp-udp-ports.md"
+            "url": "courses/network/03-UDP、TCP 与端口.md"
           },
           {
             "id": "course-network-4",
             "title": "TCP 三次握手与四次挥手",
-            "url": "courses/network/lesson-04-tcp-handshake-teardown.md"
+            "url": "courses/network/04-TCP 三次握手与四次挥手.md"
           },
           {
             "id": "course-network-5",
             "title": "socket 编程",
-            "url": "courses/network/lesson-05-socket-programming.md",
+            "url": "courses/network/05-socket 编程.md",
             "codeFiles": [
-              "courses/code/network/network_lesson05.py"
+              "courses/code/network/05-socket-basics.py"
             ]
           },
           {
             "id": "course-network-6",
             "title": "TCP 可靠传输与粘包",
-            "url": "courses/network/lesson-06-tcp-reliability.md",
+            "url": "courses/network/06-TCP 可靠传输与粘包.md",
             "codeFiles": [
-              "courses/code/network/network_lesson06.py"
+              "courses/code/network/06-tcp-reliability.py"
             ]
           },
           {
             "id": "course-network-7",
             "title": "DNS 域名解析",
-            "url": "courses/network/lesson-07-dns.md"
+            "url": "courses/network/07-DNS 域名解析.md"
           },
           {
             "id": "course-network-8",
             "title": "HTTP 基础：报文、方法与状态码",
-            "url": "courses/network/lesson-08-http-basics.md",
+            "url": "courses/network/08-HTTP 基础：报文、方法与状态码.md",
             "codeFiles": [
-              "courses/code/network/network_lesson08.py"
+              "courses/code/network/08-http-basics.py"
             ]
           },
           {
             "id": "course-network-9",
             "title": "HTTPS、TLS 与会话保持",
-            "url": "courses/network/lesson-09-https-tls-session.md"
+            "url": "courses/network/09-HTTPS、TLS 与会话保持.md"
           },
           {
             "id": "course-network-10",
-            "title": "HTTP/2、HTTP/3、WebSocket 与代理网关",
-            "url": "courses/network/lesson-10-http2-http3-websocket-proxy.md"
+            "title": "HTTP/2、HTTP/3 与代理网关",
+            "url": "courses/network/10-HTTP2、HTTP3 与代理网关.md"
           },
           {
             "id": "course-network-11",
             "title": "网络观察与排错命令工具箱",
-            "url": "courses/network/lesson-11-network-troubleshooting-tools.md"
+            "url": "courses/network/11-网络观察与排错命令工具箱.md"
           },
           {
             "id": "course-network-12",
-            "title": "综合复盘：从输入 URL 到收到 LLM 回答",
-            "url": "courses/network/lesson-12-end-to-end-review.md",
+            "title": "综合复盘：URL 到 LLM 回答",
+            "url": "courses/network/12-综合复盘：URL 到 LLM 回答.md",
             "codeFiles": [
-              "courses/code/network/network_lesson12.py"
+              "courses/code/network/12-end-to-end.py"
             ]
           }
         ]
@@ -279,45 +343,45 @@
         "topics": [
           {
             "id": "course-os-1",
-            "title": "操作系统是什么：四个子系统的总览",
-            "url": "courses/os/lesson-01-os-overview.md"
+            "title": "操作系统的四个子系统",
+            "url": "courses/os/01-操作系统的四个子系统.md"
           },
           {
             "id": "course-os-2",
             "title": "进程与线程",
-            "url": "courses/os/lesson-02-process-thread.md",
+            "url": "courses/os/02-进程与线程.md",
             "codeFiles": [
-              "courses/code/os/os_lesson02.py"
+              "courses/code/os/02-process-thread.py"
             ]
           },
           {
             "id": "course-os-3",
             "title": "进程间通信（IPC）",
-            "url": "courses/os/lesson-03-ipc.md",
+            "url": "courses/os/03-进程间通信（IPC）.md",
             "codeFiles": [
-              "courses/code/os/os_lesson03.py"
+              "courses/code/os/03-ipc.py"
             ]
           },
           {
             "id": "course-os-4",
             "title": "线程同步：竞态、锁与死锁",
-            "url": "courses/os/lesson-04-thread-synchronization.md",
+            "url": "courses/os/04-线程同步：竞态、锁与死锁.md",
             "codeFiles": [
-              "courses/code/os/os_lesson04.py"
+              "courses/code/os/04-thread-sync.py"
             ]
           },
           {
             "id": "course-os-5",
             "title": "CPU 调度",
-            "url": "courses/os/lesson-05-cpu-scheduling.md",
+            "url": "courses/os/05-CPU 调度.md",
             "codeFiles": [
-              "courses/code/os/os_lesson05.py"
+              "courses/code/os/05-cpu-scheduling.py"
             ]
           },
           {
             "id": "course-os-6",
             "title": "内存管理：虚拟内存与分页",
-            "url": "courses/os/lesson-06-virtual-memory.md"
+            "url": "courses/os/06-内存管理：虚拟内存与分页.md"
           }
         ]
       }
@@ -346,129 +410,129 @@
           },
           {
             "id": "course-database-2",
-            "title": "数据库约束",
-            "url": "courses/database/02-约束.md"
-          },
-          {
-            "id": "course-database-3",
             "title": "表结构、数据类型",
             "url": "courses/database/02-表结构、数据类型.md"
           },
           {
+            "id": "course-database-3",
+            "title": "数据库约束",
+            "url": "courses/database/03-数据库约束.md"
+          },
+          {
             "id": "course-database-4",
             "title": "SELECT、条件、排序与分页",
-            "url": "courses/database/03-SELECT、条件、排序与分页.md",
+            "url": "courses/database/04-SELECT、条件、排序与分页.md",
             "codeFiles": [
-              "courses/code/database/03-select-filter-sort-page.sql"
+              "courses/code/database/04-select-filter-sort-page.sql"
             ]
           },
           {
             "id": "course-database-5",
             "title": "INSERT、UPDATE、DELETE 与数据修改",
-            "url": "courses/database/04-INSERT、UPDATE、DELETE与数据修改.md",
+            "url": "courses/database/05-INSERT、UPDATE、DELETE与数据修改.md",
             "codeFiles": [
-              "courses/code/database/04-data-modification.sql"
+              "courses/code/database/05-data-modification.sql"
             ]
           },
           {
             "id": "course-database-6",
-            "title": "JOIN：多表关联查询",
-            "url": "courses/database/05-JOIN.md",
+            "title": "聚合、JOIN、子查询与 CTE",
+            "url": "courses/database/06-聚合、子查询与CTE.md",
             "codeFiles": [
-              "courses/code/database/05-join.sql"
+              "courses/code/database/06-aggregation-subquery-cte.sql"
             ]
           },
           {
             "id": "course-database-7",
-            "title": "聚合、JOIN、子查询与 CTE",
-            "url": "courses/database/05-聚合、子查询与CTE.md",
+            "title": "JOIN：多表关联查询",
+            "url": "courses/database/07-JOIN.md",
             "codeFiles": [
-              "courses/code/database/05-aggregation-subquery-cte.sql"
+              "courses/code/database/07-join.sql"
             ]
           },
           {
             "id": "course-database-8",
             "title": "MySQL 8 高级查询语法",
-            "url": "courses/database/06-MySQL 8高级查询语法.md",
+            "url": "courses/database/08-MySQL 8高级查询语法.md",
             "codeFiles": [
-              "courses/code/database/06-advanced-query.sql"
+              "courses/code/database/08-advanced-query.sql"
             ]
           },
           {
             "id": "course-database-9",
             "title": "InnoDB 索引与索引设计",
-            "url": "courses/database/07-InnoDB索引与索引设计.md",
+            "url": "courses/database/09-InnoDB索引与索引设计.md",
             "codeFiles": [
-              "courses/code/database/07-index.sql"
+              "courses/code/database/09-index.sql"
             ]
           },
           {
             "id": "course-database-10",
             "title": "EXPLAIN、慢查询与查询优化",
-            "url": "courses/database/08-EXPLAIN、慢查询与查询优化.md",
+            "url": "courses/database/10-EXPLAIN、慢查询与查询优化.md",
             "codeFiles": [
-              "courses/code/database/08-explain-slow-query.sql"
+              "courses/code/database/10-explain-slow-query.sql"
             ]
           },
           {
             "id": "course-database-11",
             "title": "事务、ACID 与隔离级别",
-            "url": "courses/database/09-事务、ACID与隔离级别.md",
+            "url": "courses/database/11-事务、ACID与隔离级别.md",
             "codeFiles": [
-              "courses/code/database/09-transaction-isolation.sql"
+              "courses/code/database/11-transaction-isolation.sql"
             ]
           },
           {
             "id": "course-database-12",
             "title": "MVCC、快照读、当前读与锁",
-            "url": "courses/database/10-MVCC、快照读、当前读与锁.md",
+            "url": "courses/database/12-MVCC、快照读、当前读与锁.md",
             "codeFiles": [
-              "courses/code/database/10-mvcc-locks.sql"
+              "courses/code/database/12-mvcc-locks.sql"
             ]
           },
           {
             "id": "course-database-13",
             "title": "业务并发控制：下单、库存与账户",
-            "url": "courses/database/11-业务并发控制：下单、库存与账户.md",
+            "url": "courses/database/13-业务并发控制：下单、库存与账户.md",
             "codeFiles": [
-              "courses/code/database/11-concurrency-business.sql"
+              "courses/code/database/13-concurrency-business.sql"
             ]
           },
           {
             "id": "course-database-14",
             "title": "undo log、redo log 与 binlog",
-            "url": "courses/database/12-undo-log、redo-log与binlog.md",
+            "url": "courses/database/14-undo-log、redo-log与binlog.md",
             "codeFiles": [
-              "courses/code/database/12-logs-recovery.sql"
+              "courses/code/database/14-logs-recovery.sql"
             ]
           },
           {
             "id": "course-database-15",
             "title": "备份、恢复与复制",
-            "url": "courses/database/13-备份、恢复与复制.md"
+            "url": "courses/database/15-备份、恢复与复制.md"
           },
           {
             "id": "course-database-16",
             "title": "数据归档、冷热分离与分区",
-            "url": "courses/database/14-数据归档、冷热分离与分区.md"
+            "url": "courses/database/16-数据归档、冷热分离与分区.md"
           },
           {
             "id": "course-database-17",
             "title": "数据库监控与容量",
-            "url": "courses/database/15-数据库监控与容量.md"
+            "url": "courses/database/17-数据库监控与容量.md"
           },
           {
             "id": "course-database-18",
             "title": "综合-排查：常见故障与排查方法",
-            "url": "courses/database/16-综合-排查.md",
+            "url": "courses/database/18-综合-排查.md",
             "codeFiles": [
-              "courses/code/database/16-online-troubleshooting.sql"
+              "courses/code/database/18-online-troubleshooting.sql"
             ]
           },
           {
             "id": "course-database-19",
             "title": "综合-设计：真实业务场景的面试题与思考方法",
-            "url": "courses/database/17-综合-设计.md"
+            "url": "courses/database/19-综合-设计.md"
           }
         ]
       },
@@ -481,79 +545,79 @@
           {
             "id": "course-database-sqlite-1",
             "title": "数据库表与记录",
-            "url": "courses/database-sqlite/lesson-01-tables-and-records.md",
+            "url": "courses/database-sqlite/01-tables-and-records.md",
             "codeFiles": [
-              "courses/code/database-sqlite/database_lesson01.py"
+              "courses/code/database-sqlite/01-tables-and-records.py"
             ]
           },
           {
             "id": "course-database-sqlite-2",
             "title": "条件查询和排序",
-            "url": "courses/database-sqlite/lesson-02-filtering-and-sorting.md",
+            "url": "courses/database-sqlite/02-filtering-sorting.md",
             "codeFiles": [
-              "courses/code/database-sqlite/database_lesson02.py"
+              "courses/code/database-sqlite/02-filtering-sorting.py"
             ]
           },
           {
             "id": "course-database-sqlite-3",
             "title": "修改和删除记录",
-            "url": "courses/database-sqlite/lesson-03-update-and-delete.md",
+            "url": "courses/database-sqlite/03-update-delete.md",
             "codeFiles": [
-              "courses/code/database-sqlite/database_lesson03.py"
+              "courses/code/database-sqlite/03-update-delete.py"
             ]
           },
           {
             "id": "course-database-sqlite-4",
             "title": "数据类型和表结构",
-            "url": "courses/database-sqlite/lesson-04-schema.md",
+            "url": "courses/database-sqlite/04-schema.md",
             "codeFiles": [
-              "courses/code/database-sqlite/database_lesson04.py"
+              "courses/code/database-sqlite/04-schema.py"
             ]
           },
           {
             "id": "course-database-sqlite-5",
             "title": "约束",
-            "url": "courses/database-sqlite/lesson-05-integrity.md",
+            "url": "courses/database-sqlite/05-constraints.md",
             "codeFiles": [
-              "courses/code/database-sqlite/database_lesson05.py"
+              "courses/code/database-sqlite/05-constraints.py"
             ]
           },
           {
             "id": "course-database-sqlite-6",
             "title": "单表查询补全",
-            "url": "courses/database-sqlite/lesson-06-single-table-query.md",
+            "url": "courses/database-sqlite/06-single-table-query.md",
             "codeFiles": [
-              "courses/code/database-sqlite/database_lesson06.py"
+              "courses/code/database-sqlite/06-single-table-query.py"
             ]
           },
           {
             "id": "course-database-sqlite-7",
             "title": "SQLite 的索引与查询计划",
-            "url": "courses/database-sqlite/lesson-07-index-and-query-plan.md",
+            "url": "courses/database-sqlite/07-index-query-plan.md",
             "codeFiles": [
-              "courses/code/database-sqlite/database_lesson07.py"
+              "courses/code/database-sqlite/07-index-query-plan.py"
             ]
           },
           {
             "id": "course-database-sqlite-8",
             "title": "SQLite 特有语法与内部结构",
-            "url": "courses/database-sqlite/lesson-08-sqlite-specific-syntax.md",
+            "url": "courses/database-sqlite/08-sqlite-internals.md",
             "codeFiles": [
-              "courses/code/database-sqlite/database_lesson08.py"
+              "courses/code/database-sqlite/08-sqlite-internals.py"
             ]
           },
           {
             "id": "course-database-sqlite-9",
             "title": "SQLite 备份、恢复与完整性检查",
-            "url": "courses/database-sqlite/lesson-09-backup-restore-integrity.md",
+            "url": "courses/database-sqlite/09-backup-restore.md",
             "codeFiles": [
-              "courses/code/database-sqlite/database_lesson09.py"
+              "courses/code/database-sqlite/09-backup-restore.py"
             ]
           },
           {
             "id": "course-database-sqlite-10",
             "title": "SQLite 的真实使用边界",
-            "url": "courses/database-sqlite/lesson-10-usage-boundaries.md"
+            "url": "courses/database-sqlite/10-usage-boundaries.md"
           }
         ]
       },
@@ -566,7 +630,47 @@
           {
             "id": "course-distributed-1",
             "title": "单机、集群与分布式系统",
-            "url": "courses/distributed/lesson-01-single-cluster-distributed.md"
+            "url": "courses/distributed/01-单机、集群与分布式系统.md"
+          },
+          {
+            "id": "course-distributed-2",
+            "title": "CAP、BASE 与最终一致性",
+            "url": "courses/distributed/02-CAP、BASE 与最终一致性.md"
+          },
+          {
+            "id": "course-distributed-3",
+            "title": "负载均衡与一致性哈希",
+            "url": "courses/distributed/03-负载均衡与一致性哈希.md"
+          },
+          {
+            "id": "course-distributed-4",
+            "title": "服务间调用与超时",
+            "url": "courses/distributed/04-服务间调用与超时.md"
+          },
+          {
+            "id": "course-distributed-5",
+            "title": "重试、退避与幂等",
+            "url": "courses/distributed/05-重试、退避与幂等.md"
+          },
+          {
+            "id": "course-distributed-6",
+            "title": "限流、熔断与降级",
+            "url": "courses/distributed/06-限流、熔断与降级.md"
+          },
+          {
+            "id": "course-distributed-7",
+            "title": "分布式一致性与业务操作",
+            "url": "courses/distributed/07-分布式一致性与业务操作.md"
+          },
+          {
+            "id": "course-distributed-8",
+            "title": "高可用、故障转移与分布式 ID",
+            "url": "courses/distributed/08-高可用、故障转移与分布式 ID.md"
+          },
+          {
+            "id": "course-distributed-9",
+            "title": "综合系统设计与故障排查",
+            "url": "courses/distributed/09-综合系统设计与故障排查.md"
           }
         ]
       },
@@ -579,78 +683,87 @@
           {
             "id": "course-fastapi-1",
             "title": "FastAPI 从零入门",
-            "url": "courses/fastapi/lesson-01-basics.md",
+            "url": "courses/fastapi/01-FastAPI 从零入门.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson01_basic_api.py"
+              "courses/code/fastapi/01-basic-api.py"
             ]
           },
           {
             "id": "course-fastapi-2",
             "title": "查询参数、路径参数和请求体",
-            "url": "courses/fastapi/lesson-02-inputs.md",
+            "url": "courses/fastapi/02-查询参数、路径参数和请求体.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson02_input_sources.py"
+              "courses/code/fastapi/02-input-sources.py"
             ]
           },
           {
             "id": "course-fastapi-3",
             "title": "Pydantic 校验和响应模型",
-            "url": "courses/fastapi/lesson-03-models.md",
+            "url": "courses/fastapi/03-Pydantic 校验和响应模型.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson03_pydantic_models.py"
+              "courses/code/fastapi/03-pydantic-models.py"
             ]
           },
           {
             "id": "course-fastapi-4",
             "title": "GET、POST 与 return",
-            "url": "courses/fastapi/lesson-04-errors.md",
+            "url": "courses/fastapi/04-GET、POST 与 return.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson04_errors.py"
+              "courses/code/fastapi/04-errors.py"
             ]
           },
           {
             "id": "course-fastapi-5",
             "title": "FastAPI 连接 SQLite",
-            "url": "courses/fastapi/lesson-05-sqlite.md",
+            "url": "courses/fastapi/05-FastAPI 连接 SQLite.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson05_sqlite.py"
+              "courses/code/fastapi/05-sqlite.py"
             ]
           },
           {
             "id": "course-fastapi-6",
-            "title": "依赖注入 `Depends` 与资源生命周期",
-            "url": "courses/fastapi/lesson-06-dependencies.md",
+            "title": "依赖注入与资源生命周期",
+            "url": "courses/fastapi/06-依赖注入与资源生命周期.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson06_dependencies.py"
+              "courses/code/fastapi/06-dependencies.py"
             ]
           },
           {
             "id": "course-fastapi-7",
             "title": "路由拆分和项目结构",
-            "url": "courses/fastapi/lesson-07-project-structure.md"
+            "url": "courses/fastapi/07-路由拆分和项目结构.md",
+            "codeFiles": [
+              "courses/code/fastapi/lesson07_app/main.py",
+              "courses/code/fastapi/lesson07_app/config.py",
+              "courses/code/fastapi/lesson07_app/dependencies.py",
+              "courses/code/fastapi/lesson07_app/store.py",
+              "courses/code/fastapi/lesson07_app/routers/items.py",
+              "courses/code/fastapi/lesson07_app/routers/__init__.py",
+              "courses/code/fastapi/lesson07_app/__init__.py"
+            ]
           },
           {
             "id": "course-fastapi-8",
             "title": "测试 FastAPI 接口",
-            "url": "courses/fastapi/lesson-08-testing.md",
+            "url": "courses/fastapi/08-测试 FastAPI 接口.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson08_testing.py"
+              "courses/code/fastapi/08-testing.py"
             ]
           },
           {
             "id": "course-fastapi-9",
             "title": "异步接口与模型调用",
-            "url": "courses/fastapi/lesson-09-async-model-calls.md",
+            "url": "courses/fastapi/09-异步接口与模型调用.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson09_async.py"
+              "courses/code/fastapi/09-async.py"
             ]
           },
           {
             "id": "course-fastapi-10",
             "title": "流式响应与聊天接口",
-            "url": "courses/fastapi/lesson-10-streaming.md",
+            "url": "courses/fastapi/10-流式响应与聊天接口.md",
             "codeFiles": [
-              "courses/code/fastapi/lesson10_streaming.py"
+              "courses/code/fastapi/10-streaming.py"
             ]
           }
         ]
@@ -666,7 +779,7 @@
             "title": "Redis 基础与连接",
             "url": "courses/redis/01-Redis基础与连接.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson01.py"
+              "courses/code/redis/01-connect-basics.py"
             ]
           },
           {
@@ -674,7 +787,7 @@
             "title": "Redis 常见数据结构",
             "url": "courses/redis/02-Redis常见数据结构.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson02.py"
+              "courses/code/redis/02-data-structures.py"
             ]
           },
           {
@@ -692,7 +805,7 @@
             "title": "Redis Key 设计、过期时间与连接池",
             "url": "courses/redis/05-Key设计、过期时间与连接池.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson05.py"
+              "courses/code/redis/05-key-expiry-pool.py"
             ]
           },
           {
@@ -700,7 +813,7 @@
             "title": "Cache Aside 缓存模式",
             "url": "courses/redis/06-Cache Aside缓存模式.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson06.py"
+              "courses/code/redis/06-cache-aside.py"
             ]
           },
           {
@@ -708,7 +821,7 @@
             "title": "缓存问题与基础防护",
             "url": "courses/redis/07-缓存问题与基础防护.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson07.py"
+              "courses/code/redis/07-cache-protection.py"
             ]
           },
           {
@@ -716,7 +829,7 @@
             "title": "缓存与数据库一致性",
             "url": "courses/redis/08-缓存与数据库一致性.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson08.py"
+              "courses/code/redis/08-cache-consistency.py"
             ]
           },
           {
@@ -724,7 +837,7 @@
             "title": "Redis 计数器、原子操作与限流",
             "url": "courses/redis/09-计数器、原子操作与限流.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson09.py"
+              "courses/code/redis/09-counter-rate-limit.py"
             ]
           },
           {
@@ -732,7 +845,7 @@
             "title": "Redis 幂等键与重复请求",
             "url": "courses/redis/10-幂等键与重复请求.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson10.py"
+              "courses/code/redis/10-idempotency.py"
             ]
           },
           {
@@ -740,7 +853,7 @@
             "title": "Redis 分布式锁的基本模型",
             "url": "courses/redis/11-分布式锁的基本模型.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson11.py"
+              "courses/code/redis/11-distributed-lock.py"
             ]
           },
           {
@@ -748,7 +861,7 @@
             "title": "Redis List、Stream 与异步任务",
             "url": "courses/redis/12-List、Stream与异步任务.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson12.py"
+              "courses/code/redis/12-list-stream-tasks.py"
             ]
           },
           {
@@ -756,7 +869,7 @@
             "title": "Redis 消息可靠性与综合练习",
             "url": "courses/redis/13-消息可靠性与综合练习.md",
             "codeFiles": [
-              "courses/code/redis/redis_lesson13.py"
+              "courses/code/redis/13-message-reliability.py"
             ]
           }
         ]
@@ -782,65 +895,65 @@
           {
             "id": "course-ai-agent-1",
             "title": "Agent 是什么",
-            "url": "courses/ai-agent/lesson-01-what-is-agent.md",
+            "url": "courses/ai-agent/01-what-is-agent.md",
             "codeFiles": [
-              "courses/code/ai-agent/ai_agent_lesson01.py"
+              "courses/code/ai-agent/01-what-is-agent.py"
             ]
           },
           {
             "id": "course-ai-agent-2",
             "title": "Agent Loop",
-            "url": "courses/ai-agent/lesson-02-agent-loop.md",
+            "url": "courses/ai-agent/02-agent-loop.md",
             "codeFiles": [
-              "courses/code/ai-agent/ai_agent_lesson02.py"
+              "courses/code/ai-agent/02-agent-loop.py"
             ]
           },
           {
             "id": "course-ai-agent-3",
             "title": "工具系统：注册、描述、调用链路与可靠性",
-            "url": "courses/ai-agent/lesson-03-tool-system.md",
+            "url": "courses/ai-agent/03-tool-system.md",
             "codeFiles": [
-              "courses/code/ai-agent/ai_agent_lesson03.py"
+              "courses/code/ai-agent/03-tool-system.py"
             ]
           },
           {
             "id": "course-ai-agent-4",
             "title": "记忆系统：短期、长期与污染控制",
-            "url": "courses/ai-agent/lesson-04-memory-system.md",
+            "url": "courses/ai-agent/04-memory-system.md",
             "codeFiles": [
-              "courses/code/ai-agent/ai_agent_lesson04.py"
+              "courses/code/ai-agent/04-memory-system.py"
             ]
           },
           {
             "id": "course-ai-agent-5",
             "title": "上下文工程与安全输入",
-            "url": "courses/ai-agent/lesson-05-context-engineering.md",
+            "url": "courses/ai-agent/05-context-engineering.md",
             "codeFiles": [
-              "courses/code/ai-agent/ai_agent_lesson05.py"
+              "courses/code/ai-agent/05-context-engineering.py"
             ]
           },
           {
             "id": "course-ai-agent-6",
             "title": "多 Agent 协作与编排",
-            "url": "courses/ai-agent/lesson-06-multi-agent.md",
+            "url": "courses/ai-agent/06-multi-agent.md",
             "codeFiles": [
-              "courses/code/ai-agent/ai_agent_lesson06.py"
+              "courses/code/ai-agent/06-multi-agent.py"
             ]
           },
           {
             "id": "course-ai-agent-7",
             "title": "权限、多租户与安全",
-            "url": "courses/ai-agent/lesson-07-permissions-and-multitenancy.md",
+            "url": "courses/ai-agent/07-permissions-multitenancy.md",
             "codeFiles": [
-              "courses/code/ai-agent/ai_agent_lesson07.py"
+              "courses/code/ai-agent/07-permissions-multitenancy.py"
             ]
           },
           {
             "id": "course-ai-agent-8",
             "title": "沙盒与执行环境",
-            "url": "courses/ai-agent/lesson-08-sandbox-execution.md",
+            "url": "courses/ai-agent/08-sandbox-execution.md",
             "codeFiles": [
-              "courses/code/ai-agent/ai_agent_lesson08.py"
+              "courses/code/ai-agent/08-sandbox-execution.py"
             ]
           }
         ]
@@ -854,98 +967,105 @@
           {
             "id": "course-langgraph-1",
             "title": "StateGraph：节点、边与状态构成一张可执行图",
-            "url": "courses/langgraph/lesson-01-stategraph.md",
+            "url": "courses/langgraph/01-StateGraph：节点、边与状态.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson01.py"
+              "courses/code/langgraph/01-stategraph-basics.py"
             ]
           },
           {
             "id": "course-langgraph-2",
             "title": "State、Channel 与 Reducer",
-            "url": "courses/langgraph/lesson-02-reducer.md",
+            "url": "courses/langgraph/02-State、Channel 与 Reducer.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson02.py"
+              "courses/code/langgraph/02-reducer.py"
             ]
           },
           {
             "id": "course-langgraph-3",
             "title": "节点、普通边与条件边",
-            "url": "courses/langgraph/lesson-03-edges.md",
+            "url": "courses/langgraph/03-节点、普通边与条件边.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson03.py"
+              "courses/code/langgraph/03-edges.py"
             ]
           },
           {
             "id": "course-langgraph-4",
             "title": "第 1 步：bind_tools，把工具的\"说明书\"挂到模型上（开发期，你写一次）",
-            "url": "courses/langgraph/lesson-04-tools.md",
+            "url": "courses/langgraph/04-工具：定义、注册与执行.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson04.py"
+              "courses/code/langgraph/04-bind-tools.py"
             ]
           },
           {
             "id": "course-langgraph-5",
             "title": "ReAct：把工具接进循环",
-            "url": "courses/langgraph/lesson-05-react.md",
+            "url": "courses/langgraph/05-ReAct：把工具接进循环.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson05.py"
+              "courses/code/langgraph/05-react-agent.py"
             ]
           },
           {
             "id": "course-langgraph-6",
             "title": "Checkpointer：把每个 super-step 的状态落盘，会话可隔离、崩溃可恢复",
-            "url": "courses/langgraph/lesson-06-checkpoint.md",
+            "url": "courses/langgraph/06-Checkpointer：状态落盘与恢复.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson06.py",
-              "courses/code/langgraph/lesson06_checkpoints.db"
+              "courses/code/langgraph/06-checkpointer.py"
             ]
           },
           {
             "id": "course-langgraph-7",
             "title": "interrupt：让图停下来等人确认",
-            "url": "courses/langgraph/lesson-07-interrupt.md",
+            "url": "courses/langgraph/07-interrupt：让图停下来等人确认.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson07.py"
+              "courses/code/langgraph/07-interrupt.py"
             ]
           },
           {
             "id": "course-langgraph-8",
             "title": "工具调用的可靠性与防护",
-            "url": "courses/langgraph/lesson-08-tool-reliability.md",
+            "url": "courses/langgraph/08-工具调用的可靠性与防护.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson08.py"
+              "courses/code/langgraph/08-tool-reliability.py"
             ]
           },
           {
             "id": "course-langgraph-9",
             "title": "Agentic RAG：检索作为工具",
-            "url": "courses/langgraph/lesson-09-agentic-rag.md",
+            "url": "courses/langgraph/09-Agentic RAG：检索作为工具.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson09.py"
+              "courses/code/langgraph/09-agentic-rag.py"
             ]
           },
           {
             "id": "course-langgraph-10",
             "title": "并行、Send 与子图",
-            "url": "courses/langgraph/lesson-10-send-subgraph.md",
+            "url": "courses/langgraph/10-并行、Send 与子图.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson10.py"
+              "courses/code/langgraph/10-send-subgraph.py"
             ]
           },
           {
             "id": "course-langgraph-11",
             "title": "流式输出与 FastAPI 集成",
-            "url": "courses/langgraph/lesson-11-streaming-fastapi.md",
+            "url": "courses/langgraph/11-流式输出与 FastAPI 集成.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson11.py"
+              "courses/code/langgraph/11-streaming-fastapi.py"
             ]
           },
           {
             "id": "course-langgraph-12",
             "title": "Agent 的评估与回归",
-            "url": "courses/langgraph/lesson-12-evaluation.md",
+            "url": "courses/langgraph/12-Agent 的评估与回归.md",
             "codeFiles": [
-              "courses/code/langgraph/langgraph_lesson12.py"
+              "courses/code/langgraph/12-evaluation.py"
+            ]
+          },
+          {
+            "id": "course-langgraph-13",
+            "title": "框架选型与综合复盘",
+            "url": "courses/langgraph/13-框架选型与综合复盘.md",
+            "codeFiles": [
+              "courses/code/langgraph/13-framework-selection.py"
             ]
           }
         ]
@@ -971,7 +1091,7 @@
           {
             "id": "course-algorithm-1",
             "title": "快速检查清单",
-            "url": "courses/algorithm/00-qiuckcheck.md"
+            "url": "courses/algorithm/00-quick-check.md"
           },
           {
             "id": "course-algorithm-2",
@@ -986,52 +1106,52 @@
           {
             "id": "course-algorithm-4",
             "title": "滑动窗口",
-            "url": "courses/algorithm/02-滑动窗口.md"
+            "url": "courses/algorithm/03-滑动窗口.md"
           },
           {
             "id": "course-algorithm-5",
             "title": "二分查找",
-            "url": "courses/algorithm/03-二分查找.md"
+            "url": "courses/algorithm/04-二分查找.md"
           },
           {
             "id": "course-algorithm-6",
             "title": "链表",
-            "url": "courses/algorithm/04-链表.md"
+            "url": "courses/algorithm/05-链表.md"
           },
           {
             "id": "course-algorithm-7",
             "title": "栈与队列",
-            "url": "courses/algorithm/05-栈与队列.md"
+            "url": "courses/algorithm/06-栈与队列.md"
           },
           {
             "id": "course-algorithm-8",
             "title": "递归",
-            "url": "courses/algorithm/06-递归.md"
+            "url": "courses/algorithm/07-递归.md"
           },
           {
             "id": "course-algorithm-9",
             "title": "DFS 与 BFS",
-            "url": "courses/algorithm/07-DFS与BFS.md"
+            "url": "courses/algorithm/08-DFS与BFS.md"
           },
           {
             "id": "course-algorithm-10",
             "title": "二叉树",
-            "url": "courses/algorithm/07-二叉树.md"
+            "url": "courses/algorithm/09-二叉树.md"
           },
           {
             "id": "course-algorithm-11",
             "title": "动态规划",
-            "url": "courses/algorithm/动态规划.md"
+            "url": "courses/algorithm/10-动态规划.md"
           },
           {
             "id": "course-algorithm-12",
             "title": "堆",
-            "url": "courses/algorithm/堆.md"
+            "url": "courses/algorithm/11-堆.md"
           },
           {
             "id": "course-algorithm-13",
             "title": "排序",
-            "url": "courses/algorithm/排序.md"
+            "url": "courses/algorithm/12-排序.md"
           }
         ]
       },
@@ -1044,73 +1164,73 @@
           {
             "id": "course-machine-learning-1",
             "title": "机器学习在学什么",
-            "url": "courses/machine-learning/lesson-01-what-learning-is.md",
+            "url": "courses/machine-learning/01-机器学习在学什么.md",
             "codeFiles": [
-              "courses/code/machine-learning/ml_lesson01.py"
+              "courses/code/machine-learning/01-what-learning-is.py"
             ]
           },
           {
             "id": "course-machine-learning-2",
             "title": "损失与梯度下降",
-            "url": "courses/machine-learning/lesson-02-loss-and-gradient.md",
+            "url": "courses/machine-learning/02-损失与梯度下降.md",
             "codeFiles": [
-              "courses/code/machine-learning/ml_lesson02.py"
+              "courses/code/machine-learning/02-loss-gradient.py"
             ]
           },
           {
             "id": "course-machine-learning-3",
             "title": "线性回归",
-            "url": "courses/machine-learning/lesson-03-linear-regression.md",
+            "url": "courses/machine-learning/03-线性回归.md",
             "codeFiles": [
-              "courses/code/machine-learning/ml_lesson03.py"
+              "courses/code/machine-learning/03-linear-regression.py"
             ]
           },
           {
             "id": "course-machine-learning-4",
             "title": "逻辑回归",
-            "url": "courses/machine-learning/lesson-04-logistic-regression.md",
+            "url": "courses/machine-learning/04-逻辑回归.md",
             "codeFiles": [
-              "courses/code/machine-learning/ml_lesson04.py"
+              "courses/code/machine-learning/04-logistic-regression.py"
             ]
           },
           {
             "id": "course-machine-learning-5",
             "title": "泛化、正则与模型选择",
-            "url": "courses/machine-learning/lesson-05-generalization-regularization.md",
+            "url": "courses/machine-learning/05-泛化、正则与模型选择.md",
             "codeFiles": [
-              "courses/code/machine-learning/ml_lesson05.py"
+              "courses/code/machine-learning/05-generalization.py"
             ]
           },
           {
             "id": "course-machine-learning-6",
             "title": "指标",
-            "url": "courses/machine-learning/lesson-06-metrics.md",
+            "url": "courses/machine-learning/06-指标.md",
             "codeFiles": [
-              "courses/code/machine-learning/ml_lesson06.py"
+              "courses/code/machine-learning/06-metrics.py"
             ]
           },
           {
             "id": "course-machine-learning-7",
             "title": "朴素贝叶斯",
-            "url": "courses/machine-learning/lesson-07-naive-bayes.md",
+            "url": "courses/machine-learning/07-朴素贝叶斯.md",
             "codeFiles": [
-              "courses/code/machine-learning/ml_lesson07.py"
+              "courses/code/machine-learning/07-naive-bayes.py"
             ]
           },
           {
             "id": "course-machine-learning-8",
             "title": "决策树",
-            "url": "courses/machine-learning/lesson-08-decision-tree.md",
+            "url": "courses/machine-learning/08-决策树.md",
             "codeFiles": [
-              "courses/code/machine-learning/ml_lesson08.py"
+              "courses/code/machine-learning/08-decision-tree.py"
             ]
           },
           {
             "id": "course-machine-learning-9",
             "title": "集成与提升树",
-            "url": "courses/machine-learning/lesson-09-ensemble-boosting-trees.md",
+            "url": "courses/machine-learning/09-集成与提升树.md",
             "codeFiles": [
-              "courses/code/machine-learning/ml_lesson09.py"
+              "courses/code/machine-learning/09-ensemble-boosting.py"
             ]
           }
         ]
@@ -1124,20 +1244,38 @@
           {
             "id": "course-search-recommend-1",
             "title": "搜索、推荐、匹配是三种问题",
-            "url": "courses/search-recommend/lesson-01-search-recommend-match.md"
+            "url": "courses/search-recommend/01-搜索、推荐、匹配是三种问题.md"
           },
           {
             "id": "course-search-recommend-2",
             "title": "召回",
-            "url": "courses/search-recommend/lesson-02-recall.md",
+            "url": "courses/search-recommend/02-召回.md",
             "codeFiles": [
-              "courses/code/search-recommend/search_recommend_lesson02.py"
+              "courses/code/search-recommend/02-recall.py"
             ]
           },
           {
             "id": "course-search-recommend-3",
             "title": "排序",
-            "url": "courses/search-recommend/lesson-03-ranking.md"
+            "url": "courses/search-recommend/03-排序.md"
+          },
+          {
+            "id": "course-search-recommend-4",
+            "title": "评估",
+            "url": "courses/search-recommend/04-评估.md"
+          },
+          {
+            "id": "course-search-recommend-5",
+            "title": "重排与冷启动",
+            "url": "courses/search-recommend/05-重排与冷启动.md"
+          },
+          {
+            "id": "course-search-recommend-6",
+            "title": "全链路串讲",
+            "url": "courses/search-recommend/06-全链路串讲.md",
+            "codeFiles": [
+              "courses/code/search-recommend/06-full-walkthrough.py"
+            ]
           }
         ]
       }
@@ -1167,7 +1305,13 @@
           {
             "id": "course-takeout-2",
             "title": "开发环境与项目骨架——一条命令跑起四个服务",
-            "url": "courses/takeout/02-开发环境与项目骨架.md"
+            "url": "courses/takeout/02-开发环境与项目骨架.md",
+            "codeFiles": [
+              "courses/code/takeout/docker-compose.yml",
+              "courses/code/takeout/backend/requirements.txt",
+              "courses/code/takeout/backend/app/main.py",
+              "courses/code/takeout/nginx/nginx.conf"
+            ]
           }
         ]
       }

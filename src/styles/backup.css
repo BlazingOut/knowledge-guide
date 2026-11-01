@@ -8,3 +8,10 @@
 }
 .backup-switch input[type=file] {display:none
 }
+/* 清空进度：独占一行，与导出/导入区分开 */
+.backup-switch div {flex-wrap:wrap
+}
+.backup-switch .danger-btn {flex:1 0 100%;text-align:center
+}
+.backup-switch .danger-btn:hover {color:var(--text);border-color:var(--rose)
+}

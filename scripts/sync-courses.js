@@ -2,14 +2,20 @@
 // 扫描课程仓库 courses/ 与 code/，生成 src/data/self-courses.json（统一 schema），
 // 并拷贝课文 / README / 配图 / 配套代码到 public/courses/（静态资源打进应用）。
 //
-// 用法：node scripts/sync-courses.js [课程仓库路径]（默认 ../ai_application_development_study）
+// 课文名 / 课程名统一由课程仓库的 courses-manifest.json 维护（lessonTitles / courseTitles）。
+// 未映射的条目回退课文 H1 并大声警告；--init-titles 把当前显示名批量写入映射作为初始值。
+// 课文 ↔ 代码配对只认 lessonCodes（不做编号规则匹配）；code/ 下未挂载的文件同步时警告。
+//
+// 用法：node scripts/sync-courses.js [课程仓库路径] [--init-titles]
 
 import { readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, copyFileSync, cpSync, existsSync } from 'fs'
 import { resolve, join, dirname, relative } from 'path'
 import { fileURLToPath } from 'url'
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const coursesRepo = resolve(process.argv[2] || join(repoRoot, '..', 'ai_application_development_study'))
+const syncArgs = process.argv.slice(2)
+const initTitles = syncArgs.includes('--init-titles')
+const coursesRepo = resolve(syncArgs.find((a) => !a.startsWith('--')) || join(repoRoot, '..', 'ai_application_development_study'))
 const outData = join(repoRoot, 'src', 'data', 'self-courses.json')
 const outPublic = join(repoRoot, 'public', 'courses')
 
@@ -33,24 +39,8 @@ function copyDir(src, dest) {
   return true
 }
 
-// 课文编号：lesson-05-* 或 05-* / 05_* 前缀
-function topicNo(fileName) {
-  const m = fileName.match(/^lesson-(\d+)/i) || fileName.match(/^(\d+)[-_]/)
-  return m ? m[1] : null
-}
-
-// 辅助文件命名（非课程正文代码），自动配对时排除
+// 辅助文件命名（开发自用、非课文交付物），漏配诊断时排除
 const AUX_PATTERNS = [/^_verify/, /^test_/, /^_test/, /^homework_/, /^draft_/, /^_bak/, /\.bak$/, /\.tmp$/, /_old$/]
-
-// 课文 ↔ 配套代码自动配对：只认「lessonNN」（后一位非数字）与「NN-」前缀，避免 lesson1 误配 lesson10~13
-function matchCodeFiles(codeFiles, no) {
-  const two = String(no).padStart(2, '0')
-  const lessonRe = new RegExp(`(^|[_-])lesson${two}(?![0-9])`)
-  return codeFiles.filter((f) => {
-    if (AUX_PATTERNS.some((re) => re.test(f))) return false
-    return lessonRe.test(f) || f.startsWith(`${two}-`)
-  })
-}
 
 // 课文标题提取（《标题规范》：H1 优先；无 H1 回退「第X课」格式的 H2；其余返回 null 交给文件名）
 // 「第X课」支持中文数字（第一课/第五课）与阿拉伯数字（第1课/第12课）
@@ -102,6 +92,11 @@ function main() {
   let manifestCourseHits = 0
   let manifestLessonHits = 0
   let manifestCodeHits = 0
+  // 命名统一走 manifest：收集扫描到的全部显示名与未映射条目
+  const initCourseTitles = {}
+  const initLessonTitles = {}
+  const unmappedCourses = []
+  const unmappedLessons = []
 
   const domains = []
   const missingHeading = []
@@ -136,13 +131,16 @@ function main() {
         if (!heading) missingHeading.push(relative(coursesRepo, join(coursePath, f)))
         const mapped = titleOf(courseId, f)
         if (mapped) manifestLessonHits++
-        const no = topicNo(f)
         const mappedCodes = codeOf(courseId, f)
         if (mappedCodes !== undefined) manifestCodeHits++
-        const matched = mappedCodes !== undefined ? mappedCodes : (no ? matchCodeFiles(codeFiles, no) : [])
+        const matched = mappedCodes ?? []
+        // 最终显示名：manifest 映射优先，回退课文标题（记录结果供 --init-titles 补全）
+        const resolvedTitle = mapped || (heading ? stripLessonNo(heading) : f.replace(/\.md$/, ''))
+        initLessonTitles[`${courseId}/${f}`] = resolvedTitle
+        if (mapped === undefined) unmappedLessons.push(`${courseId}/${f}`)
         return {
           id: `course-${courseId}-${i + 1}`,
-          title: mapped || (heading ? stripLessonNo(heading) : f.replace(/\.md$/, '')),
+          title: resolvedTitle,
           url: `courses/${courseId}/${f}`,
           ...(matched.length ? { codeFiles: matched.map((cf) => `courses/code/${courseId}/${cf}`) } : {}),
         }
@@ -156,13 +154,15 @@ function main() {
       const readmePath = join(coursePath, 'README.md')
       if (existsSync(readmePath)) copyFileSync(readmePath, join(outCourse, 'README.md'))
       copyDir(join(coursePath, 'assets'), join(outCourse, 'assets'))
-      if (codeFiles.length) copyDir(codeDir, join(outPublic, 'code', courseId))
+      if (existsSync(codeDir)) copyDir(codeDir, join(outPublic, 'code', courseId))
 
       // 课程名：映射优先，其次 README 标题（去掉「课程大纲」「课程」后缀），最后目录名
       const readmeText = existsSync(readmePath) ? readFileSync(readmePath, 'utf8') : ''
       const mappedTitle = manifest.courseTitles?.[courseId]
       if (mappedTitle) manifestCourseHits++
       const courseTitle = mappedTitle || (firstHeading(readmeText) || courseId).replace(/课程大纲$/, '').replace(/课程$/, '').trim()
+      initCourseTitles[courseId] = courseTitle
+      if (!mappedTitle) unmappedCourses.push(courseId)
       categories.push({
         id: `course-${courseId}`,
         title: courseTitle,
@@ -182,6 +182,40 @@ function main() {
     }
   }
 
+  // 命名统一由 courses-manifest.json 维护：--init-titles 把当前显示名批量补进映射；未映射时大声警告
+  if (initTitles) {
+    let addedCourses = 0
+    let addedLessons = 0
+    const nextCourseTitles = {}
+    for (const [courseId, title] of Object.entries(initCourseTitles)) {
+      const existing = manifest.courseTitles?.[courseId]
+      nextCourseTitles[courseId] = existing ?? title
+      if (existing === undefined) addedCourses++
+    }
+    for (const [courseId, title] of Object.entries(manifest.courseTitles || {})) {
+      if (!(courseId in nextCourseTitles)) nextCourseTitles[courseId] = title
+    }
+    const nextLessonTitles = {}
+    for (const [key, title] of Object.entries(initLessonTitles)) {
+      const existing = manifest.lessonTitles?.[key]
+      nextLessonTitles[key] = existing ?? title
+      if (existing === undefined) addedLessons++
+    }
+    for (const [key, title] of Object.entries(manifest.lessonTitles || {})) {
+      if (!(key in nextLessonTitles)) nextLessonTitles[key] = title
+    }
+    manifest.courseTitles = nextCourseTitles
+    manifest.lessonTitles = nextLessonTitles
+    writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n', 'utf8')
+    console.log(`📝 命名映射已补全 → ${relative(coursesRepo, manifestPath)}（课程名 +${addedCourses} / 课文名 +${addedLessons}）`)
+    console.log('   不合适的名字直接在 manifest 里改，改完重跑 npm run sync 生效')
+  } else if (unmappedCourses.length || unmappedLessons.length) {
+    console.warn(`⚠️  ${unmappedCourses.length} 门课程 / ${unmappedLessons.length} 篇课文未在 courses-manifest.json 映射（显示名暂取课文标题，命名统一应走映射）：`)
+    for (const courseId of unmappedCourses) console.warn(`   [课程] ${courseId}`)
+    for (const key of unmappedLessons) console.warn(`   ${key}`)
+    console.warn('   运行 npm run sync:init 可把当前显示名批量写入映射')
+  }
+
   mkdirSync(dirname(outData), { recursive: true })
   writeFileSync(outData, JSON.stringify(domains, null, 2), 'utf8')
 
@@ -194,13 +228,44 @@ function main() {
   console.log(`   数据 → ${relative(repoRoot, outData)}`)
   console.log(`   资源 → ${relative(repoRoot, outPublic)}/`)
 
-  // 重复挂载诊断：同一代码文件被多篇课文引用，通常是自动配对误配
+  // 重复挂载诊断：同一代码文件被多篇课文引用，检查 lessonCodes 是否写重
   const fileOwners = {}
   for (const d of domains) for (const c of d.children) for (const t of c.topics) for (const cf of t.codeFiles || []) (fileOwners[cf] ||= []).push(t.title)
   const dup = Object.entries(fileOwners).filter(([, owners]) => owners.length > 1)
   if (dup.length) {
-    console.warn(`⚠️  同一代码文件被多篇课文引用（${dup.length} 处，建议用 lessonCodes 精确指定）：`)
+    console.warn(`⚠️  同一代码文件被多篇课文引用（${dup.length} 处，检查 lessonCodes）：`)
     for (const [cf, owners] of dup) console.warn(`   ${cf}\n      ${owners.join('\n      ')}`)
+  }
+
+  // 漏配诊断：code/<课程>/ 下的文件没挂到任何课文（辅助文件除外），提醒补 lessonCodes
+  const mounted = new Set()
+  for (const d of domains) for (const c of d.children) for (const t of c.topics) for (const cf of t.codeFiles || []) mounted.add(cf)
+  const orphans = []
+  for (const domainCfg of DOMAIN_MAP) {
+    const classDir = join(coursesRepo, 'courses', domainCfg.dir)
+    if (!existsSync(classDir)) continue
+    for (const entry of readdirSync(classDir, { withFileTypes: true })) {
+      if (!entry.isDirectory() || entry.name === 'assets') continue
+      const codeDir = join(coursesRepo, 'code', entry.name)
+      if (!existsSync(codeDir)) continue
+      for (const f of readdirSync(codeDir, { withFileTypes: true })) {
+        if (!f.isFile() || f.name === '.gitkeep' || AUX_PATTERNS.some((re) => re.test(f.name))) continue
+        const p = `courses/code/${entry.name}/${f.name}`
+        if (!mounted.has(p)) orphans.push(p)
+      }
+    }
+  }
+  if (orphans.length) {
+    const byCourse = {}
+    for (const o of orphans) {
+      const course = o.split('/')[2]
+      ;(byCourse[course] ||= []).push(o)
+    }
+    console.warn(`⚠️  ${orphans.length} 个代码文件未挂到任何课文（补 lessonCodes；辅助文件已忽略）：`)
+    for (const [course, files] of Object.entries(byCourse)) {
+      console.warn(`   code/${course}: ${files.length} 个`)
+      if (files.length <= 3) files.forEach((f) => console.warn(`      ${f}`))
+    }
   }
   if (missingHeading.length) {
     console.warn(`⚠️  ${missingHeading.length} 篇课文无课标题（H1/「第X课」H2），已回退为文件名——建议按《标题规范》补齐：`)

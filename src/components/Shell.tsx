@@ -1,8 +1,9 @@
 // 应用外壳：侧边栏导航、课程源切换、主题/音效/数据设置；移动端使用底部导航栏
 
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 import type { Page, SourceId, Theme } from '../types/knowledge'
-import { exportBackup, importBackup } from '../lib/storage'
+import { exportBackup, importBackup, clearProgress } from '../lib/storage'
 import PlanetIcon from './PlanetIcon'
 
 type Props = {
@@ -17,23 +18,26 @@ type Props = {
   children: ReactNode
 }
 
+// 导航对齐 docs/界面交互重构方案.md v2；「今日航行」已删除，今日任务（M2）待重新设计后再加回
 const NAV: { id: Page; label: string }[] = [
-  { id: 'log', label: '星航日志' },
   { id: 'home', label: '我的星图' },
-  { id: 'checkin', label: '今日航行' },
+  { id: 'study', label: '自习舱' },
   { id: 'library', label: '知识星库' },
+  { id: 'log', label: '星航日志' },
 ]
 
 const THEMES: { id: Theme; label: string }[] = [
   { id: 'night', label: '☾ 夜航' },
   { id: 'sand', label: '✧ 沙金' },
   { id: 'indigo', label: '✦ 靛蓝' },
+  { id: 'sage', label: '🌿 鼠尾草' },
   { id: 'warm', label: '☼ 暖阳' },
 ]
 
 export default function Shell({ page, setPage, theme, setTheme, soundOn, setSound, sourceId, setSource, children }: Props) {
-  const themeIcon: Record<Theme, string> = { night: '☾', sand: '✧', indigo: '✦', warm: '☼' }
+  const themeIcon: Record<Theme, string> = { night: '☾', sand: '✧', indigo: '✦', sage: '🌿', warm: '☼' }
   const cycleTheme = () => setTheme(THEMES[(THEMES.findIndex((t) => t.id === theme) + 1) % THEMES.length].id)
+  const [confirmClear, setConfirmClear] = useState(false)
 
   return (
     <div className="shell" data-theme={theme}>
@@ -86,6 +90,7 @@ export default function Shell({ page, setPage, theme, setTheme, soundOn, setSoun
             <label className="import-btn" title="从备份文件恢复">↓ 导入
               <input type="file" accept="application/json,.json" onChange={(event) => { const file = event.target.files?.[0]; if (file) void importBackup(file); event.target.value = '' }} />
             </label>
+            <button className="danger-btn" title="清空全部学习进度（不可恢复）" onClick={() => setConfirmClear(true)}>✕ 清空进度</button>
           </div>
         </div>
       </aside>
@@ -98,6 +103,19 @@ export default function Shell({ page, setPage, theme, setTheme, soundOn, setSoun
       </div>
 
       <main>{children}</main>
+
+      {confirmClear && (
+        <div className="modal-overlay" onClick={() => setConfirmClear(false)}>
+          <div className="modal" onClick={(event) => event.stopPropagation()}>
+            <h3>清空全部学习进度？</h3>
+            <small>所有知识点的学习状态与点亮日志将被重置，且不可恢复；自定义知识点与主题、音效设置会保留。建议先「↑ 导出」备份。</small>
+            <div className="modal-actions">
+              <button onClick={() => setConfirmClear(false)}>取消</button>
+              <button className="danger" onClick={() => { setConfirmClear(false); clearProgress() }}>确认清空</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -6,11 +6,28 @@ import { emptyState, normalizeStatus } from '../types/knowledge'
 export const STATE_KEY = 'knowledge-guide:user-state:v1'
 export const COMPLETION_KEY = 'knowledge-guide:completion-log:v1'
 export const CUSTOM_TOPICS_KEY = 'knowledge-guide:custom-topics:v1'
+export const LAST_POSITION_KEY = 'knowledge-guide:last-position:v1'
 export const THEME_KEY = 'knowledge-guide:theme:v1'
 export const SOUND_KEY = 'knowledge-guide:sound:v1'
-export const BACKUP_KEYS = [STATE_KEY, COMPLETION_KEY, CUSTOM_TOPICS_KEY]
+export const BACKUP_KEYS = [STATE_KEY, COMPLETION_KEY, CUSTOM_TOPICS_KEY, LAST_POSITION_KEY]
 
 export type CustomTopics = Record<string, { id: string; title: string; url: string }[]>
+
+// 继续学习：上次读到的位置（自习舱空态时恢复）
+export type LastPosition = { categoryId: string; topicId: string }
+
+export function readLastPosition(): LastPosition | null {
+  try {
+    const raw = JSON.parse(localStorage.getItem(LAST_POSITION_KEY) || 'null') as LastPosition | null
+    return raw && typeof raw.categoryId === 'string' && typeof raw.topicId === 'string' ? raw : null
+  } catch {
+    return null
+  }
+}
+
+export function writeLastPosition(next: LastPosition) {
+  localStorage.setItem(LAST_POSITION_KEY, JSON.stringify(next))
+}
 
 export function readStates(): Record<string, UserState> {
   const raw = JSON.parse(localStorage.getItem(STATE_KEY) || '{}') as Record<string, { status?: string; verified?: boolean; exposed?: boolean }>
@@ -127,6 +144,15 @@ export async function importBackup(file: File) {
     if (BACKUP_KEYS.includes(key) && typeof value === 'string') localStorage.setItem(key, value)
   }
   location.reload() // 重新挂载应用，从 localStorage 恢复全部状态
+}
+
+// 一键清空学习进度：重置全部知识点状态、点亮日志与上次位置（自定义知识点、主题与音效设置保留）。
+// 清 localStorage 后重载页面，与导入备份同策略，确保全部内存状态复位。
+export function clearProgress() {
+  localStorage.removeItem(STATE_KEY)
+  localStorage.removeItem(COMPLETION_KEY)
+  localStorage.removeItem(LAST_POSITION_KEY)
+  location.reload()
 }
 
 // 状态循环：未开始 → 学习中 → 已完成 → 学习中

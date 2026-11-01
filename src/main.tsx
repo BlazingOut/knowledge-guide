@@ -1,7 +1,7 @@
 // 星航日志 · 秋招知识星图 —— 应用入口与状态编排
 // 数据源：自研课程（self-courses.json，由 scripts/sync-courses.js 生成）与 JavaGuide 外链
 
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import basicsRaw from './data/计算机基础知识.json'
 import backendRaw from './data/后端开发知识.json'
@@ -9,19 +9,19 @@ import aiRaw from './data/AI应用开发知识.json'
 import selfRaw from './data/self-courses.json'
 import './styles.css'
 
-import type { Category, CompletionLog, Domain, Page, SourceId, Theme, Topic, UserState } from './types/knowledge'
+import type { Category, CompletionLog, Domain, Page, ReadingTarget, SourceId, Theme, Topic, UserState } from './types/knowledge'
 import { emptyState } from './types/knowledge'
 import {
   THEME_KEY, SOUND_KEY,
   readStates, writeStates, readCompletionLog, writeCompletionLog,
-  readCustomTopics, writeCustomTopics, todayKey,
+  readCustomTopics, writeCustomTopics, readLastPosition, writeLastPosition, todayKey,
 } from './lib/storage'
 import { playTick, playDing, playFanfare } from './lib/sound'
 import Shell from './components/Shell'
+import NavBar from './components/NavBar'
 import ReadPage from './components/ReadPage'
 import StarLogPage from './pages/StarLogPage'
 import HomePage from './pages/HomePage'
-import CheckinPage from './pages/CheckinPage'
 import DetailPage from './pages/DetailPage'
 
 type RawDomain = { id: string; title: string; description: string; source: Domain['source']; children: Category[] }
@@ -43,7 +43,7 @@ const sources = [
   { id: 'javaguide', title: 'JavaGuide', domains: javaguideDomains },
 ] as const satisfies ReadonlyArray<{ id: SourceId; title: string; domains: Domain[] }>
 
-const THEMES: Theme[] = ['night', 'sand', 'indigo', 'warm']
+const THEMES: Theme[] = ['night', 'sand', 'indigo', 'sage', 'warm']
 
 function App() {
   const [theme, setThemeState] = useState<Theme>(() => {
@@ -53,25 +53,30 @@ function App() {
   })
   const setTheme = (next: Theme) => { setThemeState(next); localStorage.setItem(THEME_KEY, next) }
   const [sourceId, setSourceId] = useState<SourceId>('self')
-  const [page, setPage] = useState<Page>('log')
+  const [page, setPage] = useState<Page>('home')
   const [domainId, setDomainId] = useState(sources[0].domains[0].id)
   const [activeId, setActiveId] = useState(sources[0].domains[0].data.children[0].id)
   const [customTopics, setCustomTopics] = useState(readCustomTopics)
   const [states, setStates] = useState<Record<string, UserState>>(readStates)
   const [completionLog, setCompletionLog] = useState<CompletionLog>(readCompletionLog)
+  const [openCourseId, setOpenCourseId] = useState<string | null>(null)
   const [soundOn, setSoundOn] = useState(() => localStorage.getItem(SOUND_KEY) !== 'off')
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState('all')
-  const [reading, setReading] = useState<{ topic: Topic; category: Category; domain: Domain } | null>(null)
+  const [reading, setReading] = useState<ReadingTarget | null>(null)
 
   // 当前源领域 + 动态添加的自定义知识点合并
+  // memo：保持领域/分类/知识点对象身份稳定，否则自习舱空态解析出的阅读目标会在打卡等
+  // 重渲染时变成新引用，触发 ReadPage 按 [topic] 依赖重新拉取课文
   const currentSource = sources.find((s) => s.id === sourceId) ?? sources[0]
-  const domains = currentSource.domains.map((item) => ({
+  const domains = useMemo(() => currentSource.domains.map((item) => ({
     ...item,
     data: { children: item.data.children.map((child) => ({ ...child, topics: [...child.topics, ...(customTopics[child.id] || [])] })) },
-  }))
+  })), [currentSource, customTopics])
   const domain = domains.find((item) => item.id === domainId) || domains[0]
   const active = domain.data.children.find((item) => item.id === activeId) || domain.data.children[0]
+  // 星图下钻的当前课程（id 失配自动回落卡片视图；切领域/切源时在对应函数里清空）
+  const openCourse = domain.data.children.find((item) => item.id === openCourseId) ?? null
 
   const get = (id: string) => states[id] || emptyState
 
@@ -119,6 +124,7 @@ function App() {
     const next = domains.find((item) => item.id === id) || domains[0]
     setDomainId(next.id)
     setActiveId(next.data.children[0].id)
+    setOpenCourseId(null)
     setQuery(''); setFilter('all'); setPage('home')
   }
   const switchSource = (id: SourceId) => {
@@ -127,13 +133,16 @@ function App() {
     setSourceId(id)
     setDomainId(next.domains[0].id)
     setActiveId(next.domains[0].data.children[0].id)
+    setOpenCourseId(null)
     setQuery(''); setFilter('all'); setReading(null)
     setPage('home')
   }
 
-  // 打开课文阅读（自研课程）；JavaGuide 保持外链
+  // 打开课文阅读（自研课程）；记录来源页（返回时恢复来路）与上次位置（自习舱空态恢复）。
+  // JavaGuide 保持外链
   const openRead = (topic: Topic, category: Category, owner: Domain) => {
-    setReading({ topic, category, domain: owner })
+    writeLastPosition({ categoryId: category.id, topicId: topic.id })
+    setReading({ topic, category, domain: owner, from: page })
     setPage('read')
   }
   const onReadTopic = (topic: Topic) => openRead(topic, active, domain)
@@ -143,18 +152,40 @@ function App() {
     else open(category.id, 'library')
   }
 
-  // 连续学习流：按当前分类顺序切到下一篇（未开始时自动标记「学习中」）
-  const readingIdx = reading ? reading.category.topics.findIndex((t) => t.id === reading.topic.id) : -1
-  const hasNext = !!reading && readingIdx >= 0 && readingIdx < reading.category.topics.length - 1
+  // 自习舱空态解析（M3 继续学习）：侧边栏直接进自习舱且无在读课文时，
+  // 优先恢复上次位置（last-position），首次使用回退显示第一门课第一课。
+  const fallbackReading = useMemo<ReadingTarget | null>(() => {
+    if (page !== 'study' || reading) return null
+    const last = readLastPosition()
+    if (last) {
+      for (const d of domains) {
+        const category = d.data.children.find((c) => c.id === last.categoryId)
+        const topic = category?.topics.find((t) => t.id === last.topicId)
+        if (category && topic) return { topic, category, domain: d, from: 'study' }
+      }
+    }
+    const d = domains[0]
+    const category = d?.data.children[0]
+    const topic = category?.topics[0]
+    return d && category && topic ? { topic, category, domain: d, from: 'study' } : null
+  }, [page, reading, domains])
+
+  // 在读目标：阅读页用 reading；自习舱页无 reading 时用空态解析结果
+  const activeReading = page === 'read' ? reading : page === 'study' ? (reading ?? fallbackReading) : null
+
+  // 连续学习流：按当前课程目录顺序切到下一篇（未开始时自动标记「学习中」）
+  const readingIdx = activeReading ? activeReading.category.topics.findIndex((t) => t.id === activeReading.topic.id) : -1
+  const hasNext = !!activeReading && readingIdx >= 0 && readingIdx < activeReading.category.topics.length - 1
   const goNext = () => {
-    if (!reading || readingIdx < 0) return
-    const next = reading.category.topics[readingIdx + 1]
+    if (!activeReading || readingIdx < 0) return
+    const next = activeReading.category.topics[readingIdx + 1]
     if (next) {
-      setReading({ ...reading, topic: next })
+      setReading({ ...activeReading, topic: next })
+      writeLastPosition({ categoryId: activeReading.category.id, topicId: next.id })
       if (get(next.id).status === 'unlearned') update(next.id, { status: 'learning' })
     } else {
       setReading(null)
-      setPage('checkin')
+      setPage(activeReading.from)
     }
   }
 
@@ -163,17 +194,42 @@ function App() {
     return (!query || topic.title.includes(query)) && (filter === 'all' || filter === state.status || (filter === 'exposed' && state.exposed))
   })
 
+  // 顶部导航条：星图下钻与课文阅读显示（返回 + 面包屑）；顶层视图不渲染
+  let nav: { backLabel: string; onBack: () => void; crumbs: string[] } | null = null
+  if (page === 'home' && openCourse) {
+    nav = { backLabel: '返回课程列表', onBack: () => setOpenCourseId(null), crumbs: ['我的星图', domain.title, openCourse.title] }
+  } else if ((page === 'read' || page === 'study') && activeReading) {
+    const dest = activeReading.from === 'library' ? '知识星库' : '我的星图'
+    nav = {
+      backLabel: '返回',
+      onBack: () => { setReading(null); setPage(activeReading.from === 'study' ? 'home' : activeReading.from) },
+      crumbs: [dest, activeReading.category.title, activeReading.topic.title],
+    }
+  }
+
+  // Esc 返回：导航条可见时生效；弹窗打开时让位给弹窗
+  useEffect(() => {
+    if (!nav) return
+    const { onBack } = nav
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && !document.querySelector('.modal-overlay')) onBack()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  })
+
   return (
     <Shell page={page} setPage={setPage} theme={theme} setTheme={setTheme} soundOn={soundOn} setSound={setSound} sourceId={sourceId} setSource={switchSource}>
-      {page === 'read' && reading
-        ? <ReadPage reading={reading} get={get} update={update} hasNext={hasNext} onNext={goNext} onBack={() => { setReading(null); setPage('checkin') }} />
+      {nav && <NavBar backLabel={nav.backLabel} onBack={nav.onBack} crumbs={nav.crumbs} />}
+      {(page === 'read' || page === 'study') && activeReading
+        ? <ReadPage reading={activeReading} get={get} update={update} hasNext={hasNext} onNext={goNext} onBack={nav!.onBack} />
         : page === 'log'
           ? <StarLogPage domains={domains} get={get} completionLog={completionLog} switchDomain={switchDomain} />
           : page === 'home'
-            ? <HomePage domain={domain} domains={domains} get={get} open={open} switchDomain={switchDomain} onOpenTopic={onOpenTopic} />
-            : page === 'checkin'
-              ? <CheckinPage active={active} get={get} update={update} setPage={setPage} domainTitle={domain.title} isSelf={sourceId === 'self'} onRead={onReadTopic} />
-              : <DetailPage active={active} get={get} update={update} filtered={filtered} query={query} setQuery={setQuery} filter={filter} setFilter={setFilter} setPage={setPage} addTopic={addTopic} removeTopic={removeTopic} domainTitle={domain.title} isSelf={sourceId === 'self'} onRead={onReadTopic} />}
+            ? <HomePage domain={domain} domains={domains} get={get} update={update} open={open} openCourse={openCourse} setOpenCourseId={setOpenCourseId} switchDomain={switchDomain} onOpenTopic={onOpenTopic} />
+            : page === 'study'
+              ? null
+              : <DetailPage active={active} get={get} update={update} filtered={filtered} query={query} setQuery={setQuery} filter={filter} setFilter={setFilter} addTopic={addTopic} removeTopic={removeTopic} domainTitle={domain.title} isSelf={sourceId === 'self'} onRead={onReadTopic} />}
     </Shell>
   )
 }
@@ -194,8 +250,16 @@ async function setupAutoUpdate() {
         await relaunch()
       }
     }
-  } catch {
-    // 无网络或更新服务不可用时静默跳过
+  } catch (err) {
+    const text = err instanceof Error ? err.message : String(err)
+    console.error('自动更新失败：', err)
+    // 显示具体错误（下载失败 / 签名校验失败 / 安装失败都能看到原因），不再静默
+    try {
+      const { message } = await import('@tauri-apps/plugin-dialog')
+      await message(`更新失败：${text}`, { title: '星航日志 · 更新失败', kind: 'error' })
+    } catch {
+      window.alert(`更新失败：${text}`)
+    }
   }
 }
 

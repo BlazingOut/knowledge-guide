@@ -105,7 +105,7 @@ export default function StarLogPage({ domains, get, completionLog, switchDomain 
           <div className="log-panel-head"><small>最近点亮</small><h2>航行记录</h2></div>
           {recent.length
             ? <ul className="log-recent">{recent.map((item) => <li key={item.date + item.id}><small>{item.date}</small><span>{item.title}</span></li>)}</ul>
-            : <p className="log-empty">还没有点亮记录，去「今日航行」开始第一颗星星吧 ✦</p>}
+            : <p className="log-empty">还没有点亮记录，去「我的星图」选一课，点亮第一颗星星吧 ✦</p>}
         </section>
       </div>
     </div>

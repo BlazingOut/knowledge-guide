@@ -51,7 +51,7 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .cards {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px
 }
-.card,.topic,.study-card,.checkin-card,.library-overview,.checkin-head {background:var(--surface);border:1px solid var(--border)
+.card,.topic,.study-card,.library-overview {background:var(--surface);border:1px solid var(--border)
 }
 .card {position:relative;text-align:left;border-radius:16px;padding:16px;min-height:180px;cursor:pointer;transition:.2s
 }
@@ -86,8 +86,6 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 .tip h3 {font-size:15px;margin:5px 0
 }
 .tip p {font-size:11px
-}
-.back {border:0;background:none;color:var(--green-soft);cursor:pointer;font-size:12px;padding:0;margin-bottom:35px
 }
 .catHead {align-items:end
 }
@@ -137,27 +135,12 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .topic section a,.topic section button {border:0;background:none;color:var(--green-soft);padding:0;font-size:11px;cursor:pointer;text-decoration:none
 }
-.checkin-head {display:grid;grid-template-columns:minmax(0,1fr) 320px;align-items:center;gap:36px;padding:26px 30px;margin-bottom:28px;border-radius:20px
-}
-.checkin-copy h1 {font-size:32px;margin:10px 0 7px;display:flex;align-items:center;gap:10px
-}
-.sparkle {color:var(--yellow);text-shadow:0 0 8px var(--yellow);font-size:18px
-}
-.checkin-copy p {max-width:600px;font-size:13px
-}
-.checkin-summary {padding-left:26px
-}
-.summary-label {display:flex;align-items:center;justify-content:space-between
-}
-.summary-label>span,.checkin-title>span {font-size:12px;font-weight:700;color:var(--badge-text);background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:10px;padding:4px 8px
-}
-.checkin-summary strong {display:inline-block;font-size:34px;line-height:1.1;margin:8px 0 10px;color:var(--text)
-}
-.checkin-summary strong i {font-size:16px;font-style:normal;color:var(--muted)
+/* 课程下钻进度条与目录行（checkin-head 大框已删，信息并入首页 Hero） */
+.checkin-title>span {font-size:12px;font-weight:700;color:var(--badge-text);background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:10px;padding:4px 8px
 }
 .progress-track {height:8px;background:var(--track);border-radius:8px;margin:12px 0 10px;overflow:visible
 }
-.checkin-summary p {font-size:11px
+.checkin-title .course-side {display:flex;align-items:center;gap:10px
 }
 .checkin-title {display:flex;align-items:end;justify-content:space-between;margin:0 0 16px
 }
@@ -187,9 +170,9 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .card-foot>span {font-size:10px;color:var(--subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
-.card-foot button,.checkin-actions button {border:1px solid var(--border);border-radius:9px;background:transparent;color:var(--muted);padding:7px 12px;font-size:11px;cursor:pointer;white-space:nowrap
+.card-foot button {border:1px solid var(--border);border-radius:9px;background:transparent;color:var(--muted);padding:7px 12px;font-size:11px;cursor:pointer;white-space:nowrap
 }
-.card-foot button:hover,.checkin-actions button:hover {border-color:var(--green);background:var(--veil-green);color:var(--green-soft)
+.card-foot button:hover {border-color:var(--green);background:var(--veil-green);color:var(--green-soft)
 }
 .learning-progress {display:flex;align-items:center;gap:7px;margin-top:-3px;color:var(--green-soft);font-size:10px
 }
@@ -207,7 +190,7 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .shell button:focus:not(:focus-visible) {outline:none
 }
-.priority,.topic,.study-card,.library-overview,.checkin-head {transition:background .25s,border-color .25s,color .25s
+.priority,.topic,.study-card,.library-overview {transition:background .25s,border-color .25s,color .25s
 }
 @media (prefers-reduced-motion:reduce) {
 *,*:before,*:after {animation:none!important;transition:none!important
@@ -215,10 +198,6 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 @media (max-width:820px) {
 .side {width:190px
-}
-.checkin-head {grid-template-columns:1fr
-}
-.checkin-summary {border-top:1px solid var(--border);padding:18px 0 0
 }
 }
 @media (max-width:620px) {
@@ -250,13 +229,11 @@ header,.catHead {display:block
 }
 .toolbar input {width:100%;margin-top:14px
 }
-.checkin-head {padding:22px 20px
-}
-.checkin-copy h1 {font-size:28px
-}
 .checkin-title {align-items:flex-start;gap:12px
 }
 .checkin-title>span {white-space:nowrap
+}
+.checkin-title .course-side {flex-wrap:wrap
 }
 .checkin-list {grid-template-columns:1fr
 }

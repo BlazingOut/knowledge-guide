@@ -46,7 +46,7 @@ export default function ReadPage({ reading, get, update, hasNext, onNext, onBack
   const html = useMemo(() => {
     if (!md) return ''
     const dir = courseDirOf(topic.url)
-    const rewritten = dir ? md.replace(/\(assets\//g, `(courses/${dir}/assets/`) : md
+    const rewritten = dir ? md.replace(/\(\.?\/?assets\//g, `(courses/${dir}/assets/`) : md
     return DOMPurify.sanitize(marked.parse(rewritten) as string)
   }, [md, topic.url])
 
@@ -56,7 +56,6 @@ export default function ReadPage({ reading, get, update, hasNext, onNext, onBack
   return (
     <div className="read">
       <div className="read-head">
-        <button className="back" onClick={onBack}>←　返回</button>
         <div className="read-meta">
           <small>{domain.title} · {category.title}</small>
           <h1>{topic.title}</h1>
@@ -96,7 +95,7 @@ export default function ReadPage({ reading, get, update, hasNext, onNext, onBack
         <span className="read-status">{labels[state.status]}</span>
         {hasNext
           ? <button className="read-next" onClick={onNext}>下一篇：{reading.category.topics[reading.category.topics.findIndex((t) => t.id === topic.id) + 1]?.title} →</button>
-          : <span className="read-done-all">本课全部读完 ✦ 返回列表继续吧</span>}
+          : <button className="read-next" onClick={onBack}>已完成本章 · 返回课程目录 →</button>}
       </div>
     </div>
   )

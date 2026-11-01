@@ -13,15 +13,15 @@ export type Domain = {
 export type Status = 'unlearned' | 'learning' | 'completed'
 export type UserState = { status: Status; verified: boolean; exposed: boolean }
 export type CompletionLog = Record<string, string[]>
-export type Page = 'log' | 'home' | 'checkin' | 'library' | 'read'
+export type Page = 'log' | 'home' | 'study' | 'library' | 'read'
 export type SourceId = 'self' | 'javaguide'
 export type Source = { id: SourceId; title: string; domains: Domain[] }
 
-// 主题：夜航（绿）/ 沙金 / 靛蓝 / 暖阳——共享组件，token 切换
-export type Theme = 'night' | 'sand' | 'indigo' | 'warm'
+// 主题：夜航（绿）/ 沙金 / 靛蓝 / 鼠尾草（纸白）/ 暖阳——共享组件，token 切换
+export type Theme = 'night' | 'sand' | 'indigo' | 'sage' | 'warm'
 
-// 课文阅读目标：携带所在分类/领域上下文（用于「下一篇」与来源标注）
-export type ReadingTarget = { topic: Topic; category: Category; domain: Domain }
+// 课文阅读目标：携带所在分类/领域上下文（用于「下一篇」）与来源页（用于「返回」恢复来路）
+export type ReadingTarget = { topic: Topic; category: Category; domain: Domain; from: Page }
 
 export const labels: Record<Status, string> = { unlearned: '未开始', learning: '学习中', completed: '已完成' }
 export const emptyState: UserState = { status: 'unlearned', verified: false, exposed: false }
