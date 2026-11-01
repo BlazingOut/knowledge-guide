@@ -135,6 +135,13 @@ p {font-size:14px;color:var(--muted);line-height:1.8;margin:0
 }
 .topic section a,.topic section button {border:0;background:none;color:var(--green-soft);padding:0;font-size:11px;cursor:pointer;text-decoration:none
 }
+/* 自习舱空态：非自研源（JavaGuide）下无可读课文 */
+.study-empty {flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center
+}
+.study-empty h2 {font-size:20px;color:var(--text)
+}
+.study-empty p {max-width:420px;font-size:12px
+}
 /* 课程下钻进度条与目录行（checkin-head 大框已删，信息并入首页 Hero） */
 .checkin-title>span {font-size:12px;font-weight:700;color:var(--badge-text);background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:10px;padding:4px 8px
 }

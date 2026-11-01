@@ -141,7 +141,8 @@ function App() {
   // 打开课文阅读（自研课程）；记录来源页（返回时恢复来路）与上次位置（自习舱空态恢复）。
   // JavaGuide 保持外链
   const openRead = (topic: Topic, category: Category, owner: Domain) => {
-    writeLastPosition({ categoryId: category.id, topicId: topic.id })
+    // 课程大纲是伪课题（id 带 -readme 后缀），不在课文列表里——写入 last-position 会破坏自习舱恢复
+    if (!topic.id.endsWith('-readme')) writeLastPosition({ categoryId: category.id, topicId: topic.id })
     setReading({ topic, category, domain: owner, from: page })
     setPage('read')
   }
@@ -155,7 +156,7 @@ function App() {
   // 自习舱空态解析（M3 继续学习）：侧边栏直接进自习舱且无在读课文时，
   // 优先恢复上次位置（last-position），首次使用回退显示第一门课第一课。
   const fallbackReading = useMemo<ReadingTarget | null>(() => {
-    if (page !== 'study' || reading) return null
+    if (page !== 'study' || reading || sourceId !== 'self') return null
     const last = readLastPosition()
     if (last) {
       for (const d of domains) {
@@ -168,7 +169,7 @@ function App() {
     const category = d?.data.children[0]
     const topic = category?.topics[0]
     return d && category && topic ? { topic, category, domain: d, from: 'study' } : null
-  }, [page, reading, domains])
+  }, [page, reading, domains, sourceId])
 
   // 在读目标：阅读页用 reading；自习舱页无 reading 时用空态解析结果
   const activeReading = page === 'read' ? reading : page === 'study' ? (reading ?? fallbackReading) : null
@@ -228,7 +229,11 @@ function App() {
           : page === 'home'
             ? <HomePage domain={domain} domains={domains} get={get} update={update} open={open} openCourse={openCourse} setOpenCourseId={setOpenCourseId} switchDomain={switchDomain} onOpenTopic={onOpenTopic} />
             : page === 'study'
-              ? null
+              ? <div className="study-empty">
+                  <h2>自习舱暂无可读课文</h2>
+                  <p>当前课程源是 JavaGuide（外链课程），条目请到知识星库打开；切回自研课程后，这里会自动恢复上次阅读位置。</p>
+                  <button className="tip-action" onClick={() => setPage('library')}>去知识星库 →</button>
+                </div>
               : <DetailPage active={active} get={get} update={update} filtered={filtered} query={query} setQuery={setQuery} filter={filter} setFilter={setFilter} addTopic={addTopic} removeTopic={removeTopic} domainTitle={domain.title} isSelf={sourceId === 'self'} onRead={onReadTopic} />}
     </Shell>
   )
